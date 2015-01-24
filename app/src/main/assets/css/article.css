@@ -1,0 +1,74 @@
+.inline-block-hehe {
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+}
+body {
+  margin: 0;
+  padding: 0.8em;
+  padding-bottom: 50px;
+  line-height: normal;
+}
+body p {
+  font-size: 15px !important;
+  margin-bottom: 1.5em;
+  text-indent: 1em;
+}
+body * {
+  max-width: 100%;
+  word-break: break-all !important;
+  background: #fff !important;
+  font-family: "Heiti SC" !important;
+  font-style: normal !important;
+  color:#333333;
+  text-align: justify;
+}
+body strong {
+  font-size: 18px;
+  text-indent: 0px;
+}
+body section {
+  font-size: 12px !important;
+  padding-bottom: 20px;
+}
+body section * {
+  line-height: 16px;
+  font-size: 12px !important;
+  color: #333 !important;
+}
+body section p {
+  margin: 1em 0 !important;
+  font-size: 16px !important;
+}
+body section p br {
+  display: none !important;
+}
+body section font br {
+  display: block !important;
+}
+body section blockquote {
+  padding: 5px 10px;
+  margin: 0 0 20px;
+  border-left: 4px solid #eee;
+}
+body img {
+  display: block;
+  height: auto;
+  margin: 1em auto;
+  max-width: 100% !important;
+  height: auto !important;
+}
+body .art-editor {
+  float: right;
+  font-size: 14px;
+  color: #727272;
+  letter-spacing: 0.5px;
+}
+body a,
+body a * {
+  color: #0090d0 !important;
+  display: block !important;
+}
+body a:hover * {
+  text-decoration: none;
+}

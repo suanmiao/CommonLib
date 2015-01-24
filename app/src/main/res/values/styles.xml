@@ -1,0 +1,202 @@
+<resources>
+
+    <style name="AppTheme" parent="BaseTheme">
+
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="toolbarStyle">@style/BaseToolbarStyle</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@color/base_blue</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!--toolbar-->
+    <style name="BaseToolbarStyle" parent="Base.Widget.AppCompat.Toolbar">
+        <item name="android:background">@drawable/actionbar_bg</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:textColor">@color/pure_white</item>
+        <item name="android:textSize">17dp</item>
+        <item name="android:height">@dimen/toolbar_height</item>
+    </style>
+
+
+    <style name="MeItemTextStyle">
+        <item name="android:textColor">@color/setting_item_text</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MeItemTitleTextStyle" parent="MeItemTextStyle">
+        <item name="android:textSize">14dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginLeft">50dp</item>
+        <item name="android:layout_marginRight">75dp</item>
+    </style>
+
+    <style name="MeItemIndicatorTextStyle" parent="MeItemTextStyle">
+        <item name="android:textSize">14dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">38dp</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="MeItemTitleIconStyle">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+
+    <style name="MeItemEnterIconStyle">
+        <item name="android:src">@drawable/icon_me_enter</item>
+        <item name="android:layout_width">6.4dp</item>
+        <item name="android:layout_height">12dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
+    <style name="MeRoundItemTheme">
+        <item name="android:background">@drawable/bg_me_round_item</item>
+        <item name="android:layout_marginLeft">17dp</item>
+        <item name="android:layout_marginRight">17dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="MeSemiTopRoundItemTheme">
+        <item name="android:background">@drawable/bg_me_semi_top_round_item</item>
+        <item name="android:layout_marginLeft">17dp</item>
+        <item name="android:layout_marginRight">17dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="MeSemiBottomRoundItemTheme">
+        <item name="android:background">@drawable/bg_me_semi_bottom_round_item</item>
+        <item name="android:layout_marginLeft">17dp</item>
+        <item name="android:layout_marginRight">17dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="MeItemDivideLineTheme">
+        <item name="android:background">@drawable/setting_item_divide_line</item>
+        <item name="android:layout_marginLeft">13dp</item>
+        <item name="android:layout_marginRight">13dp</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="DialogUpperBg">
+        <item name="android:background">@drawable/dialog_upper_bg</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="DialogBottomBg">
+        <item name="android:background">@drawable/dialog_bottom_bg</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="DialogEnsureButton">
+        <item name="android:background">@drawable/bg_dialog_ensure</item>
+        <item name="android:textColor">@color/dialog_ensure_text</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="DialogCancelButton">
+        <item name="android:background">@drawable/bg_dialog_cancel</item>
+        <item name="android:textColor">@color/dialog_cancel_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <!--setting page-->
+
+    <style name="SettingItemBgStyle">
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="SettingHeaderTextStyle">
+        <item name="android:textSize">17dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="SettingIndexTextStyle">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/gray_87</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="SettingDescriptionTextStyle">
+        <item name="android:textSize">10dp</item>
+        <item name="android:textColor">#959595</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="SettingItemDividerStyle">
+        <item name="android:background">@color/gray_d8</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:layout_height">2px</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="SettingItemBoldDividerStyle">
+        <item name="android:background">@color/gray_99</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:layout_height">4px</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+
+    <!--popup window-->
+
+    <style name="PopupWindowStyle">
+        <item name="android:windowShowAnimation">@anim/more_show_anim</item>
+        <item name="android:windowEnterAnimation">@anim/more_show_anim</item>
+        <item name="android:windowExitAnimation">@anim/more_dismiss_anim</item>
+    </style>
+
+    <!--common-->
+
+    <style name="SettingSwitchButtonStyle">
+        <item name="android:layout_width">66dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
+    <!--actionbar-->
+    <!--<style name="BlueActionBar" parent="android:Widget.ActionBar">-->
+    <!--<item name="background">@drawable/actionbar_bg</item>-->
+    <!--<item name="android:background">@drawable/actionbar_bg</item>-->
+    <!--<item name="android:paddingLeft">0dp</item>-->
+    <!--<item name="android:paddingRight">0dp</item>-->
+    <!--<item name="android:textColor">@color/pure_white</item>-->
+    <!--<item name="android:textSize">17dp</item>-->
+    <!--<item name="android:height">44dp</item>-->
+    <!--<item name="android:paddingBottom">1px</item>-->
+    <!--<item name="android:icon">@android:color/transparent</item>
+     This does the magic! -->
+    <!--</style>-->
+
+</resources>

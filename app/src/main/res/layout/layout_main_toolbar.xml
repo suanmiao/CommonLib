@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_base"
+    android:layout_width="match_parent"
+    app:contentInsetStart="0dp"
+    app:contentInsetEnd="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="1dp"
+    android:layout_height="@dimen/main_toolbar_height">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:id="@+id/ic_main_actionbar_article"
+            android:background="@drawable/bg_action_bar_indicator_item"
+            android:layout_width="58dp"
+            android:layout_height="match_parent"
+            android:paddingTop="12dp"
+            android:paddingBottom="13dp"
+            android:src="@drawable/ic_main_action_article"/>
+
+        <ImageView
+            android:id="@+id/ic_main_actionbar_square"
+            android:background="@drawable/bg_action_bar_indicator_item"
+            android:layout_width="58dp"
+            android:layout_height="match_parent"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:src="@drawable/ic_main_action_square"/>
+
+        <ImageView
+            android:id="@+id/ic_main_actionbar_me"
+            android:background="@drawable/bg_action_bar_indicator_item"
+            android:layout_width="58dp"
+            android:layout_height="match_parent"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
+            android:src="@drawable/ic_main_action_me"/>
+
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>

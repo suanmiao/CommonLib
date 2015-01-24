@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="base_blue">#00BCD4</color>
+    <color name="light_blue">#77BCD5</color>
+    <color name="pressed_blue">#55C0CE</color>
+    <color name="actionbar_select_mask">#30000000</color>
+    <color name="pure_white">#FFFFFF</color>
+    <color name="pure_black">#000000</color>
+    <color name="white_80">#C0FFFFFF</color>
+    <color name="gray_99">#999999</color>
+    <color name="gray_f3">#f3f3f3</color>
+    <color name="gray_ec">#ececec</color>
+    <color name="gray_4d">#4d4d4d</color>
+    <color name="gray_87">#878787</color>
+    <color name="gray_c7">#c7c7c7</color>
+    <color name="gray_d8_20">#30D8D8D8</color>
+    <color name="gray_d8">#D8D8D8</color>
+    <color name="gray_fa">#FAFAFA</color>
+
+    <color name="category_page_description_color">#D0D0D0</color>
+
+    <color name="black_00_20">#30000000</color>
+
+    <color name="dialog_mask">#700d0d0d</color>
+    <color name="switch_baseline_color">#b7b7b7</color>
+
+    <color name="category_header_bg_mask">#303d3d3d</color>
+    <color name="article_header_bg_mask">#503d3d3d</color>
+
+    <color name="article_comment_list_mask">#900d0d0d</color>
+    <color name="article_comment_hint_mask">#900d0d0d</color>
+</resources>

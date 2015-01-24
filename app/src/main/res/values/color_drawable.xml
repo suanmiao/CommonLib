@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="semi_transparent_20">#30000000</drawable>
+    <drawable name="pure_transparent">#00000000</drawable>
+
+    <drawable name="divide_line_bg_normal">@color/gray_c7</drawable>
+    <drawable name="divide_line_bg_pressed">@color/pressed_blue</drawable>
+
+    <drawable name="pure_white">@color/pure_white</drawable>
+    <drawable name="article_press_bg">#e4e4e4</drawable>
+    <drawable name="mask_color">@color/actionbar_select_mask</drawable>
+
+</resources>

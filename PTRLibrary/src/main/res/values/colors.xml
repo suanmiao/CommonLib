@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="water_drop_border_color">#ffffff</color>
+    <color name="water_drop_fill_color">#60ffffff</color>
+</resources>

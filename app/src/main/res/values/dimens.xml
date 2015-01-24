@@ -1,0 +1,61 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="toolbar_height">44dp</dimen>
+    <dimen name="main_toolbar_height">47dp</dimen>
+    <dimen name="main_content_marin_top">42dp</dimen>
+
+    <dimen name="tag_bg_padding_horizontal">8dp</dimen>
+    <dimen name="tag_bg_padding_vertical">1.3dp</dimen>
+    <dimen name="tag_text_size">9dp</dimen>
+
+    <dimen name="pager_indicator_bottom_line_height">6dp</dimen>
+    <dimen name="pager_indicator_bottom_line_padding_bottom">-1dp</dimen>
+
+    <dimen name="article_header_height">270dp</dimen>
+    <dimen name="article_scroll_padding">40dp</dimen>
+
+    <dimen name="category_page_header_height">270dp</dimen>
+    <dimen name="category_page_scroll_padding">40dp</dimen>
+
+    <dimen name="thin_back_padding_left">6dp</dimen>
+    <dimen name="full_back_padding_left">12dp</dimen>
+
+    <dimen name="tip_view_default_height">32dp</dimen>
+    <dimen name="tip_text_size">12dp</dimen>
+    <dimen name="tip_bg_padding_vertical">6dp</dimen>
+    <dimen name="tip_bg_padding_horizontal">28dp</dimen>
+
+    <dimen name="default_action_icon_size">27dp</dimen>
+    <dimen name="default_action_bg_size">44dp</dimen>
+
+    <dimen name="default_more_window_width">130dp</dimen>
+    <dimen name="default_more_offset_x">0dp</dimen>
+    <dimen name="default_more_offset_y">-42dp</dimen>
+
+
+    <!--about node bar-->
+
+    <dimen name="default_node_progress_height">5dp</dimen>
+    <dimen name="default_normal_node_radius">5dp</dimen>
+    <dimen name="default_selected_node_radius">9dp</dimen>
+
+    <dimen name="default_node_bar_horizontal_padding">25dp</dimen>
+
+    <dimen name="default_node_bar_margin_bottom">18dp</dimen>
+    <dimen name="default_node_text_margin_bottom">8dp</dimen>
+    <dimen name="default_node_text_size">10dp</dimen>
+
+    <!--about switch button-->
+    <dimen name="default_switch_indicator_width">23dp</dimen>
+    <dimen name="default_switch_indicator_height">24dp</dimen>
+    <dimen name="default_switch_baseline_height">10dp</dimen>
+    <dimen name="default_switch_baseline_padding">15dp</dimen>
+
+    <!--action view-->
+
+    <dimen name="default_move_slop">3dp</dimen>
+    <dimen name="default_max_hole_radius">45dp</dimen>
+    <dimen name="default_min_hole_radius">35dp</dimen>
+    <dimen name="default_hint_size">15dp</dimen>
+
+</resources>

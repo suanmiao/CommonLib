@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/bg_category_page_follow_pressed" android:state_selected="false" android:state_pressed="true"/>
+    <item android:drawable="@drawable/bg_category_page_follow_normal" android:state_selected="false" android:state_pressed="false"/>
+
+    <item android:drawable="@drawable/bg_category_page_unfollow_pressed" android:state_selected="true" android:state_pressed="true"/>
+    <item android:drawable="@drawable/bg_category_page_unfollow_normal" android:state_selected="true" android:state_pressed="false"/>
+
+    <item android:drawable="@drawable/bg_category_page_follow_normal" />
+
+</selector>

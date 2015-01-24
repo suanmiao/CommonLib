@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:suan="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="9dp"
+    android:layout_width="match_parent"
+    android:background="@drawable/bg_article_item"
+    android:layout_height="wrap_content">
+
+    <com.suan.example.ui.widget.STextView
+        android:id="@+id/text_item_main_article_header"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:gravity="center"
+        android:textSize="10dp"
+        android:textColor="@color/gray_87"
+        android:layout_marginTop="8dp"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:background="@color/gray_ec"
+        android:layout_height="16dp"/>
+
+    <View
+        android:background="@color/gray_d8"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="9dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <com.suan.example.ui.widget.STextView
+                android:text="离开教室地方了金坷垃圣诞节福建师大"
+                suan:textStyle="bold"
+                android:id="@+id/text_item_main_article_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:textColor="@color/gray_4d"
+                android:textStyle="bold"
+                android:textSize="13dp"/>
+
+            <LinearLayout
+                android:id="@+id/layout_item_main_article_normal_tag"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+
+            <com.suan.example.ui.widget.STextView
+                android:id="@+id/text_item_main_article_fav_num"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_99"
+                android:text="9384"
+                android:textSize="10dp"/>
+
+            <ImageView
+                android:id="@+id/img_item_main_article_fav_num"
+                android:src="@drawable/icon_item_main_article_fav"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="2dp"
+                android:layout_toLeftOf="@+id/text_item_main_article_fav_num"
+                android:layout_marginRight="3dp"
+                android:layout_width="10dp"
+                android:layout_height="9dp"/>
+
+            <com.suan.example.ui.widget.STextView
+                android:id="@+id/text_item_main_article_comment_num"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="0dp"
+                android:layout_toLeftOf="@+id/img_item_main_article_fav_num"
+                android:layout_marginRight="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_99"
+                android:text="9384"
+                android:textSize="10dp"/>
+
+            <ImageView
+                android:id="@+id/img_item_main_article_comment_num"
+                android:src="@drawable/icon_item_main_article_comment"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="2dp"
+                android:layout_toLeftOf="@+id/text_item_main_article_comment_num"
+                android:layout_marginRight="3dp"
+                android:layout_width="12dp"
+                android:layout_height="9dp"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:src="@drawable/ic_default_img_medium_rectangle"
+            android:id="@+id/img_main_article_normal"
+            android:scaleType="centerCrop"
+            android:layout_marginLeft="13dp"
+            android:layout_width="75dp"
+            android:layout_height="60dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
