@@ -4,6 +4,20 @@
 
  Home brew android common lib, you can try if interested
 
+## Feature
+  **IO**
+  network module, compatible with both Volley and RoboSpice, all-in-one request management
+  image loading, both for items in scroll container and idle item
+  cache ,on both ram and disk
+  **UI**
+  TextView and EditText with custom font support
+  MVC framework on list item
+  Dialog customisation support (maybe more animation support in the future)
+  **Request Framework**
+  full-case coverage for all request
+
+## Other
+  **it's a library designed in my coding and feature style, and the stability hasn't been verified**
 
 ## Copyrights
 

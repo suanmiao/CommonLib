@@ -122,30 +122,6 @@ public class ArticleListFragment extends AbstractBaseFragment {
             }
           }
         }));
-    // ArticleListRequest refreshRequest = new ArticleListRequest(0, ITEM_COUNT_PER_REQUEST,
-    // ArticleListRequest.ArticleListRequestType.FOLLOWED, "");
-    // executeRequest(refreshRequest, new RequestListener<ArticleModel.ArticleList.FormResult>() {
-    // @Override
-    // public void onRequestFailure(SpiceException spiceException) {
-    // TipUtil.processException(tipView, spiceException);
-    // listMainArticle.onRefreshComplete();
-    // }
-    //
-    // @Override
-    // public void onRequestSuccess(ArticleModel.ArticleList.FormResult result) {
-    // if (result.isStatusOK()) {
-    // ArticleUtil.mergeHeadline(result.content.list, result.content.headlines);
-    // TipUtil.showRefreshTip(tipView, true, result.content.list.size());
-    // listAdapter.setData(result.content.list);
-    // for (int i = 0; i < result.content.list.size(); i++) {
-    // ArticleModel model = result.content.list.get(i);
-    // }
-    // } else {
-    // ResponseStatusUtil.processResponseStatus(getActivity(), result, tipView);
-    // }
-    // listMainArticle.onRefreshComplete();
-    // }
-    // });
   }
 
 
