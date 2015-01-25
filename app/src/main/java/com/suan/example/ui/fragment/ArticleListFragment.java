@@ -9,7 +9,7 @@ import android.view.View;
 import com.android.volley.VolleyError;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.squareup.otto.Subscribe;
-import com.suan.common.io.http.MRequestListener;
+import com.suan.common.io.http.CommonRequestListener;
 import com.suan.common.io.http.robospiece.api.BaseFormResult;
 import com.suan.common.ui.adapter.listview.BaseListAdapter;
 import com.suan.common.ui.fragment.AbstractBaseFragment;
@@ -105,8 +105,8 @@ public class ArticleListFragment extends AbstractBaseFragment {
     listMainArticle.onRefreshStart();
     String url = "http://zhihurss.miantiao.me/zhihuzhuanlan/taosay";
     ChannelRequest request = new ChannelRequest(url);
-    executeRequest(request, new MRequestListener(
-        new MRequestListener.VolleyListener<ChannelModel>() {
+    executeRequest(request, new CommonRequestListener(
+        new CommonRequestListener.VolleyListener<ChannelModel>() {
           @Override
           public void onErrorResponse(VolleyError error) {
             Log.e("SUAN", "response error " + error);
