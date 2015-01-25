@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.suan.common.component.BaseApplication;
-import com.suan.common.io.http.BaseRequest;
-import com.suan.common.io.http.MRequestListener;
+import com.suan.common.io.http.CommonRequest;
+import com.suan.common.io.http.CommonRequestListener;
 import com.suan.common.io.http.robospiece.RequestManager;
 import com.suan.common.io.http.robospiece.api.BaseFormResult;
 import com.suan.common.ui.mvc.Model.BaseModel;
@@ -58,7 +58,7 @@ public abstract class BaseViewModel {
         return baseView;
     }
 
-    public void executeRequest(BaseRequest request, MRequestListener listener) {
+    public void executeRequest(CommonRequest request, CommonRequestListener listener) {
         mRequestManager.executeRequest(request, listener, this);
     }
 

@@ -1,9 +1,10 @@
-package com.suan.common.io.http.image;
+package com.suan.common.io.http.image.spice;
 
 import android.graphics.Bitmap;
 
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.suan.common.io.http.image.Photo;
 import com.suan.common.util.BitmapUtil;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.io.InputStream;
 /**
  * Created by suanmiao on 14/12/7.
  */
-public class PhotoRequest extends BaseCacheImageRequest<Photo> {
+public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
 
     protected static final String KEY_CONTENT_LENGTH = "Content-Length";
 
@@ -28,12 +29,12 @@ public class PhotoRequest extends BaseCacheImageRequest<Photo> {
 
     protected  LoadOption loadOption = LoadOption.BOTH;
 
-    public PhotoRequest(Photo photo) {
+    public PhotoSpiceRequest(Photo photo) {
         super(Photo.class);
         this.photo = photo;
     }
 
-    public PhotoRequest(Photo photo, LoadOption option) {
+    public PhotoSpiceRequest(Photo photo, LoadOption option) {
         super(Photo.class);
         this.photo = photo;
         this.loadOption = option;

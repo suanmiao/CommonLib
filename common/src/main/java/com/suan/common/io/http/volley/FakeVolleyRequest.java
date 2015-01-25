@@ -4,6 +4,10 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.suan.common.io.http.exception.CommonParamException;
+import com.suan.common.io.http.exception.CommonRequestException;
+import com.suan.common.io.http.robospiece.api.TaggedRequestListener;
 
 import java.util.Map;
 
@@ -13,20 +17,28 @@ import java.util.Map;
 public class FakeVolleyRequest<T> extends Request<T> {
 
   private IVolleyActionDelivery<T> volleyActionDelivery;
-  private Response.Listener<T> resultListener;
+  private TaggedRequestListener<T> taggedRequestListener;
   private Map<String, String> headers;
   private Map<String, String> postParams;
 
   public FakeVolleyRequest(int method, String url, Map<String, String> headers,
       Map<String, String> postParams,
       IVolleyActionDelivery<T> volleyActionDelivery,
-      Response.Listener<T> resultListener,
-      Response.ErrorListener errorListener) {
-    super(method, url, errorListener);
+      TaggedRequestListener<T> taggedRequestListener) throws CommonRequestException {
+    super(method, url, taggedRequestListener);
+    checkNull("header", headers);
+    checkNull("url", url);
+    checkNull("action delivery", volleyActionDelivery);
     this.headers = headers;
     this.postParams = postParams;
     this.volleyActionDelivery = volleyActionDelivery;
-    this.resultListener = resultListener;
+    this.taggedRequestListener = taggedRequestListener;
+  }
+
+  private void checkNull(String paramName, Object param) throws CommonRequestException {
+    if (param == null) {
+      throw new CommonParamException("param " + paramName + " is null");
+    }
   }
 
   @Override
@@ -36,7 +48,13 @@ public class FakeVolleyRequest<T> extends Request<T> {
 
   @Override
   protected void deliverResponse(T response) {
-    resultListener.onResponse(response);
+    taggedRequestListener.onResponse(response);
+  }
+
+  @Override
+  public void deliverError(VolleyError error) {
+    super.deliverError(error);
+    taggedRequestListener.onErrorResponse(error);
   }
 
   @Override

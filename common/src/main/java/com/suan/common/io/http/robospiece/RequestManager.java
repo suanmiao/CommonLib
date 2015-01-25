@@ -10,8 +10,10 @@ import com.octo.android.robospice.SpiceManager;
 import com.squareup.okhttp.OkHttpClient;
 import com.suan.common.component.BaseApplication;
 import com.suan.common.io.cache.CacheManager;
-import com.suan.common.io.http.BaseRequest;
-import com.suan.common.io.http.MRequestListener;
+import com.suan.common.io.http.CommonRequest;
+import com.suan.common.io.http.CommonRequestListener;
+import com.suan.common.io.http.exception.CommonParamException;
+import com.suan.common.io.http.exception.CommonRequestException;
 import com.suan.common.io.http.robospiece.api.TaggedRequestListener;
 import com.suan.common.io.http.volley.FakeVolleyRequest;
 import com.suan.common.util.helper.FileHelper;
@@ -38,9 +40,10 @@ public class RequestManager {
    * RoboSpiece
    */
   private SpiceManager spiceManager;
-  private Map<Object, List<BaseRequest>> runningRequest;
+  private Map<String, CommonRequest> runningRequest;
   private static OkHttpClient mOkHttpClient;
   RequestQueue requestQueue;
+  private static final String TAG_PREFIX = "/";
 
   /**
    * two specific demands for wace
@@ -53,7 +56,7 @@ public class RequestManager {
     BOTH
   }
 
-  private ExecuteMode mExecuteMode;
+  private static ExecuteMode mExecuteMode;
 
   public RequestManager(Class requestService, OkHttpClient okHttpClient) {
     initCommon();
@@ -63,7 +66,7 @@ public class RequestManager {
   public RequestManager(Context context) {
     initCommon();
     initVolley(context);
-    this.mExecuteMode = ExecuteMode.VOLLEY;
+    mExecuteMode = ExecuteMode.VOLLEY;
   }
 
   private void initCommon() {
@@ -78,7 +81,7 @@ public class RequestManager {
     spiceManager = new SpiceManager(requestService);
     mOkHttpClient = okHttpClient;
     spiceManager.start(BaseApplication.getAppContext());
-    this.mExecuteMode = ExecuteMode.ROBO_SPIECE;
+    mExecuteMode = ExecuteMode.ROBO_SPIECE;
   }
 
   private void initVolley(Context context) {
@@ -93,72 +96,94 @@ public class RequestManager {
     return cacheManager;
   }
 
+  public static ExecuteMode getExecuteMode() {
+    return mExecuteMode;
+  }
+
+  private RequestFinishListener mRequestFinishListener = new RequestFinishListener() {
+    @Override
+    public void onFinish(String hashTag) {
+      runningRequest.remove(hashTag);
+    }
+  };
+
   public void cancelRequest(Object tag) {
-    List<BaseRequest> taggedRequestList = runningRequest.get(tag);
-    if (taggedRequestList != null) {
-      for (BaseRequest request : taggedRequestList) {
-        request.cancel();
+    String key = tag.hashCode() + TAG_PREFIX;
+    List<Map.Entry<String, CommonRequest>> entryList = new ArrayList<>();
+    entryList.addAll(runningRequest.entrySet());
+    for (Map.Entry<String, CommonRequest> entry : entryList) {
+      if (entry.getKey().contains(key)) {
+        entry.getValue().cancel();
+        runningRequest.remove(entry.getKey());
       }
     }
   }
 
-  protected void addRequestToTagList(Object tag, BaseRequest request) {
-    List<BaseRequest> list = runningRequest.get(tag);
-    if (list != null) {
-      list.add(request);
-    } else {
-      list = new ArrayList<>();
-      list.add(request);
-      runningRequest.put(tag, list);
-    }
+  protected void addRequestToTagList(Object tag, CommonRequest request) {
+    runningRequest.put(generateHashTag(tag, request), request);
   }
 
-  public void removeRequestFromTagList(Object tag, BaseRequest request) {
-    List<BaseRequest> list = runningRequest.get(tag);
-    if (list != null) {
-      list.remove(request);
-    }
+  public void removeRequestFromTagList(Object tag, CommonRequest request) {
+    runningRequest.remove(generateHashTag(tag, request));
   }
 
-  public <T> void executeRequest(BaseRequest<T> request, MRequestListener<T> requestListener,
+  public <T> void executeRequest(CommonRequest<T> request, CommonRequestListener<T> requestListener,
       Object tag) {
     addRequestToTagList(tag, request);
     switch (request.getRequestType()) {
       case VOLLEY_REQUEST:
         switch (request.getVolleyRequestMethod()) {
           case Request.Method.POST: {
-            FakeVolleyRequest<T> volleyRequest =
-                new FakeVolleyRequest<T>(request.getVolleyRequestMethod(), request.getUrl(),
-                    request.getVolleyHeaders(), request.getVolleyParams(),
-                    request.getVolleyActionDelivery(),
-                    requestListener.getVolleyListener(), requestListener.getErrorListener());
-            requestQueue.add(volleyRequest);
-            request.setVolleyRequest(volleyRequest);
+            try {
+              TaggedRequestListener<T> taggedRequestListener =
+                  new TaggedRequestListener<T>(requestListener.getVolleyListener());
+              taggedRequestListener.mark(generateHashTag(tag, request), mRequestFinishListener);
+              FakeVolleyRequest<T> volleyRequest =
+                  new FakeVolleyRequest<T>(request.getVolleyRequestMethod(), request.getUrl(),
+                      request.getVolleyHeaders(), request.getVolleyParams(),
+                      request.getVolleyActionDelivery(), taggedRequestListener);
+              requestQueue.add(volleyRequest);
+              request.setVolleyRequest(volleyRequest);
+            } catch (CommonRequestException e) {
+              e.printStackTrace();
+            }
             break;
           }
           case Request.Method.GET: {
-            FakeVolleyRequest<T> volleyRequest =
-                new FakeVolleyRequest<T>(request.getVolleyRequestMethod(), getEncodedGetUrl(
-                    request.getUrl(), request.getVolleyParams()),
-                    request.getVolleyHeaders(), null,
-                    request.getVolleyActionDelivery(),
-                    requestListener.getVolleyListener(), requestListener.getErrorListener());
-            requestQueue.add(volleyRequest);
-            request.setVolleyRequest(volleyRequest);
+            try {
+              TaggedRequestListener<T> taggedRequestListener =
+                  new TaggedRequestListener<T>(requestListener.getVolleyListener());
+              taggedRequestListener.mark(generateHashTag(tag, request), mRequestFinishListener);
+              FakeVolleyRequest<T> volleyRequest =
+                  new FakeVolleyRequest<T>(request.getVolleyRequestMethod(), getEncodedGetUrl(
+                      request.getUrl(), request.getVolleyParams()),
+                      request.getVolleyHeaders(), null,
+                      request.getVolleyActionDelivery(),
+                          taggedRequestListener);
+              requestQueue.add(volleyRequest);
+              request.setVolleyRequest(volleyRequest);
+            } catch (CommonRequestException e) {
+              e.printStackTrace();
+            }
             break;
           }
         }
         break;
       case ROBO_REQUEST:
-        spiceManager.execute(request.getSpiceRequest(), new TaggedRequestListener<T>(tag, request,
-            requestListener.getRoboRequestListener(),
-            this));
+        TaggedRequestListener<T> taggedRequestListener = new TaggedRequestListener<T>(
+            requestListener.getRoboRequestListener());
+        taggedRequestListener.mark(generateHashTag(tag, request), mRequestFinishListener);
+        spiceManager.execute(request.getSpiceRequest(), taggedRequestListener);
         break;
     }
   }
 
-  private String getEncodedGetUrl(String url, Map<String, String> params) {
-    if (TextUtils.isEmpty(url) || params == null) {
+  private String getEncodedGetUrl(String url, Map<String, String> params)
+      throws CommonRequestException {
+    if (TextUtils.isEmpty(url)) {
+      throw new CommonParamException("request url is null");
+    }
+    if (params == null) {
       return url;
     }
     ArrayList<Map.Entry<String, String>> entryArrayList = new ArrayList<>();
@@ -185,16 +210,26 @@ public class RequestManager {
     }
     return url;
   }
-  // public void executeRequest(IRequest request, RequestListener requestListener, Object tag) {
-  // addRequestToTagList(tag, request);
-  // if (request instanceof SpiceRequest) {
-  // SpiceRequest spiceRequest = (SpiceRequest) request;
-  // spiceManager.execute(spiceRequest, new TaggedRequestListener(tag, request, requestListener,
-  // this));
-  // } else if (request instanceof Request) {
-  // Request volleyRequest = (Request) request;
-  // requestQueue.add(volleyRequest);
-  // }
-  // }
+
+  private <T> List<CommonRequest<T>> getRequestListByTag(Object tag) {
+    String key = tag.hashCode() + TAG_PREFIX;
+    List<Map.Entry<String, CommonRequest<T>>> entryList = new ArrayList<>();
+    List<CommonRequest<T>> result = new ArrayList<>();
+    entryList.addAll(entryList);
+    for (Map.Entry<String, CommonRequest<T>> entry : entryList) {
+      if (entry.getKey().contains(key)) {
+        result.add(entry.getValue());
+      }
+    }
+    return result;
+  }
+
+  private String generateHashTag(Object tag, CommonRequest request) {
+    return tag.hashCode() + TAG_PREFIX + request.hashCode();
+  }
+
+  public interface RequestFinishListener {
+    public void onFinish(String hashTag);
+  }
 
 }

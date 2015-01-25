@@ -6,13 +6,13 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 /**
  * Created by suanmiao on 15/1/18.
+ * Universal listener for a request
  */
-public class MRequestListener<T> {
+public class CommonRequestListener<T> {
 
   RequestListener<T> roboRequestListener;
 
-  Response.Listener<T> volleyListener;
-  Response.ErrorListener errorListener;
+  VolleyListener<T> volleyListener;
 
   public enum ListenerType {
     ROBO_LISTENER,
@@ -21,14 +21,13 @@ public class MRequestListener<T> {
 
   private ListenerType mListenerType;
 
-  public MRequestListener(RequestListener<T> requestListener) {
+  public CommonRequestListener(RequestListener<T> requestListener) {
     this.roboRequestListener = requestListener;
     this.mListenerType = ListenerType.ROBO_LISTENER;
   }
 
-  public MRequestListener(VolleyListener volleyListener) {
+  public CommonRequestListener(VolleyListener volleyListener) {
     this.volleyListener = volleyListener;
-    this.errorListener = volleyListener;
     this.mListenerType = ListenerType.VOLLEY_LISTENER;
   }
 
@@ -36,12 +35,8 @@ public class MRequestListener<T> {
     return roboRequestListener;
   }
 
-  public Response.Listener<T> getVolleyListener() {
+  public VolleyListener<T> getVolleyListener() {
     return volleyListener;
-  }
-
-  public Response.ErrorListener getErrorListener() {
-    return errorListener;
   }
 
   public ListenerType getListenerType() {

@@ -1,8 +1,9 @@
-package com.suan.common.io.http.image;
+package com.suan.common.io.http.image.spice;
 
 import android.graphics.Bitmap;
 
 import com.suan.common.component.BaseApplication;
+import com.suan.common.io.http.image.Photo;
 import com.suan.common.ui.blur.Blur;
 
 import java.io.IOException;
@@ -10,15 +11,15 @@ import java.io.IOException;
 /**
  * Created by suanmiao on 14/12/7.
  */
-public class BlurPhotoRequest extends PhotoRequest {
+public class BlurPhotoSpiceRequest extends PhotoSpiceRequest {
 
     public static final String BLUR_SUFFIX = "_blur";
 
-    public BlurPhotoRequest(Photo photo) {
+    public BlurPhotoSpiceRequest(Photo photo) {
         super(photo);
     }
 
-    public BlurPhotoRequest(Photo photo, LoadOption option) {
+    public BlurPhotoSpiceRequest(Photo photo, LoadOption option) {
         super(photo, option);
     }
 

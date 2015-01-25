@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by suanmiao on 15/1/18.
  */
-public class BaseRequest<T> {
+public class CommonRequest<T> {
 
   /**
    * Volley
@@ -35,9 +35,9 @@ public class BaseRequest<T> {
 
   private RequestType requestType;
 
-  protected BaseRequest(int volleyRequestMethod, String url, Map<String, String> headers,
-      Map<String, String> params,
-      IVolleyActionDelivery<T> volleyActionDelivery) {
+  protected CommonRequest(int volleyRequestMethod, String url, Map<String, String> headers,
+                          Map<String, String> params,
+                          IVolleyActionDelivery<T> volleyActionDelivery) {
     this.volleyRequestMethod = volleyRequestMethod;
     this.url = url;
     this.headers = headers;
@@ -46,7 +46,7 @@ public class BaseRequest<T> {
     this.requestType = RequestType.VOLLEY_REQUEST;
   }
 
-  protected BaseRequest(SpiceRequest<T> request) {
+  protected CommonRequest(SpiceRequest<T> request) {
     this.spiceRequest = request;
     this.requestType = RequestType.ROBO_REQUEST;
   }
@@ -134,11 +134,11 @@ public class BaseRequest<T> {
       return this;
     }
 
-    public BaseRequest<T> build() {
+    public CommonRequest<T> build() {
       if (TextUtils.isEmpty(url) || volleyActionDelivery == null) {
         throw new NullPointerException("");
       }
-      return new BaseRequest<T>(volleyRequestMethod, url, headers, params, volleyActionDelivery);
+      return new CommonRequest<T>(volleyRequestMethod, url, headers, params, volleyActionDelivery);
     }
   }
 
@@ -151,11 +151,11 @@ public class BaseRequest<T> {
       return this;
     }
 
-    public BaseRequest<T> build() {
+    public CommonRequest<T> build() {
       if (spiceRequest == null) {
         throw new NullPointerException("");
       }
-      return new BaseRequest<T>(spiceRequest);
+      return new CommonRequest<T>(spiceRequest);
     }
   }
 

@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.suan.common.component.BaseApplication;
-import com.suan.common.io.http.BaseRequest;
-import com.suan.common.io.http.MRequestListener;
+import com.suan.common.io.http.CommonRequest;
+import com.suan.common.io.http.CommonRequestListener;
 import com.suan.common.io.http.robospiece.RequestManager;
 
 import butterknife.ButterKnife;
@@ -64,7 +64,7 @@ public abstract class AbstractBaseFragment extends Fragment {
 
     protected abstract void onStartLoading();
 
-    protected void executeRequest(BaseRequest request, MRequestListener requestListener) {
+    protected void executeRequest(CommonRequest request, CommonRequestListener requestListener) {
         mRequestManager.executeRequest(request, requestListener, this);
     }
 

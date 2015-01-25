@@ -1,4 +1,4 @@
-package com.suan.common.io.http.image;
+package com.suan.common.io.http.image.spice;
 
 import com.octo.android.robospice.request.listener.RequestListener;
 

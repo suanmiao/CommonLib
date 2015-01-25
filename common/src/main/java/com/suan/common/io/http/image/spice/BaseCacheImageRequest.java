@@ -1,4 +1,4 @@
-package com.suan.common.io.http.image;
+package com.suan.common.io.http.image.spice;
 
 import com.suan.common.component.BaseApplication;
 import com.suan.common.io.cache.CacheManager;
