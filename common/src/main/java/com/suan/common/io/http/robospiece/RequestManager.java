@@ -2,10 +2,12 @@ package com.suan.common.io.http.robospiece;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.Volley;
 import com.octo.android.robospice.SpiceManager;
 import com.squareup.okhttp.OkHttpClient;
 import com.suan.common.component.BaseApplication;
@@ -39,7 +41,7 @@ public class RequestManager {
   private static final String DISK_HTTP_CACHE_DIR = FileHelper.getAppRootDirectory() + "/httpCache";
 
   /**
-   * RoboSpiece
+   * RoboSpice
    */
   private SpiceManager spiceManager;
   private Map<String, CommonRequest> runningRequest;
@@ -87,9 +89,9 @@ public class RequestManager {
   }
 
   private void initVolley(Context context) {
-    requestQueue =
-        new RequestQueue(new DiskBasedCache(new File(DISK_HTTP_CACHE_DIR)), new CommonNetwork());
-    // requestQueue = Volley.newRequestQueue();
+    requestQueue = Volley.newRequestQueue(context);
+    requestQueue = new RequestQueue(new DiskBasedCache(new File(DISK_HTTP_CACHE_DIR)), new CommonNetwork());
+    requestQueue.start();
   }
 
   public static OkHttpClient getOkHttpClient() {
@@ -149,6 +151,7 @@ public class RequestManager {
                       request.getVolleyActionDelivery(), taggedRequestListener);
               volleyRequest.setLoadOption(request.getLoadOption());
               volleyRequest.setIsPhotoRequest(request.isPhotoRequest());
+              volleyRequest.setBlurResult(request.isBlurResult());
               requestQueue.add(volleyRequest);
               request.setVolleyRequest(volleyRequest);
             } catch (CommonRequestException e) {
@@ -169,8 +172,10 @@ public class RequestManager {
                       taggedRequestListener);
               volleyRequest.setLoadOption(request.getLoadOption());
               volleyRequest.setIsPhotoRequest(request.isPhotoRequest());
-              requestQueue.add(volleyRequest);
+              volleyRequest.setBlurResult(request.isBlurResult());
               request.setVolleyRequest(volleyRequest);
+              Log.e("SUAN", "request add to queue ");
+              requestQueue.add(volleyRequest);
             } catch (CommonRequestException e) {
               e.printStackTrace();
             }
@@ -234,7 +239,8 @@ public class RequestManager {
   }
 
   private String generateHashTag(Object tag, CommonRequest request) {
-    return tag.hashCode() + TAG_PREFIX + request.hashCode();
+    String tagHash = tag == null ? "" : tag.hashCode() + "";
+    return tagHash + TAG_PREFIX + request.hashCode();
   }
 
   public interface RequestFinishListener {

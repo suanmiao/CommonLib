@@ -1,5 +1,7 @@
 package com.suan.common.io.http.volley;
 
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -23,6 +25,7 @@ public class FakeVolleyRequest<T> extends Request<T> {
   private Map<String, String> postParams;
   private boolean photoRequest = false;
   private Photo.LoadOption loadOption = Photo.LoadOption.BOTH;
+  private boolean blurResult = false;
 
   public FakeVolleyRequest(int method, String url, Map<String, String> headers,
       Map<String, String> postParams,
@@ -43,6 +46,14 @@ public class FakeVolleyRequest<T> extends Request<T> {
     }
   }
 
+  public boolean isBlurResult() {
+    return blurResult;
+  }
+
+  public void setBlurResult(boolean blurResult) {
+    this.blurResult = blurResult;
+  }
+
   public void setIsPhotoRequest(boolean photoRequest) {
     this.photoRequest = photoRequest;
   }
@@ -61,17 +72,20 @@ public class FakeVolleyRequest<T> extends Request<T> {
 
   @Override
   protected Response<T> parseNetworkResponse(NetworkResponse response) {
+    Log.e("SUAN", "request parse response " + response.data);
     return volleyActionDelivery.parseNetworkResponse(response);
   }
 
   @Override
   protected void deliverResponse(T response) {
+    Log.e("SUAN", "request deliver response " + response);
     taggedRequestListener.onResponse(response);
   }
 
   @Override
   public void deliverError(VolleyError error) {
     super.deliverError(error);
+    Log.e("SUAN", "request deliver error " + error);
     taggedRequestListener.onErrorResponse(error);
   }
 

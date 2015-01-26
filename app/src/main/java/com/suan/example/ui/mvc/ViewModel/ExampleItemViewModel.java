@@ -24,8 +24,13 @@ public class ExampleItemViewModel extends BaseViewModel {
     ExampleItemView itemView = (ExampleItemView) getView();
     ExampleItemModel model = (ExampleItemModel) baseModel;
     itemView.text.setText(model.text);
-    Photo.loadScrollItemImg(itemView.img, model.img, R.drawable.ic_launcher, scrollState,
-        scrollSpeed);
+    if (Math.random() > 0.5) {
+      Photo.loadScrollItemImg(itemView.img, model.img, R.drawable.ic_launcher, scrollState,
+          scrollSpeed);
+    } else {
+      Photo.loadScrollItemBlurImg(itemView.img, model.img, R.drawable.ic_launcher, scrollState,
+          scrollSpeed);
+    }
   }
 
   @Override

@@ -12,7 +12,6 @@ import com.suan.common.component.BaseApplication;
 import com.suan.common.io.http.CommonRequest;
 import com.suan.common.io.http.SpiceCommonListener;
 import com.suan.common.io.http.VolleyCommonListener;
-import com.suan.common.io.http.image.spice.BlurPhotoSpiceRequest;
 import com.suan.common.io.http.image.spice.PhotoSpiceRequest;
 import com.suan.common.io.http.image.volley.BlurPhotoActionDelivery;
 import com.suan.common.io.http.image.volley.PhotoActionDelivery;
@@ -27,6 +26,7 @@ import java.io.IOException;
  */
 public class Photo {
 
+  public static final String BLUR_SUFFIX = "_blur";
   public static final int INVALID_VALUE = -1;
 
   private int viewWidth = INVALID_VALUE;
@@ -123,11 +123,6 @@ public class Photo {
     return new PhotoSpiceRequest(this);
   }
 
-
-  public BlurPhotoSpiceRequest newBlurSpiceRequest() {
-    return new BlurPhotoSpiceRequest(this);
-  }
-
   public CommonRequest getRequest() {
     return request;
   }
@@ -199,18 +194,24 @@ public class Photo {
                 spiceRequest.setLoadOption(LoadOption.BOTH);
                 request = new CommonRequest.SpiceBuilder<Photo>().request(spiceRequest)
                     .build();
-                photo.setRequest(request);
                 break;
 
               case VOLLEY:
-                CommonRequest<Photo> request1 =
+                request =
                     new CommonRequest.VolleyBuilder<Photo>().url(photo.getUrl())
                         .method(Request.Method.GET)
                         .actionDelivery(new PhotoActionDelivery(photo)).build();
-                executeFullRequest(request1, photo, imageView);
                 break;
             }
-            executeFullRequest(request, photo, imageView);
+            if (request != null) {
+              if (saveTraffic) {
+                request.setLoadOption(LoadOption.ONLY_FROM_CACHE);
+              } else {
+                request.setLoadOption(LoadOption.BOTH);
+              }
+              photo.setRequest(request);
+              executeFullRequest(request, photo, imageView);
+            }
           }
         }
       }
@@ -300,14 +301,14 @@ public class Photo {
     final Photo photo = Photo.getObject(imageView, url);
     if (photo != null) {
       if (photo.getLoadingState() == ContentState.NONE) {
-        photo.loadFromRamCache(mRequestManager, imageView, url + BlurPhotoSpiceRequest.BLUR_SUFFIX);
+        photo.loadFromRamCache(mRequestManager, imageView, url + Photo.BLUR_SUFFIX);
         if (photo.getLoadingState() == ContentState.NONE) {
           imageView.setImageResource(defaultResourceID);
           photo.setContentState(ContentState.LOADING);
           CommonRequest<Photo> request = null;
           switch (RequestManager.getExecuteMode()) {
             case ROBO_SPIECE:
-              PhotoSpiceRequest spiceRequest = photo.newBlurSpiceRequest();
+              PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
               if (saveTraffic) {
                 spiceRequest.setLoadOption(LoadOption.ONLY_FROM_CACHE);
               } else {
@@ -325,6 +326,7 @@ public class Photo {
               break;
           }
           if (request != null) {
+            request.setBlurResult(true);
             photo.setRequest(request);
             if (saveTraffic) {
               request.setLoadOption(LoadOption.ONLY_FROM_CACHE);
@@ -349,7 +351,7 @@ public class Photo {
     final Photo photo = Photo.getObject(imageView, url);
     if (photo != null) {
       if (photo.getLoadingState() == ContentState.NONE) {
-        photo.loadFromRamCache(mRequestManager, imageView, url + BlurPhotoSpiceRequest.BLUR_SUFFIX);
+        photo.loadFromRamCache(mRequestManager, imageView, url + Photo.BLUR_SUFFIX);
         if (photo.getLoadingState() == ContentState.NONE) {
           imageView.setImageResource(defaultResourceID);
         }
@@ -362,7 +364,7 @@ public class Photo {
           CommonRequest<Photo> request = null;
           switch (RequestManager.getExecuteMode()) {
             case ROBO_SPIECE:
-              PhotoSpiceRequest spiceRequest = photo.newBlurSpiceRequest();
+              PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
               request = new CommonRequest.SpiceBuilder<Photo>().request(spiceRequest)
                   .build();
               break;
@@ -375,6 +377,7 @@ public class Photo {
               break;
           }
           if (request != null) {
+            request.setBlurResult(true);
             photo.setRequest(request);
             if (saveTraffic) {
               request.setLoadOption(LoadOption.ONLY_FROM_CACHE);
@@ -397,7 +400,7 @@ public class Photo {
         CommonRequest<Photo> request = null;
         switch (RequestManager.getExecuteMode()) {
           case ROBO_SPIECE:
-            PhotoSpiceRequest spiceRequest = photo.newBlurSpiceRequest();
+            PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
             if (saveTraffic) {
               spiceRequest.setLoadOption(LoadOption.ONLY_FROM_CACHE);
             } else {
@@ -415,6 +418,7 @@ public class Photo {
             break;
         }
         if (request != null) {
+          request.setBlurResult(true);
           photo.setRequest(request);
           if (saveTraffic) {
             request.setLoadOption(LoadOption.ONLY_FROM_CACHE);
@@ -467,7 +471,6 @@ public class Photo {
             }
           }
         }, imageView);
-
         break;
     }
   }

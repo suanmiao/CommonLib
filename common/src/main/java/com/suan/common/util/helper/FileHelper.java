@@ -1,15 +1,14 @@
 package com.suan.common.util.helper;
 
-import java.io.File;
-
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.io.File;
+
 /**
  * Helper to do some system behavior.
  *
- * @author xuda@wandoujia.com
  */
 public class FileHelper {
 

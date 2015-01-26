@@ -11,15 +11,15 @@ import java.io.IOException;
 /**
  * Created by suanmiao on 14/12/7.
  */
-public class BlurPhotoSpiceRequest extends PhotoSpiceRequest {
+public class BlurPhotoSpiceRequestCopy extends PhotoSpiceRequest {
 
     public static final String BLUR_SUFFIX = "_blur";
 
-    public BlurPhotoSpiceRequest(Photo photo) {
+    private BlurPhotoSpiceRequestCopy(Photo photo) {
         super(photo);
     }
 
-    public BlurPhotoSpiceRequest(Photo photo, Photo.LoadOption option) {
+    private BlurPhotoSpiceRequestCopy(Photo photo, Photo.LoadOption option) {
         super(photo, option);
     }
 
