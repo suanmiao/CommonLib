@@ -24,7 +24,6 @@ public abstract class BaseApplication extends Application {
 
   private void init() {
     context = getApplicationContext();
-    // requestManager = new RequestManager(getRequestService(),getOkHttpClient());
     requestManager = new RequestManager(this);
     setExceptionHandler();
   }
@@ -51,5 +50,4 @@ public abstract class BaseApplication extends Application {
     return requestManager;
   }
 
-  ;
 }

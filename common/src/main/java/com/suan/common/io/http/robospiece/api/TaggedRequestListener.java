@@ -3,18 +3,18 @@ package com.suan.common.io.http.robospiece.api;
 import com.android.volley.VolleyError;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import com.suan.common.io.http.CommonRequestListener;
 import com.suan.common.io.http.robospiece.RequestManager;
+import com.suan.common.io.http.volley.IVolleyListener;
 
 /**
  * Created by suanmiao on 14/12/6.
  * universal listener for both Volley and RoboSpice
  */
 public class TaggedRequestListener<T>
-    implements RequestListener<T>, CommonRequestListener.VolleyListener<T> {
+    implements RequestListener<T>, IVolleyListener<T> {
 
   private RequestListener<T> spiceListener;
-  private CommonRequestListener.VolleyListener<T> volleyListener;
+  private IVolleyListener<T> volleyListener;
   private String hashTag;
   private RequestManager.RequestFinishListener mRequestFinishListener;
 
@@ -23,7 +23,7 @@ public class TaggedRequestListener<T>
   }
 
   public TaggedRequestListener(
-      CommonRequestListener.VolleyListener<T> listener1) {
+      IVolleyListener<T> listener1) {
     this.volleyListener = listener1;
   }
 

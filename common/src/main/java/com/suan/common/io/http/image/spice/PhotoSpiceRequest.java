@@ -19,22 +19,16 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
 
     protected Photo photo;
 
-    public static enum LoadOption {
-        ONLY_FROM_CACHE,
-        ONLY_FROM_NETWORK,
-        BOTH
-    }
-
     protected boolean shouldCache = true;
 
-    protected  LoadOption loadOption = LoadOption.BOTH;
+    protected Photo.LoadOption loadOption = Photo.LoadOption.BOTH;
 
     public PhotoSpiceRequest(Photo photo) {
         super(Photo.class);
         this.photo = photo;
     }
 
-    public PhotoSpiceRequest(Photo photo, LoadOption option) {
+    public PhotoSpiceRequest(Photo photo, Photo.LoadOption option) {
         super(Photo.class);
         this.photo = photo;
         this.loadOption = option;
@@ -95,11 +89,11 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
         this.shouldCache = shouldCache;
     }
 
-    public LoadOption getLoadOption() {
+    public Photo.LoadOption getLoadOption() {
         return loadOption;
     }
 
-    public void setLoadOption(LoadOption loadOption) {
+    public void setLoadOption(Photo.LoadOption loadOption) {
         this.loadOption = loadOption;
     }
 }

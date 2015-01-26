@@ -21,7 +21,7 @@
   > full-case coverage for all request
 
 ## Other
-  **it's a library designed in my coding and feature style, and the stability hasn't been verified++
+  **it's a library designed in my coding and feature style, and the stability hasn't been verified**
 
 ## Copyrights
 

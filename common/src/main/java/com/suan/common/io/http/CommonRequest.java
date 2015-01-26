@@ -4,6 +4,8 @@ import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.octo.android.robospice.request.SpiceRequest;
+import com.suan.common.io.http.image.Photo;
+import com.suan.common.io.http.image.spice.PhotoSpiceRequest;
 import com.suan.common.io.http.volley.IVolleyActionDelivery;
 
 import java.util.Map;
@@ -28,6 +30,12 @@ public class CommonRequest<T> {
    */
   private SpiceRequest<T> spiceRequest;
 
+  /**
+   * common
+   */
+  boolean photoRequest = false;
+  private Photo.LoadOption loadOption = Photo.LoadOption.BOTH;
+
   public enum RequestType {
     ROBO_REQUEST,
     VOLLEY_REQUEST
@@ -36,8 +44,8 @@ public class CommonRequest<T> {
   private RequestType requestType;
 
   protected CommonRequest(int volleyRequestMethod, String url, Map<String, String> headers,
-                          Map<String, String> params,
-                          IVolleyActionDelivery<T> volleyActionDelivery) {
+      Map<String, String> params,
+      IVolleyActionDelivery<T> volleyActionDelivery) {
     this.volleyRequestMethod = volleyRequestMethod;
     this.url = url;
     this.headers = headers;
@@ -49,6 +57,22 @@ public class CommonRequest<T> {
   protected CommonRequest(SpiceRequest<T> request) {
     this.spiceRequest = request;
     this.requestType = RequestType.ROBO_REQUEST;
+  }
+
+  public boolean isPhotoRequest() {
+    return photoRequest;
+  }
+
+  public void setIsPhotoRequest(boolean photoRequest) {
+    this.photoRequest = photoRequest;
+  }
+
+  public Photo.LoadOption getLoadOption() {
+    return loadOption;
+  }
+
+  public void setLoadOption(Photo.LoadOption loadOption) {
+    this.loadOption = loadOption;
   }
 
   public Map<String, String> getVolleyHeaders() {
@@ -80,6 +104,10 @@ public class CommonRequest<T> {
   }
 
   public SpiceRequest<T> getSpiceRequest() {
+    if (spiceRequest != null && spiceRequest instanceof PhotoSpiceRequest) {
+      PhotoSpiceRequest photoSpiceRequest = (PhotoSpiceRequest) spiceRequest;
+      photoSpiceRequest.setLoadOption(loadOption);
+    }
     return spiceRequest;
   }
 

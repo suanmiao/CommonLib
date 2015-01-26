@@ -19,7 +19,7 @@ public class BlurPhotoSpiceRequest extends PhotoSpiceRequest {
         super(photo);
     }
 
-    public BlurPhotoSpiceRequest(Photo photo, LoadOption option) {
+    public BlurPhotoSpiceRequest(Photo photo, Photo.LoadOption option) {
         super(photo, option);
     }
 

@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+import com.android.volley.toolbox.DiskBasedCache;
 import com.octo.android.robospice.SpiceManager;
 import com.squareup.okhttp.OkHttpClient;
 import com.suan.common.component.BaseApplication;
@@ -15,9 +15,11 @@ import com.suan.common.io.http.CommonRequestListener;
 import com.suan.common.io.http.exception.CommonParamException;
 import com.suan.common.io.http.exception.CommonRequestException;
 import com.suan.common.io.http.robospiece.api.TaggedRequestListener;
+import com.suan.common.io.http.volley.CommonNetwork;
 import com.suan.common.io.http.volley.FakeVolleyRequest;
 import com.suan.common.util.helper.FileHelper;
 
+import java.io.File;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,7 +87,9 @@ public class RequestManager {
   }
 
   private void initVolley(Context context) {
-    requestQueue = Volley.newRequestQueue(context);
+    requestQueue =
+        new RequestQueue(new DiskBasedCache(new File(DISK_HTTP_CACHE_DIR)), new CommonNetwork());
+    // requestQueue = Volley.newRequestQueue();
   }
 
   public static OkHttpClient getOkHttpClient() {
@@ -127,7 +131,8 @@ public class RequestManager {
     runningRequest.remove(generateHashTag(tag, request));
   }
 
-  public <T> void executeRequest(CommonRequest<T> request, CommonRequestListener<T> requestListener,
+  public <T> void executeRequest(CommonRequest<T> request,
+      CommonRequestListener<T> requestListener,
       Object tag) {
     addRequestToTagList(tag, request);
     switch (request.getRequestType()) {
@@ -142,6 +147,8 @@ public class RequestManager {
                   new FakeVolleyRequest<T>(request.getVolleyRequestMethod(), request.getUrl(),
                       request.getVolleyHeaders(), request.getVolleyParams(),
                       request.getVolleyActionDelivery(), taggedRequestListener);
+              volleyRequest.setLoadOption(request.getLoadOption());
+              volleyRequest.setIsPhotoRequest(request.isPhotoRequest());
               requestQueue.add(volleyRequest);
               request.setVolleyRequest(volleyRequest);
             } catch (CommonRequestException e) {
@@ -155,11 +162,13 @@ public class RequestManager {
                   new TaggedRequestListener<T>(requestListener.getVolleyListener());
               taggedRequestListener.mark(generateHashTag(tag, request), mRequestFinishListener);
               FakeVolleyRequest<T> volleyRequest =
-                  new FakeVolleyRequest<T>(request.getVolleyRequestMethod(), getEncodedGetUrl(
+                  new FakeVolleyRequest<T>(request.getVolleyRequestMethod(), getEncodedGETUrl(
                       request.getUrl(), request.getVolleyParams()),
                       request.getVolleyHeaders(), null,
                       request.getVolleyActionDelivery(),
-                          taggedRequestListener);
+                      taggedRequestListener);
+              volleyRequest.setLoadOption(request.getLoadOption());
+              volleyRequest.setIsPhotoRequest(request.isPhotoRequest());
               requestQueue.add(volleyRequest);
               request.setVolleyRequest(volleyRequest);
             } catch (CommonRequestException e) {
@@ -178,7 +187,7 @@ public class RequestManager {
     }
   }
 
-  private String getEncodedGetUrl(String url, Map<String, String> params)
+  private String getEncodedGETUrl(String url, Map<String, String> params)
       throws CommonRequestException {
     if (TextUtils.isEmpty(url)) {
       throw new CommonParamException("request url is null");

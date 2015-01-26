@@ -1,18 +1,13 @@
 package com.suan.common.io.http;
 
-import com.android.volley.Response;
-import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
+import com.suan.common.io.http.volley.IVolleyListener;
 
 /**
  * Created by suanmiao on 15/1/18.
  * Universal listener for a request
  */
-public class CommonRequestListener<T> {
-
-  RequestListener<T> roboRequestListener;
-
-  VolleyListener<T> volleyListener;
+public abstract class CommonRequestListener<T> {
 
   public enum ListenerType {
     ROBO_LISTENER,
@@ -21,44 +16,9 @@ public class CommonRequestListener<T> {
 
   private ListenerType mListenerType;
 
-  public CommonRequestListener(RequestListener<T> requestListener) {
-    this.roboRequestListener = requestListener;
-    this.mListenerType = ListenerType.ROBO_LISTENER;
-  }
+  public abstract RequestListener<T> getRoboRequestListener();
+  public abstract IVolleyListener<T> getVolleyListener();
 
-  public CommonRequestListener(VolleyListener volleyListener) {
-    this.volleyListener = volleyListener;
-    this.mListenerType = ListenerType.VOLLEY_LISTENER;
-  }
+  public abstract ListenerType getListenerType();
 
-  public RequestListener<T> getRoboRequestListener() {
-    return roboRequestListener;
-  }
-
-  public VolleyListener<T> getVolleyListener() {
-    return volleyListener;
-  }
-
-  public ListenerType getListenerType() {
-    return mListenerType;
-  }
-
-  public void onSuccess(T o) {
-    switch (mListenerType) {
-      case ROBO_LISTENER:
-        this.roboRequestListener.onRequestSuccess(o);
-        break;
-      case VOLLEY_LISTENER:
-        this.volleyListener.onResponse(o);
-        break;
-    }
-  }
-
-  public void onError(SpiceException spiceException) {
-    this.roboRequestListener.onRequestFailure(spiceException);
-  }
-
-  public interface VolleyListener<T> extends Response.ErrorListener, Response.Listener<T> {
-
-  }
 }

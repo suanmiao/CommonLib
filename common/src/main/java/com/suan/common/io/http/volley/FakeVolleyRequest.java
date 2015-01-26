@@ -7,6 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.suan.common.io.http.exception.CommonParamException;
 import com.suan.common.io.http.exception.CommonRequestException;
+import com.suan.common.io.http.image.Photo;
 import com.suan.common.io.http.robospiece.api.TaggedRequestListener;
 
 import java.util.Map;
@@ -20,13 +21,14 @@ public class FakeVolleyRequest<T> extends Request<T> {
   private TaggedRequestListener<T> taggedRequestListener;
   private Map<String, String> headers;
   private Map<String, String> postParams;
+  private boolean photoRequest = false;
+  private Photo.LoadOption loadOption = Photo.LoadOption.BOTH;
 
   public FakeVolleyRequest(int method, String url, Map<String, String> headers,
       Map<String, String> postParams,
       IVolleyActionDelivery<T> volleyActionDelivery,
       TaggedRequestListener<T> taggedRequestListener) throws CommonRequestException {
     super(method, url, taggedRequestListener);
-    checkNull("header", headers);
     checkNull("url", url);
     checkNull("action delivery", volleyActionDelivery);
     this.headers = headers;
@@ -39,6 +41,22 @@ public class FakeVolleyRequest<T> extends Request<T> {
     if (param == null) {
       throw new CommonParamException("param " + paramName + " is null");
     }
+  }
+
+  public void setIsPhotoRequest(boolean photoRequest) {
+    this.photoRequest = photoRequest;
+  }
+
+  public boolean isPhotoRequest() {
+    return photoRequest;
+  }
+
+  public void setLoadOption(Photo.LoadOption loadOption) {
+    this.loadOption = loadOption;
+  }
+
+  public Photo.LoadOption getLoadOption() {
+    return loadOption;
   }
 
   @Override
