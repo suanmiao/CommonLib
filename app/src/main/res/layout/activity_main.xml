@@ -5,12 +5,12 @@
     android:background="@color/gray_fa"
     >
 
-    <com.suan.example.ui.widget.SViewPager
+    <me.suan.example.ui.widget.SViewPager
         android:id="@+id/viewpager_main"
         android:layout_marginTop="@dimen/main_content_marin_top"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </com.suan.example.ui.widget.SViewPager>
+    </me.suan.example.ui.widget.SViewPager>
 
     <include layout="@layout/layout_main_toolbar"/>
 

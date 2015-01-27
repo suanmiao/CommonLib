@@ -10,7 +10,7 @@
     android:background="@drawable/bg_article_item"
     android:layout_height="wrap_content">
 
-    <com.suan.example.ui.widget.STextView
+    <me.suan.example.ui.widget.STextView
         android:id="@+id/text_item_main_article_header"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
@@ -40,7 +40,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent">
 
-            <com.suan.example.ui.widget.STextView
+            <me.suan.example.ui.widget.STextView
                 android:text="离开教室地方了金坷垃圣诞节福建师大"
                 suan:textStyle="bold"
                 android:id="@+id/text_item_main_article_title"
@@ -63,7 +63,7 @@
 
             </LinearLayout>
 
-            <com.suan.example.ui.widget.STextView
+            <me.suan.example.ui.widget.STextView
                 android:id="@+id/text_item_main_article_fav_num"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="0dp"
@@ -85,7 +85,7 @@
                 android:layout_width="10dp"
                 android:layout_height="9dp"/>
 
-            <com.suan.example.ui.widget.STextView
+            <me.suan.example.ui.widget.STextView
                 android:id="@+id/text_item_main_article_comment_num"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="0dp"

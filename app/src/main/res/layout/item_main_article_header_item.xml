@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.suan.example.ui.widget.STextView
+    <me.suan.example.ui.widget.STextView
         android:id="@+id/text_item_main_article_header_title"
         android:textSize="15dp"
         android:textColor="@color/pure_white"
@@ -30,7 +30,7 @@
         android:layout_marginTop="13dp"
         android:layout_height="wrap_content"/>
 
-    <com.suan.example.ui.widget.STextView
+    <me.suan.example.ui.widget.STextView
         android:id="@+id/text_item_main_article_header_tag"
         android:textSize="10dp"
         android:textColor="@color/pure_white"
