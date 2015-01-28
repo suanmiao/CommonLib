@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="160dp">
 
-    <me.suan.example.ui.widget.SViewPager
+    <me.suanmiao.example.ui.widget.SViewPager
         android:id="@+id/pager_item_main_article_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </me.suan.example.ui.widget.SViewPager>
+    </me.suanmiao.example.ui.widget.SViewPager>
     <com.suan.pagerIndicator.CirclePageIndicator
         android:id="@+id/indicator_header"
         android:layout_alignParentBottom="true"

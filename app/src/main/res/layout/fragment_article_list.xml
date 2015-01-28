@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     >
 
-    <me.suan.ptrListview.PtrListview
+    <me.suanmiao.ptrListview.PtrListview
         android:id="@+id/list_main_article"
         android:divider="@null"
         android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </me.suan.ptrListview.PtrListview>
+    </me.suanmiao.ptrListview.PtrListview>
 
-    <me.suan.example.ui.widget.TipView
+    <me.suanmiao.example.ui.widget.TipView
         android:id="@+id/tip_main_article"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tip_view_default_height">
-    </me.suan.example.ui.widget.TipView>
+    </me.suanmiao.example.ui.widget.TipView>
 
 </RelativeLayout>
 

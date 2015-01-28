@@ -39,7 +39,7 @@
                 android:paddingRight="11dp"
                 android:src="@drawable/ic_full_back_icon"/>
 
-            <me.suan.example.ui.widget.STextView
+            <me.suanmiao.example.ui.widget.STextView
                 android:id="@+id/text_base_toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

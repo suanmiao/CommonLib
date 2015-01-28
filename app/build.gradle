@@ -1,6 +1,4 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'android-apt'
-//def AAVersion = '3.0+'
 
 buildscript {
     repositories {
@@ -43,20 +41,6 @@ android {
         exclude 'META-INF/ASL2.0'
     }
 }
-
-//apt {
-//    arguments {
-////        androidManifestFile variant.processResources.manifestFile
-//        resourcePackageName 'com.suan.wace'
-//
-//        // If you're using Android NBS flavors you should use the following line instead of hard-coded packageName
-//        // resourcePackageName android.defaultConfig.packageName
-//
-//        // You can set optional annotation processing options here, like these commented options:
-//        // logLevel 'INFO'
-//        // logFile '/var/log/aa.log'
-//    }
-//}
 
 dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
