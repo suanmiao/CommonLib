@@ -1,11 +1,14 @@
 package me.suanmiao.ptrListview.header;
 
-import me.suanmiao.ptrListview.PtrListview;
+import android.view.View;
+
+import me.suanmiao.ptrListview.IPullToRefresh;
+import me.suanmiao.ptrListview.PtrListView;
 
 /**
  * Created by suanmiao on 14-11-3.
  */
-public interface IPTRHeader extends PtrListview.PullProgressListener {
+public interface IPTRHeader extends PtrListView.PullProgressListener {
 
   /**
    * 
@@ -22,6 +25,15 @@ public interface IPTRHeader extends PtrListview.PullProgressListener {
    */
   public int getHeaderRefreshingHeight();
 
-  public int getHeaderPaddingTop();
+  public int getHeaderCurrentPaddingTop();
 
+  public View getHeaderLayout();
+
+  public void onPull(float progress, IPullToRefresh.REFRESH_STATE refreshState);
+
+  public void onPullCancel();
+
+  public void onRefreshStart();
+
+  public void onInit();
 }

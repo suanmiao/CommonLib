@@ -27,9 +27,8 @@
             android:layout_weight="1"
             android:layout_height="match_parent">
 
-            <me.suanmiao.example.ui.widget.STextView
+            <me.suanmiao.common.ui.widget.STextView
                 android:text="离开教室地方了金坷垃圣诞节福建师大"
-                suan:textStyle="bold"
                 android:id="@+id/text_item_main_item_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

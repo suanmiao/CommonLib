@@ -4,37 +4,27 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import me.suanmiao.ptrListview.header.AbstractHeaderLayout;
-import me.suanmiao.ptrListview.header.DefaultHeaderLayout;
+import me.suanmiao.ptrListview.footer.DefaultFooter;
+import me.suanmiao.ptrListview.footer.IPTRFooter;
+import me.suanmiao.ptrListview.header.DefaultHeader;
+import me.suanmiao.ptrListview.header.IPTRHeader;
 
 
 /**
  * Created by lhk on 2/6/14.
  */
-public class PtrListview extends ListView implements
+public class PtrListView extends ListView implements
     AbsListView.OnScrollListener, IPullToRefresh {
 
   private final static float ratio = 2.0f;
-  private AbstractHeaderLayout headerLayout;
-
-  private RotateAnimation circleAnimation;
-  /*
-   * about footer view
-   */
-  private LinearLayout footerLayout;
-  private ImageView footerCircleImageView;
-  private int footerHeight;
+  private IPTRHeader mHeader;
+  private IPTRFooter mFooter;
 
   private int startY;
   private boolean isLoading = false;
@@ -51,61 +41,43 @@ public class PtrListview extends ListView implements
 
   private boolean catchMotionEvent;
 
-  /*
-   * outer variable
-   */
   private boolean refreshEnable = true;
+  private boolean loadEnable = true;
 
-  private static final int VISIBLIE_SLOP = 30;
+  private static final int VISIBLE_SLOP = 30;
 
-  public PtrListview(Context context) {
+  public PtrListView(Context context) {
     super(context);
     init(context);
   }
 
-  public PtrListview(Context context, AttributeSet attrs) {
+  public PtrListView(Context context, AttributeSet attrs) {
     super(context, attrs);
     init(context);
   }
 
-  public PtrListview(Context context, AttributeSet attrs, int defStyle) {
+  public PtrListView(Context context, AttributeSet attrs, int defStyle) {
     super(context, attrs, defStyle);
     init(context);
   }
 
   private void init(Context context) {
-    LayoutInflater inflater = LayoutInflater.from(context);
     super.setOnScrollListener(this);
-
-    circleAnimation = new RotateAnimation(0, 360,
-        RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-        RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-    circleAnimation.setInterpolator(new LinearInterpolator());
-    circleAnimation.setDuration(500);
-    circleAnimation.setRepeatCount(-1);
-
     // init state
     refreshState = REFRESH_STATE.DONE;
     // if catch the event
     catchMotionEvent = false;
 
-    setHeaderLayout(new DefaultHeaderLayout(context));
+    mFooter = new DefaultFooter(getContext());
+    mHeader = new DefaultHeader(getContext());
+    addHeaderView(mHeader.getHeaderLayout());
 
-    /*
-     * about footer layout
-     */
-    footerLayout = (LinearLayout) inflater.inflate(
-        R.layout.ptr_loading_layout, null);
-    footerCircleImageView = (ImageView) footerLayout
-        .findViewById(R.id.ptr_footer_circle);
-    footerHeight = getResources().getDimensionPixelSize(R.dimen.footer_height);
-    footerLayout.setPadding(0, 0, 0, -footerHeight);
-    // footerLayout.setVisibility(View.INVISIBLE);
-    addFooterView(footerLayout);
+    addFooterView(mFooter.getFooterLayout());
   }
 
   @Override
   public boolean onTouchEvent(MotionEvent ev) {
+    // Log.e("SUAN", ev.getAction() + " amount: " + ev.getPointerCount());
     if (catchMotionEvent && refreshEnable) {
       switch (ev.getAction()) {
         case MotionEvent.ACTION_DOWN:
@@ -120,12 +92,11 @@ public class PtrListview extends ListView implements
           if (refreshState != REFRESH_STATE.REFRESHING && refreshState != REFRESH_STATE.LOADING) {
             if (refreshState == REFRESH_STATE.PULL_TO_REFRESH) {
               refreshState = REFRESH_STATE.DONE;
-              headerLayout.animatePaddingTop(-headerLayout.getHeaderTotalHeight());
+              mHeader.onPullCancel();
             }
             if (refreshState == REFRESH_STATE.RELEASE_TO_REFRESH) {
               refreshState = REFRESH_STATE.REFRESHING;
-              headerLayout.animatePaddingTop(-(headerLayout.getHeaderTotalHeight() - headerLayout
-                  .getHeaderRefreshingHeight()));
+              mHeader.onRefreshStart();
               if (refreshListener != null) {
                 refreshListener.onRefresh();
               }
@@ -144,31 +115,31 @@ public class PtrListview extends ListView implements
               // ensure the section is always the first one
               setSelection(0);
               if ((tempY - startY) > 0) {
-                if ((tempY - startY) / ratio < headerLayout.getHeaderRefreshingHeight()) {
+                if ((tempY - startY) / ratio < mHeader.getHeaderRefreshingHeight()) {
                   refreshState = REFRESH_STATE.PULL_TO_REFRESH;
                 }
               } else {
                 refreshState = REFRESH_STATE.DONE;
               }
               setPullProgress((tempY - startY) / ratio
-                  / (float) headerLayout.getHeaderRefreshingHeight());
+                  / (float) mHeader.getHeaderRefreshingHeight());
               break;
             case PULL_TO_REFRESH:
               setSelection(0);
-              if ((tempY - startY) / ratio >= headerLayout.getHeaderRefreshingHeight()) {
+              if ((tempY - startY) / ratio >= mHeader.getHeaderRefreshingHeight()) {
                 // change state to rtr
                 refreshState = REFRESH_STATE.RELEASE_TO_REFRESH;
               } else if (tempY - startY <= 0) {
                 refreshState = REFRESH_STATE.DONE;
               }
               setPullProgress((tempY - startY) / ratio
-                  / (float) headerLayout.getHeaderRefreshingHeight());
+                  / (float) mHeader.getHeaderRefreshingHeight());
               break;
             case DONE:
               if (tempY > startY) {
                 refreshState = REFRESH_STATE.PULL_TO_REFRESH;
                 setPullProgress((tempY - startY) / ratio
-                    / (float) headerLayout.getHeaderRefreshingHeight());
+                    / (float) mHeader.getHeaderRefreshingHeight());
               }
               break;
           }
@@ -216,13 +187,17 @@ public class PtrListview extends ListView implements
     this.refreshEnable = refreshEnable;
   }
 
-  public void setHeaderLayout(AbstractHeaderLayout headerLayout) {
-    if (this.headerLayout != null) {
-      removeHeaderView(this.headerLayout);
+  public void setLoadEnable(boolean loadEnable) {
+    this.loadEnable = loadEnable;
+  }
+
+  public void setHeaderLayout(IPTRHeader header) {
+    if (this.mHeader != null) {
+      removeHeaderView(this.mHeader.getHeaderLayout());
     }
-    this.headerLayout = headerLayout;
-    headerLayout.setPadding(0, -headerLayout.getHeaderTotalHeight(), 0, 0);
-    addHeaderView(headerLayout, null, false);
+    this.mHeader = header;
+    mHeader.onInit();
+    addHeaderView(header.getHeaderLayout(), null, false);
   }
 
   @Override
@@ -244,22 +219,24 @@ public class PtrListview extends ListView implements
   @Override
   public void onRefreshComplete() {
     refreshState = REFRESH_STATE.DONE;
-    headerLayout.animatePaddingTop(-headerLayout.getHeaderTotalHeight());
+    mHeader.onPullCancel();
+  }
+
+  @Override
+  public boolean isLoadEnable() {
+    return loadEnable;
   }
 
   @Override
   public void onLoadStart() {
     isLoading = true;
-    footerLayout.setPadding(0, 0, 0, 0);
-    footerCircleImageView.clearAnimation();
-    footerCircleImageView.startAnimation(circleAnimation);
+    mFooter.onLoadStart();
   }
 
   @Override
   public void onLoadComplete() {
     isLoading = false;
-    footerLayout.setPadding(0, 0, 0, -footerHeight);
-    footerCircleImageView.clearAnimation();
+    mFooter.onLoadComplete();
   }
 
   @Override
@@ -274,8 +251,8 @@ public class PtrListview extends ListView implements
   @Override
   public void onScrollStateChanged(AbsListView view, int scrollState) {
     if (scrollState == SCROLL_STATE_IDLE && lastItemVisibile && onLoadListener != null
-        && itemTakeFullPage()) {
-      onLoadListener.onLastVisibleItem();
+        && itemTakeFullPage() && loadEnable) {
+      onLoadListener.onLastItemVisible();
     }
 
     if (mScrollListener != null) {
@@ -287,7 +264,7 @@ public class PtrListview extends ListView implements
    * to judge whether items take full page
    * if not ,even if last item is visible ,we should not call listener
    *
-   * @return
+   * @return whether items take up full page
    */
   private boolean itemTakeFullPage() {
     if (getChildCount() > 0) {
@@ -300,7 +277,7 @@ public class PtrListview extends ListView implements
       }
       Rect visibleRect = new Rect();
       getGlobalVisibleRect(visibleRect);
-      return (visibleRect.bottom - visibleRect.top) - totalHeight < VISIBLIE_SLOP;
+      return (visibleRect.bottom - visibleRect.top) - totalHeight < VISIBLE_SLOP;
     }
     return false;
   }
@@ -322,9 +299,8 @@ public class PtrListview extends ListView implements
     if (progressListener != null) {
       progressListener.onPull(progress, refreshState);
     }
-    if (headerLayout != null) {
-      headerLayout.onPull(progress, refreshState);
-      headerLayout.invalidate();
+    if (mHeader != null) {
+      mHeader.onPull(progress, refreshState);
     }
   }
 
@@ -333,7 +309,7 @@ public class PtrListview extends ListView implements
   }
 
   public interface OnLoadListener {
-    public void onLastVisibleItem();
+    public void onLastItemVisible();
   }
 
   public interface PullProgressListener {

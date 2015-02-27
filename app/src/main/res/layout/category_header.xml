@@ -25,12 +25,11 @@
         android:layout_width="80dp"
         android:layout_height="80dp"/>
 
-    <me.suanmiao.example.ui.widget.STextView
+    <me.suanmiao.common.ui.widget.STextView
         android:id="@+id/text_category_page_profile"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_width="match_parent"
-        suan:textStyle="bold"
         android:textSize="14dp"
         android:textColor="@color/pure_white"
         android:layout_marginTop="10dp"
@@ -39,7 +38,7 @@
         android:gravity="center_horizontal"
         android:layout_height="wrap_content"/>
 
-    <me.suanmiao.example.ui.widget.STextView
+    <me.suanmiao.common.ui.widget.STextView
         android:id="@+id/text_category_page_description"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
@@ -52,7 +51,7 @@
         android:gravity="center_horizontal"
         android:layout_height="wrap_content"/>
 
-    <me.suanmiao.example.ui.widget.STextView
+    <me.suanmiao.common.ui.widget.STextView
         android:id="@+id/text_category_page_follower_num"
         android:layout_width="match_parent"
         android:textSize="11dp"
@@ -63,7 +62,7 @@
         android:gravity="center_horizontal"
         android:layout_height="wrap_content"/>
     
-    <me.suanmiao.example.ui.widget.STextView
+    <me.suanmiao.common.ui.widget.STextView
         android:id="@+id/but_category_page_action"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/text_category_page_follower_num"

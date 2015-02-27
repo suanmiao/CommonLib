@@ -1,7 +1,5 @@
 package me.suanmiao.ptrListview.header;
 
-import java.util.ArrayList;
-
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -10,9 +8,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
+
+import java.util.ArrayList;
 
 import me.suanmiao.ptrListview.IPullToRefresh;
 import me.suanmiao.ptrListview.R;
@@ -21,10 +22,13 @@ import me.suanmiao.ptrListview.R;
 /**
  * Created by suanmiao on 14-9-15.
  */
-public class RaindropHeader extends AbstractHeaderLayout {
+public class RaindropHeader extends LinearLayout implements IPTRHeader {
 
+  public static final long RESET_TOTAL_DURATION = 300;
   private static final long ANIMATION_DURATION = 500;
   private boolean shrinking = false;
+  private boolean inChangeable = false;
+  private int paddingTop;
 
   private int waterDropHeight;
   private int waterDropWidth;
@@ -84,7 +88,7 @@ public class RaindropHeader extends AbstractHeaderLayout {
         paddingTop = (int) (-getHeaderTotalHeight() + progress * getHeaderRefreshingHeight());
         int dropHeight =
             (int) (getHeaderRefreshingHeight() * progress);
-        if (!shrinking) {
+        if (!shrinking && !inChangeable) {
           if (dropHeight > getResources().getDimensionPixelSize(R.dimen.water_drop_max_height)) {
             shrink();
           } else if (dropHeight >= waterDropWidth) {
@@ -98,7 +102,7 @@ public class RaindropHeader extends AbstractHeaderLayout {
         paddingTop = (int) (-getHeaderTotalHeight() + progress * getHeaderRefreshingHeight());
         int dropHeight =
             (int) (getHeaderRefreshingHeight() * progress);
-        if (!shrinking) {
+        if (!shrinking && !inChangeable) {
           if (dropHeight > getResources().getDimensionPixelSize(R.dimen.water_drop_max_height)) {
             shrink();
           } else if (dropHeight >= waterDropWidth) {
@@ -110,16 +114,50 @@ public class RaindropHeader extends AbstractHeaderLayout {
       }
       case DONE: {
         paddingTop = -getHeaderTotalHeight();
-        shrink();
+        if (!inChangeable) {
+          shrink();
+        }
         break;
       }
       case REFRESHING: {
         paddingTop = -(getHeaderTotalHeight() - getHeaderRefreshingHeight());
-        shrink();
+        if (!inChangeable) {
+          shrink();
+        }
         break;
       }
     }
     setPadding(0, paddingTop, 0, 0);
+  }
+
+  @Override
+  public void onPullCancel() {
+    inChangeable = false;
+    animatePaddingTop(-getHeaderTotalHeight());
+  }
+
+  @Override
+  public void onRefreshStart() {
+    animatePaddingTop(-(getHeaderTotalHeight() - getHeaderRefreshingHeight()));
+  }
+
+  @Override
+  public void onInit() {
+    inChangeable = false;
+    setPadding(0, -getHeaderTotalHeight(), 0, 0);
+  }
+
+  public void animatePaddingTop(int to) {
+    ValueAnimator resetAnimator =
+        ValueAnimator.ofInt(paddingTop, to).setDuration(RESET_TOTAL_DURATION);
+    resetAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator animation) {
+        paddingTop = (Integer) animation.getAnimatedValue();
+        setPadding(0, paddingTop, 0, 0);
+      }
+    });
+    resetAnimator.start();
   }
 
   @Override
@@ -133,12 +171,23 @@ public class RaindropHeader extends AbstractHeaderLayout {
   }
 
   @Override
+  public int getHeaderCurrentPaddingTop() {
+    return paddingTop;
+  }
+
+  @Override
+  public View getHeaderLayout() {
+    return this;
+  }
+
+  @Override
   protected void onDraw(Canvas canvas) {
     drawContent(canvas);
     super.onDraw(canvas);
   }
 
   public void shrink() {
+    inChangeable = true;
     shrinking = true;
     ValueAnimator animator = ValueAnimator.ofFloat(0, 1f).setDuration(ANIMATION_DURATION);
     animator.setInterpolator(new LinearInterpolator());

@@ -18,19 +18,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <me.suanmiao.example.ui.widget.STextView
+    <me.suanmiao.common.ui.widget.STextView
         android:id="@+id/text_item_main_article_header_title"
         android:textSize="15dp"
         android:textColor="@color/pure_white"
         android:gravity="left|top"
-        suan:textStyle="bold"
         android:layout_width="match_parent"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:layout_marginTop="13dp"
         android:layout_height="wrap_content"/>
 
-    <me.suanmiao.example.ui.widget.STextView
+    <me.suanmiao.common.ui.widget.STextView
         android:id="@+id/text_item_main_article_header_tag"
         android:textSize="10dp"
         android:textColor="@color/pure_white"

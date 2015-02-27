@@ -16,20 +16,27 @@ public interface IPullToRefresh {
 
   public boolean isRefreshEnable();
 
+  public void setRefreshEnable(boolean enable);
+
   /**
    * called when refresh start
    */
   public void onRefreshStart();
+
 
   /**
    * called when refresh complete
    */
   public void onRefreshComplete();
 
+  public boolean isLoadEnable();
+
+  public void setLoadEnable(boolean enable);
+
   public void onLoadStart();
 
   public void onLoadComplete();
 
-    public boolean isLoading();
+  public boolean isLoading();
 
 }

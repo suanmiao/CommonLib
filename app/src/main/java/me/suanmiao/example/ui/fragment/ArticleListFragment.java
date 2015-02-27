@@ -19,7 +19,6 @@ import me.suanmiao.common.io.http.robospiece.api.BaseFormResult;
 import me.suanmiao.common.ui.adapter.listview.BaseListAdapter;
 import me.suanmiao.common.ui.fragment.AbstractBaseFragment;
 import me.suanmiao.common.ui.mvc.ViewModel.BaseViewModel;
-import me.suanmiao.common.util.DateUtil;
 import me.suanmiao.example.event.BusProvider;
 import me.suanmiao.example.io.http.requests.ChannelRequest;
 import me.suanmiao.example.ui.adapter.listview.ExampleListAdapter;
@@ -27,7 +26,8 @@ import me.suanmiao.example.ui.mvc.Model.ArticleModel;
 import me.suanmiao.example.ui.mvc.Model.ChannelModel;
 import me.suanmiao.example.ui.mvc.Model.ExampleItemModel;
 import me.suanmiao.example.ui.widget.TipView;
-import me.suanmiao.ptrListview.PtrListview;
+import me.suanmiao.ptrListview.PtrListView;
+import me.suanmiao.ptrListview.header.RaindropHeader;
 
 /**
  * Created by suanmiao on 14-12-2.
@@ -35,7 +35,7 @@ import me.suanmiao.ptrListview.PtrListview;
 public class ArticleListFragment extends AbstractBaseFragment {
 
   @InjectView(me.suanmiao.example.R.id.list_main_article)
-  PtrListview listMainArticle;
+  PtrListView listMainArticle;
 
   @InjectView(me.suanmiao.example.R.id.tip_main_article)
   TipView tipView;
@@ -96,7 +96,7 @@ public class ArticleListFragment extends AbstractBaseFragment {
     listMainArticle.setOnLoadListener(loadListener);
     listMainArticle.setOnScrollListener(listAdapter);
     listMainArticle.setAdapter(listAdapter);
-//    listMainArticle.setHeaderLayout(new RaindropHeader(getActivity()));
+    listMainArticle.setHeaderLayout(new RaindropHeader(getActivity()));
   }
 
   private BaseViewModel.UIChangeListener mUiChangeListener = new BaseViewModel.UIChangeListener() {
@@ -124,16 +124,16 @@ public class ArticleListFragment extends AbstractBaseFragment {
         }
       };
 
-  private PtrListview.OnRefreshListener refreshListener = new PtrListview.OnRefreshListener() {
+  private PtrListView.OnRefreshListener refreshListener = new PtrListView.OnRefreshListener() {
     @Override
     public void onRefresh() {
       refreshData();
     }
   };
 
-  private PtrListview.OnLoadListener loadListener = new PtrListview.OnLoadListener() {
+  private PtrListView.OnLoadListener loadListener = new PtrListView.OnLoadListener() {
     @Override
-    public void onLastVisibleItem() {
+    public void onLastItemVisible() {
       loadData();
     }
   };
@@ -160,8 +160,8 @@ public class ArticleListFragment extends AbstractBaseFragment {
         Log.e("SUAN", "response success " + response + "|" + response.title + "|"
             + response.itemList);
         for (ArticleModel articleModel : response.itemList) {
-          Log.e("SUAN", "article " + articleModel + "|" + articleModel.title + "|"
-              + articleModel.pubDate + "|" + DateUtil.parsePubdateDate(articleModel.pubDate));
+//          Log.e("SUAN", "article " + articleModel + "|" + articleModel.title + "|"
+//              + articleModel.pubDate + "|" + DateUtil.parsePubdateDate(articleModel.pubDate));
         }
       }
     });
