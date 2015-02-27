@@ -300,7 +300,7 @@ public class PtrListview extends ListView implements
       }
       Rect visibleRect = new Rect();
       getGlobalVisibleRect(visibleRect);
-      return visibleRect.bottom - totalHeight < VISIBLIE_SLOP;
+      return (visibleRect.bottom - visibleRect.top) - totalHeight < VISIBLIE_SLOP;
     }
     return false;
   }

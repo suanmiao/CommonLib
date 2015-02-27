@@ -2,7 +2,7 @@ package me.suanmiao.common.io.http.robospiece.request;
 
 import com.octo.android.robospice.request.SpiceRequest;
 import com.squareup.okhttp.OkHttpClient;
-import me.suanmiao.common.io.http.robospiece.RequestManager;
+import me.suanmiao.common.io.http.RequestManager;
 
 /**
  * Created by suanmiao on 14/12/15.

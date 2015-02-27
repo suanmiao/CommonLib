@@ -26,7 +26,7 @@ public class ResponseStatusUtil {
                 break;
             default:
                 if(tipView!=null&& !TextUtils.isEmpty(result.getDescription())){
-                    TipUtil.showWarningTip(tipView,result.getDescription());
+//                    TipUtil.showWarningTip(tipView,result.getDescription());
                 }
                 break;
         }

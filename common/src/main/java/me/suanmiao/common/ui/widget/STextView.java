@@ -14,12 +14,8 @@ import me.suanmiao.common.R;
  */
 public class STextView extends TextView {
 
-  private static Typeface hei;
-  private static final String TYPEFACE_DEFAULT_PATH = "fonts/heiti.ttf";
-  private static final String TYPEFACE_BOLD_PATH = "fonts/heiti_bold.ttf";
-  private static final int STYLE_NORMAL = 2;
-  private static final int STYLE_BOLD = 3;
-  private int textStyle = STYLE_NORMAL;
+  private static Typeface font;
+  private String fontPath = null;
 
   public STextView(Context context) {
     super(context);
@@ -39,30 +35,25 @@ public class STextView extends TextView {
   }
 
   private void init(Context context) {
-    if (hei == null) {
-      switch (textStyle) {
-        case STYLE_NORMAL:
-          hei = Typeface.createFromAsset(getResources().getAssets(), TYPEFACE_DEFAULT_PATH);
-          break;
-        case STYLE_BOLD:
-          hei = Typeface.createFromAsset(getResources().getAssets(), TYPEFACE_BOLD_PATH);
-          break;
-        default:
-          hei = Typeface.createFromAsset(getResources().getAssets(), TYPEFACE_DEFAULT_PATH);
-          break;
+    try {
+      if (fontPath != null) {
+        font = Typeface.createFromAsset(getResources().getAssets(), fontPath);
       }
+      if (font != null) {
+        setTypeface(font);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    setTypeface(hei);
   }
-
 
   private void initAttr(Context context, AttributeSet attributeSet) {
     TypedArray a =
         context.obtainStyledAttributes(attributeSet, R.styleable.STextView);
     try {
-      textStyle = a.getInt(R.styleable.STextView_textStyle, STYLE_NORMAL);
-    } finally {
-      a.recycle();
+      fontPath = a.getString(R.styleable.STextView_textFontPath);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 }

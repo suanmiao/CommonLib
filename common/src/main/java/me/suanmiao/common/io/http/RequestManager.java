@@ -1,4 +1,4 @@
-package me.suanmiao.common.io.http.robospiece;
+package me.suanmiao.common.io.http;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -10,16 +10,6 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.Volley;
 import com.octo.android.robospice.SpiceManager;
 import com.squareup.okhttp.OkHttpClient;
-import me.suanmiao.common.component.BaseApplication;
-import me.suanmiao.common.io.cache.CacheManager;
-import me.suanmiao.common.io.http.CommonRequest;
-import me.suanmiao.common.io.http.CommonRequestListener;
-import me.suanmiao.common.io.http.exception.CommonParamException;
-import me.suanmiao.common.io.http.exception.CommonRequestException;
-import me.suanmiao.common.io.http.robospiece.api.TaggedRequestListener;
-import me.suanmiao.common.io.http.volley.CommonNetwork;
-import me.suanmiao.common.io.http.volley.FakeVolleyRequest;
-import me.suanmiao.common.util.helper.FileHelper;
 
 import java.io.File;
 import java.net.URLEncoder;
@@ -28,10 +18,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.suanmiao.common.component.BaseApplication;
+import me.suanmiao.common.io.cache.CacheManager;
+import me.suanmiao.common.io.http.exception.CommonParamException;
+import me.suanmiao.common.io.http.exception.CommonRequestException;
+import me.suanmiao.common.io.http.robospiece.api.TaggedRequestListener;
+import me.suanmiao.common.io.http.volley.CommonNetwork;
+import me.suanmiao.common.io.http.volley.FakeVolleyRequest;
+import me.suanmiao.common.util.helper.FileHelper;
+
 /**
  * Created by suanmiao on 14-10-31.
  */
 public class RequestManager {
+
 
   /**
    * common
@@ -62,9 +62,17 @@ public class RequestManager {
 
   private static ExecuteMode mExecuteMode;
 
+  public RequestManager(Context context, Class requestService, OkHttpClient okHttpClient) {
+    initCommon();
+    initVolley(context);
+    initRobo(requestService, okHttpClient);
+    mExecuteMode = ExecuteMode.BOTH;
+  }
+
   public RequestManager(Class requestService, OkHttpClient okHttpClient) {
     initCommon();
     initRobo(requestService, okHttpClient);
+    mExecuteMode = ExecuteMode.ROBO_SPIECE;
   }
 
   public RequestManager(Context context) {
@@ -90,7 +98,8 @@ public class RequestManager {
 
   private void initVolley(Context context) {
     requestQueue = Volley.newRequestQueue(context);
-    requestQueue = new RequestQueue(new DiskBasedCache(new File(DISK_HTTP_CACHE_DIR)), new CommonNetwork());
+    requestQueue =
+        new RequestQueue(new DiskBasedCache(new File(DISK_HTTP_CACHE_DIR)), new CommonNetwork());
     requestQueue.start();
   }
 

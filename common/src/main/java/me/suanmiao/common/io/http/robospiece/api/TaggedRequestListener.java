@@ -3,7 +3,7 @@ package me.suanmiao.common.io.http.robospiece.api;
 import com.android.volley.VolleyError;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import me.suanmiao.common.io.http.robospiece.RequestManager;
+import me.suanmiao.common.io.http.RequestManager;
 import me.suanmiao.common.io.http.volley.IVolleyListener;
 
 /**

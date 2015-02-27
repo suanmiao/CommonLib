@@ -6,7 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import me.suanmiao.common.component.BaseApplication;
 import me.suanmiao.common.io.http.CommonRequest;
 import me.suanmiao.common.io.http.CommonRequestListener;
-import me.suanmiao.common.io.http.robospiece.RequestManager;
+import me.suanmiao.common.io.http.RequestManager;
 
 import butterknife.ButterKnife;
 

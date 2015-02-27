@@ -4,8 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
-import com.squareup.okhttp.OkHttpClient;
-import me.suanmiao.common.io.http.robospiece.RequestManager;
+import me.suanmiao.common.io.http.RequestManager;
 
 
 /**
@@ -24,13 +23,11 @@ public abstract class BaseApplication extends Application {
 
   private void init() {
     context = getApplicationContext();
-    requestManager = new RequestManager(this);
+    requestManager = initRequestManager();
     setExceptionHandler();
   }
 
-  public abstract Class getRequestService();
-
-  public abstract OkHttpClient getOkHttpClient();
+  protected abstract RequestManager initRequestManager();
 
   private void setExceptionHandler() {
     new Handler().postDelayed(new Runnable() {

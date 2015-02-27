@@ -9,6 +9,11 @@ import android.view.View;
 
 import com.android.volley.VolleyError;
 import com.octo.android.robospice.persistence.exception.SpiceException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.InjectView;
 import me.suanmiao.common.io.http.VolleyCommonListener;
 import me.suanmiao.common.io.http.robospiece.api.BaseFormResult;
 import me.suanmiao.common.ui.adapter.listview.BaseListAdapter;
@@ -23,11 +28,6 @@ import me.suanmiao.example.ui.mvc.Model.ChannelModel;
 import me.suanmiao.example.ui.mvc.Model.ExampleItemModel;
 import me.suanmiao.example.ui.widget.TipView;
 import me.suanmiao.ptrListview.PtrListview;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.InjectView;
 
 /**
  * Created by suanmiao on 14-12-2.

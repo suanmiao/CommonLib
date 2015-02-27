@@ -7,8 +7,6 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
     }
 
     compileOptions {
@@ -28,7 +26,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.mcxiaoke.volley:library:1.0.+'
+    compile 'com.mcxiaoke.volley:library-aar:1.0.0'
     compile ('org.simpleframework:simple-xml:2.7.1'){
         exclude module: 'stax'
         exclude module: 'stax-api'
@@ -41,7 +39,6 @@ dependencies {
     compile 'com.octo.android.robospice:robospice-okhttp:1.4.14'
     compile 'com.squareup.okhttp:okhttp:2.1.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
-    compile project(':PTRLibrary')
 }
 
 apply from: "./push_to_mvn.gradle"

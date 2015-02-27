@@ -6,18 +6,15 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
+import me.suanmiao.common.R;
+
 
 /**
  * Created by suanmiao on 14-11-29.
  */
 public class SEditText extends EditText {
-
-  private static Typeface hei;
-  private static final String TYPEFACE_DEFAULT_PATH = "fonts/heiti.ttf";
-  private static final String TYPEFACE_BOLD_PATH = "fonts/heiti_bold.ttf";
-  private static final int STYLE_NORMAL = 2;
-  private static final int STYLE_BOLD = 3;
-  private int textStyle = STYLE_NORMAL;
+  private static Typeface font;
+  private String fontPath = null;
 
   public SEditText(Context context) {
     super(context);
@@ -37,33 +34,25 @@ public class SEditText extends EditText {
   }
 
   private void init(Context context) {
-    if (hei == null) {
-      switch (textStyle) {
-        case STYLE_NORMAL:
-          hei = Typeface.createFromAsset(getResources().getAssets(), TYPEFACE_DEFAULT_PATH);
-          break;
-        case STYLE_BOLD:
-          hei = Typeface.createFromAsset(getResources().getAssets(), TYPEFACE_BOLD_PATH);
-          break;
-        default:
-          hei = Typeface.createFromAsset(getResources().getAssets(), TYPEFACE_DEFAULT_PATH);
-          break;
+    try {
+      if (fontPath != null) {
+        font = Typeface.createFromAsset(getResources().getAssets(), fontPath);
       }
+      if (font != null) {
+        setTypeface(font);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    setTypeface(hei);
   }
-
 
   private void initAttr(Context context, AttributeSet attributeSet) {
     TypedArray a =
-        context.obtainStyledAttributes(attributeSet, me.suanmiao.common.R.styleable.STextView);
+        context.obtainStyledAttributes(attributeSet, R.styleable.SEditText);
     try {
-      textStyle = a.getInt(me.suanmiao.common.R.styleable.SEditText_editTextStyle, STYLE_NORMAL);
-    } finally {
-      a.recycle();
+      fontPath = a.getString(R.styleable.SEditText_fontPath);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
-
-
-
 }

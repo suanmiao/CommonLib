@@ -8,23 +8,27 @@ import android.widget.ImageView;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.octo.android.robospice.persistence.exception.SpiceException;
+
+import java.io.IOException;
+
 import me.suanmiao.common.component.BaseApplication;
 import me.suanmiao.common.io.http.CommonRequest;
+import me.suanmiao.common.io.http.SpiceBuilder;
 import me.suanmiao.common.io.http.SpiceCommonListener;
+import me.suanmiao.common.io.http.VolleyBuilder;
 import me.suanmiao.common.io.http.VolleyCommonListener;
 import me.suanmiao.common.io.http.image.spice.PhotoSpiceRequest;
 import me.suanmiao.common.io.http.image.volley.BlurPhotoActionDelivery;
 import me.suanmiao.common.io.http.image.volley.PhotoActionDelivery;
 import me.suanmiao.common.io.http.robospiece.ProgressListener;
-import me.suanmiao.common.io.http.robospiece.RequestManager;
+import me.suanmiao.common.io.http.RequestManager;
 import me.suanmiao.common.util.TextUtil;
-
-import java.io.IOException;
 
 /**
  * Created by suanmiao on 14/12/7.
  */
 public class Photo {
+
 
   public static final String BLUR_SUFFIX = "_blur";
   public static final int INVALID_VALUE = -1;
@@ -192,13 +196,13 @@ public class Photo {
               case ROBO_SPIECE:
                 PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
                 spiceRequest.setLoadOption(LoadOption.BOTH);
-                request = new CommonRequest.SpiceBuilder<Photo>().request(spiceRequest)
+                request = new SpiceBuilder<Photo>().request(spiceRequest)
                     .build();
                 break;
 
               case VOLLEY:
                 request =
-                    new CommonRequest.VolleyBuilder<Photo>().url(photo.getUrl())
+                    new VolleyBuilder<Photo>().url(photo.getUrl())
                         .method(Request.Method.GET)
                         .actionDelivery(new PhotoActionDelivery(photo)).build();
                 break;
@@ -232,13 +236,13 @@ public class Photo {
             case ROBO_SPIECE:
               PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
               request =
-                  new CommonRequest.SpiceBuilder<Photo>().request(spiceRequest)
+                  new SpiceBuilder<Photo>().request(spiceRequest)
                       .build();
               break;
 
             case VOLLEY:
               request =
-                  new CommonRequest.VolleyBuilder<Photo>().url(photo.getUrl())
+                  new VolleyBuilder<Photo>().url(photo.getUrl())
                       .method(Request.Method.GET)
                       .actionDelivery(new PhotoActionDelivery(photo)).build();
               break;
@@ -267,13 +271,13 @@ public class Photo {
         switch (RequestManager.getExecuteMode()) {
           case ROBO_SPIECE:
             PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
-            new CommonRequest.SpiceBuilder<Photo>().request(spiceRequest)
+            new SpiceBuilder<Photo>().request(spiceRequest)
                 .build();
             break;
 
           case VOLLEY:
             request =
-                new CommonRequest.VolleyBuilder<Photo>().url(photo.getUrl())
+                new VolleyBuilder<Photo>().url(photo.getUrl())
                     .method(Request.Method.GET)
                     .actionDelivery(new PhotoActionDelivery(photo)).build();
             break;
@@ -314,13 +318,13 @@ public class Photo {
               } else {
                 spiceRequest.setLoadOption(LoadOption.BOTH);
               }
-              request = new CommonRequest.SpiceBuilder<Photo>().request(spiceRequest)
+              request = new SpiceBuilder<Photo>().request(spiceRequest)
                   .build();
               break;
 
             case VOLLEY:
               request =
-                  new CommonRequest.VolleyBuilder<Photo>().url(photo.getUrl())
+                  new VolleyBuilder<Photo>().url(photo.getUrl())
                       .method(Request.Method.GET)
                       .actionDelivery(new PhotoActionDelivery(photo)).build();
               break;
@@ -365,13 +369,13 @@ public class Photo {
           switch (RequestManager.getExecuteMode()) {
             case ROBO_SPIECE:
               PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
-              request = new CommonRequest.SpiceBuilder<Photo>().request(spiceRequest)
+              request = new SpiceBuilder<Photo>().request(spiceRequest)
                   .build();
               break;
 
             case VOLLEY:
               request =
-                  new CommonRequest.VolleyBuilder<Photo>().url(photo.getUrl())
+                  new VolleyBuilder<Photo>().url(photo.getUrl())
                       .method(Request.Method.GET)
                       .actionDelivery(new BlurPhotoActionDelivery(photo)).build();
               break;
@@ -406,13 +410,13 @@ public class Photo {
             } else {
               spiceRequest.setLoadOption(LoadOption.BOTH);
             }
-            request = new CommonRequest.SpiceBuilder<Photo>().request(spiceRequest)
+            request = new SpiceBuilder<Photo>().request(spiceRequest)
                 .build();
             break;
 
           case VOLLEY:
             request =
-                new CommonRequest.VolleyBuilder<Photo>().url(photo.getUrl())
+                new VolleyBuilder<Photo>().url(photo.getUrl())
                     .method(Request.Method.GET)
                     .actionDelivery(new BlurPhotoActionDelivery(photo)).build();
             break;

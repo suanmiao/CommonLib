@@ -7,7 +7,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 
 import me.suanmiao.common.component.BaseApplication;
-import me.suanmiao.common.io.http.robospiece.RequestManager;
+import me.suanmiao.common.io.http.RequestManager;
 import me.suanmiao.common.ui.mvc.Model.BaseModel;
 import me.suanmiao.common.ui.mvc.ViewModel.BaseViewModel;
 

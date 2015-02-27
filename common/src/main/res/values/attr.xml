@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="STextView">
-        <attr name="textStyle" format="enum">
-            <enum name="normal" value="2"/>
-            <enum name="bold" value="3"/>
+
+        <attr name="textFontPath" format="string">
         </attr>
 
         <!--<attr name="lineNum" format="integer"/>-->
@@ -11,9 +10,8 @@
 
     </declare-styleable>
     <declare-styleable name="SEditText">
-        <attr name="editTextStyle" format="enum">
-            <enum name="normal" value="2"/>
-            <enum name="bold" value="3"/>
+
+        <attr name="fontPath" format="string">
         </attr>
 
         <!--<attr name="lineNum" format="integer"/>-->

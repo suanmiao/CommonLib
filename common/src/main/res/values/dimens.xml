@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_header_height" >60dp</dimen>
+    <dimen name="footer_height" >60dp</dimen>
+    <dimen name="water_drop_border_stroke_width" >3dp</dimen>
+
+    <dimen name="water_drop_width" >30dp</dimen>
+    <dimen name="water_drop_height" >80dp</dimen>
+    <dimen name="water_drop_padding_bottom" >5dp</dimen>
+    <dimen name="water_drop_max_height" >120dp</dimen>
+
+    <dimen name="rain_drop_header_total_height" >140dp</dimen>
+
+</resources>

@@ -1,6 +1,6 @@
 package me.suanmiao.common.io.http.exception;
 
-import me.suanmiao.common.io.http.robospiece.RequestManager;
+import me.suanmiao.common.io.http.RequestManager;
 
 /**
  * Created by suanmiao on 15/1/24.

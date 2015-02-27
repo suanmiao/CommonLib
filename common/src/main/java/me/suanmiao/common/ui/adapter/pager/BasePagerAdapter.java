@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.suanmiao.common.component.BaseApplication;
-import me.suanmiao.common.io.http.robospiece.RequestManager;
+import me.suanmiao.common.io.http.RequestManager;
 import me.suanmiao.common.ui.mvc.Model.BaseModel;
 
 import java.util.List;

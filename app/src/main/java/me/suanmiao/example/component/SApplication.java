@@ -1,9 +1,7 @@
 package me.suanmiao.example.component;
 
-import android.os.Handler;
-
-import com.squareup.okhttp.OkHttpClient;
 import me.suanmiao.common.component.BaseApplication;
+import me.suanmiao.common.io.http.RequestManager;
 import me.suanmiao.example.io.http.api.WaceRequestService;
 
 /**
@@ -12,23 +10,7 @@ import me.suanmiao.example.io.http.api.WaceRequestService;
 public class SApplication extends BaseApplication {
 
   @Override
-  public Class getRequestService() {
-    return WaceRequestService.class;
+  protected RequestManager initRequestManager() {
+    return new RequestManager(this, WaceRequestService.class, WaceRequestService.getOkHttpClient());
   }
-
-  @Override
-  public OkHttpClient getOkHttpClient() {
-    return WaceRequestService.getOkHttpClient();
-  }
-
-  private void setExceptionHandler() {
-    new Handler().postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        Thread.setDefaultUncaughtExceptionHandler(new SExceptionHandler(Thread
-            .getDefaultUncaughtExceptionHandler()));
-      }
-    }, 200);
-  }
-
 }

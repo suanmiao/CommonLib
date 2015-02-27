@@ -26,4 +26,7 @@
     <color name="category_header_bg_mask">#303d3d3d</color>
     <color name="article_header_bg_mask">#503d3d3d</color>
 
+    <!--ptr-->
+    <color name="water_drop_border_color">#666666</color>
+    <color name="water_drop_fill_color">#60ffffff</color>
 </resources>

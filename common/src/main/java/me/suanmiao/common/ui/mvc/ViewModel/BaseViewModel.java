@@ -6,7 +6,7 @@ import com.octo.android.robospice.persistence.exception.SpiceException;
 import me.suanmiao.common.component.BaseApplication;
 import me.suanmiao.common.io.http.CommonRequest;
 import me.suanmiao.common.io.http.CommonRequestListener;
-import me.suanmiao.common.io.http.robospiece.RequestManager;
+import me.suanmiao.common.io.http.RequestManager;
 import me.suanmiao.common.io.http.robospiece.api.BaseFormResult;
 import me.suanmiao.common.ui.mvc.Model.BaseModel;
 import me.suanmiao.common.ui.mvc.View.BaseView;
