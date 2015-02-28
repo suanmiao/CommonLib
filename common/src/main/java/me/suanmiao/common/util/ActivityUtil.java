@@ -19,6 +19,4 @@ public class ActivityUtil {
         return result;
     }
 
-
-
 }

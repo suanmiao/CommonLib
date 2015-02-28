@@ -27,7 +27,7 @@ import me.suanmiao.example.ui.mvc.Model.ChannelModel;
 import me.suanmiao.example.ui.mvc.Model.ExampleItemModel;
 import me.suanmiao.example.ui.widget.MieHeader;
 import me.suanmiao.example.ui.widget.TipView;
-import me.suanmiao.ptrListview.PtrListView;
+import me.suanmiao.ptrlistview.PtrListView;
 
 /**
  * Created by suanmiao on 14-12-2.
@@ -96,7 +96,7 @@ public class ArticleListFragment extends AbstractBaseFragment {
     listMainArticle.setOnLoadListener(loadListener);
     listMainArticle.setOnScrollListener(listAdapter);
     listMainArticle.setAdapter(listAdapter);
-    listMainArticle.setHeaderLayout(new MieHeader(getActivity()));
+    listMainArticle.setHeader(new MieHeader(getActivity()));
     listMainArticle.setContinuousPulling(true);
   }
 

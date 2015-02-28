@@ -7,8 +7,8 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 
 import me.suanmiao.example.R;
-import me.suanmiao.ptrListview.IPullToRefresh;
-import me.suanmiao.ptrListview.header.AbstractNormalHeader;
+import me.suanmiao.ptrlistview.IPullToRefresh;
+import me.suanmiao.ptrlistview.header.AbstractNormalHeader;
 
 /**
  * Created by suanmiao on 15/2/27.

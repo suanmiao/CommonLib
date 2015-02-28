@@ -2,21 +2,17 @@ package me.suanmiao.common.component;
 
 import me.suanmiao.common.util.DateUtil;
 import me.suanmiao.common.util.FileUtils;
-import me.suanmiao.common.util.helper.FileHelper;
 
 /**
  * Created by suanmiao on 15/1/2.
  */
 public class SExceptionHandler implements Thread.UncaughtExceptionHandler {
-    private static final String EXCEPTION_FILE_NAME = "crash.log";
     private Thread.UncaughtExceptionHandler exceptionHandler;
+    private String crashFilePath;
 
-    public SExceptionHandler(Thread.UncaughtExceptionHandler uncaughtExceptionHandler) {
+    public SExceptionHandler(String crashFilePath,Thread.UncaughtExceptionHandler uncaughtExceptionHandler) {
         this.exceptionHandler = uncaughtExceptionHandler;
-    }
-
-    public SExceptionHandler() {
-
+        this.crashFilePath = crashFilePath;
     }
 
     @Override
@@ -28,9 +24,8 @@ public class SExceptionHandler implements Thread.UncaughtExceptionHandler {
         }
     }
 
-    public static void writeToFile(String content) {
-        String path = FileHelper.getAppRootDirectory() + EXCEPTION_FILE_NAME;
-        FileUtils.saveTextFile(path, content);
+    public  void writeToFile(String content) {
+        FileUtils.saveTextFile(crashFilePath, content);
     }
 
     private String getExceptionContent(Throwable ex) {

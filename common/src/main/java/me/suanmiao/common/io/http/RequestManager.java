@@ -31,14 +31,12 @@ import me.suanmiao.common.util.helper.FileHelper;
  * Created by suanmiao on 14-10-31.
  */
 public class RequestManager {
-
-
   /**
    * common
    */
   private CacheManager cacheManager;
-  private static final String DISK_BITMAP_CACHE_DIR = FileHelper.getAppRootDirectory() + "/cache";
-  private static final String DISK_HTTP_CACHE_DIR = FileHelper.getAppRootDirectory() + "/httpCache";
+  private String diskBitmapCacheDir;
+  private String diskHTTPCacheDir;
 
   /**
    * RoboSpice
@@ -62,29 +60,35 @@ public class RequestManager {
 
   private static ExecuteMode mExecuteMode;
 
-  public RequestManager(Context context, Class requestService, OkHttpClient okHttpClient) {
-    initCommon();
+  public RequestManager(Context context, Class requestService, OkHttpClient okHttpClient,
+      String appFolderName) {
+    initCommon(appFolderName);
     initVolley(context);
     initRobo(requestService, okHttpClient);
     mExecuteMode = ExecuteMode.BOTH;
   }
 
-  public RequestManager(Class requestService, OkHttpClient okHttpClient) {
-    initCommon();
+  public RequestManager(Class requestService, OkHttpClient okHttpClient, String appFolderName) {
+    initCommon(appFolderName);
     initRobo(requestService, okHttpClient);
     mExecuteMode = ExecuteMode.ROBO_SPIECE;
   }
 
-  public RequestManager(Context context) {
-    initCommon();
+  public RequestManager(Context context, String appFolderName) {
+    initCommon(appFolderName);
     initVolley(context);
     mExecuteMode = ExecuteMode.VOLLEY;
   }
 
-  private void initCommon() {
+  private void initCommon(String appFolderName) {
+    diskBitmapCacheDir = FileHelper.getAppRootDirectory(appFolderName) +
+        "/cache";
+    diskHTTPCacheDir = FileHelper.getAppRootDirectory(appFolderName) +
+        "/httpCache";
+
     runningRequest = new HashMap<>();
     cacheManager =
-        new CacheManager(DISK_BITMAP_CACHE_DIR, DISK_HTTP_CACHE_DIR,
+        new CacheManager(diskBitmapCacheDir,
             BaseApplication.getAppContext());
   }
 
@@ -99,7 +103,7 @@ public class RequestManager {
   private void initVolley(Context context) {
     requestQueue = Volley.newRequestQueue(context);
     requestQueue =
-        new RequestQueue(new DiskBasedCache(new File(DISK_HTTP_CACHE_DIR)), new CommonNetwork());
+        new RequestQueue(new DiskBasedCache(new File(diskHTTPCacheDir)), new CommonNetwork());
     requestQueue.start();
   }
 

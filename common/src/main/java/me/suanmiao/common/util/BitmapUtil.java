@@ -3,15 +3,15 @@ package me.suanmiao.common.util;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import me.suanmiao.common.io.http.image.Photo;
-import me.suanmiao.common.util.helper.SystemHelper;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import me.suanmiao.common.io.http.image.Photo;
+import me.suanmiao.common.util.helper.SystemHelper;
 
 
 /**
@@ -114,37 +114,6 @@ public class BitmapUtil {
     }
   }
 
-  // public static Bitmap decodePhoto(InputStream in, Photo photo) throws IOException {
-  // //copy stream
-  // ByteArrayOutputStream baos = new ByteArrayOutputStream();
-  // byte[] buffer = new byte[BUFFER_SIZE];
-  // int len;
-  // while ((len = in.read(buffer)) > -1) {
-  // baos.write(buffer, 0, len);
-  // }
-  // baos.flush();
-  //
-  // InputStream is1 = new ByteArrayInputStream(baos.toByteArray());
-  // InputStream is2 = new ByteArrayInputStream(baos.toByteArray());
-  //
-  // BitmapFactory.Options options = new BitmapFactory.Options();
-  // options.inJustDecodeBounds = true;
-  // BitmapFactory.decodeStream(is1,null,options);
-  // // BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
-  // int sourceWidth = options.outWidth;
-  // int sourceHeight = options.outHeight;
-  // int sampleSize = getBestFitSampleSize(sourceWidth, sourceHeight, photo.getViewWidth(),
-  // photo.getViewHeight(), Bitmap.Config.ARGB_8888);
-  // options.inJustDecodeBounds = false;
-  // options.inSampleSize = sampleSize;
-  // Bitmap result = BitmapFactory.decodeStream(is2,null,options);
-  // // Bitmap result = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
-  // if (photo.getProgressListener() != null && photo.getContentLength() > 0) {
-  // photo.getProgressListener().onProgress(1.0f);
-  // }
-  // return result;
-  // }
-
   public static byte[] streamToByteArray(InputStream in, Photo photo) throws IOException {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -207,37 +176,6 @@ public class BitmapUtil {
     return (int) Math.round(Math.min(widthRatio, heightRatio));
   }
 
-  // public static Bitmap decodeInputStream(InputStream in) throws IOException {
-  // ByteArrayOutputStream baos = new ByteArrayOutputStream();
-  //
-  // // Fake code simulating the copy
-  // // You can generally do better with nio if you need...
-  // // And please, unlike me, do something about the Exceptions :D
-  // byte[] buffer = new byte[BUFFER_SIZE];
-  // int len;
-  // while ((len = in.read(buffer)) > -1) {
-  // baos.write(buffer, 0, len);
-  // }
-  // baos.flush();
-  //
-  // // Open new InputStreams using the recorded bytes
-  // // Can be repeated as many times as you wish
-  // InputStream is1 = new ByteArrayInputStream(baos.toByteArray());
-  // InputStream is2 = new ByteArrayInputStream(baos.toByteArray());
-  //
-  // BitmapFactory.Options options = new BitmapFactory.Options();
-  // options.inJustDecodeBounds = true;
-  // BitmapFactory.decodeStream(is1, null, options);
-  // int sourceWidth = options.outWidth;
-  // int sourceHeight = options.outHeight;
-  // int[] screenSize = SystemHelper.getScreenSize();
-  // int sampleSize = getBestFitSampleSize(sourceWidth, sourceHeight, screenSize[0], screenSize[1],
-  // Bitmap.Config.ARGB_8888);
-  // options.inJustDecodeBounds = false;
-  // options.inSampleSize = sampleSize;
-  // return BitmapFactory.decodeStream(is2, null, options);
-  // }
-
   public static Bitmap decodeInputStream(InputStream in, boolean sample) throws IOException {
     if (sample) {
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -270,37 +208,6 @@ public class BitmapUtil {
     }
   }
 
-  //
-  // public static Bitmap decodeBitmap(InputStream in) {
-  // Bitmap bitmap = null;
-  // int maxMemory = (int) (Runtime.getRuntime().maxMemory());
-  // byte[] content = readAllBytes(in);
-  // try {
-  // BitmapFactory.Options options = new BitmapFactory.Options();
-  // options.inJustDecodeBounds = true;
-  //
-  // BitmapFactory.decodeByteArray(content, 0, content.length, options);
-  //
-  // int width = options.outWidth;
-  // int height = options.outHeight;
-  // if (width * height > maxMemory / 2) {
-  // options.inSampleSize = (int) Math.sqrt((height * width) / maxMemory);
-  //
-  // } else {
-  //
-  // }
-  //
-  // options.inJustDecodeBounds = false;
-  // bitmap = BitmapFactory.decodeByteArray(content, 0, content.length, options);
-  // } catch (Exception e) {
-  // // BitmapFactory.Options options = new BitmapFactory.Options();
-  // // options.inSampleSize = 4;
-  // // bitmap = BitmapFactory.decodeByteArray(content, 0, content.length, options);
-  // }
-  // return bitmap;
-  // }
-  //
-
   public static Bitmap decodeFile(String path) {
     Bitmap bitmap = null;
 
@@ -318,21 +225,14 @@ public class BitmapUtil {
       int height = options.outHeight;
       if (width * height > maxMemory / 2) {
         options.inSampleSize = (int) Math.sqrt((height * width) / maxMemory);
-
-      } else {
-
       }
-
       options.inJustDecodeBounds = false;
       bitmap = BitmapFactory.decodeByteArray(content, 0, content.length, options);
     } catch (Exception e) {
-
-
+        e.printStackTrace();
     }
-
     return bitmap;
   }
-
 
   public static byte[] readAllBytes(InputStream inputStream) {
     try {

@@ -2,32 +2,29 @@
 
 ## Introduction
 
- Home brew android common lib, you can try if interested
+ Home brew android common lib
 
 ## Feature
   **IO**
   > network module, compatible with both Volley and RoboSpice, all-in-one request management
-  > image loading, both for items in scroll container and idle item
-  > cache ,on both ram and disk
-
+  > image loading, both for items in scroll container and idle item,also blur image load and cache support
+  > cache ,both on ram and disk
 
   **UI**
   > TextView and EditText with custom font support
   > MVC framework on list item
   > Dialog customisation support (maybe more animation support in the future)
 
-
   **Request Framework**
   > full-case coverage for all request
+
+  **Util**
+  > Bitmap,Date,File utils
 
 ## Usage
 **Gradle:**
 ```groovy
-    compile ('me.suanmiao.common:common-library:0.1.1'){
-         exclude module: 'stax'
-         exclude module: 'stax-api'
-         exclude module: 'xpp3'
-     }
+    compile 'me.suanmiao.common:library:0.1.2'
  ```
 
 ## Other

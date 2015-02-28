@@ -2,7 +2,6 @@ package me.suanmiao.example.io.http.requests;
 
 import com.android.volley.Request;
 import me.suanmiao.common.io.http.CommonRequest;
-import me.suanmiao.common.io.http.volley.BaseXmlActionDelivery;
 import me.suanmiao.example.ui.mvc.Model.ChannelModel;
 
 import org.simpleframework.xml.Serializer;

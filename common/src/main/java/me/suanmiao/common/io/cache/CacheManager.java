@@ -3,12 +3,10 @@ package me.suanmiao.common.io.cache;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.util.LruCache;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -18,46 +16,17 @@ import java.security.NoSuchAlgorithmException;
 public class CacheManager {
     private LruCache<String, Bitmap> ramCache;
     private DiskBitmapCache diskBitmapCache;
-    private DiskStreamCache diskStreamCache;
     private static final int APP_VERSION = 1;
 
     private static final int MB = 1024 * 1024;
-    private static final int IMAGE_THREAD_SIZE = 5;
     private static final float BITMAP_MEMORY_CACHE_SIZE_SCALE = 0.15f; // 15% memory
     private static final int BITMAP_MAX_FILE_CACHE_SIZE = 16 * MB; // 16M
 
-    public CacheManager(String diskBitmapPath, String diskHttpPath, Context context) {
+    public CacheManager(String diskBitmapPath, Context context) {
         ramCache = new LruCache<>(getMemoryCacheSize(context));
         try {
             DiskLruCache diskBitmapLruCache = DiskLruCache.open(new File(diskBitmapPath), APP_VERSION, 1, BITMAP_MAX_FILE_CACHE_SIZE);
             diskBitmapCache = new DiskBitmapCache(diskBitmapLruCache);
-            DiskLruCache diskHTTPLruCache = DiskLruCache.open(new File(diskHttpPath), APP_VERSION, 1, BITMAP_MAX_FILE_CACHE_SIZE);
-            diskStreamCache = new DiskStreamCache(diskHTTPLruCache);
-        } catch (IOException e) {
-            Log.e("SUAN", "new cache instance error " + e);
-        }
-    }
-
-    public InputStream getStream(String key) {
-        if (diskStreamCache == null || key == null) {
-            return null;
-        }
-        key = getHashKey(key);
-        try {
-            return diskStreamCache.get(key);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void putStream(String key, InputStream stream) {
-        if (diskStreamCache == null || key == null) {
-            return;
-        }
-        key = getHashKey(key);
-        try {
-            diskStreamCache.put(key, stream);
         } catch (IOException e) {
             e.printStackTrace();
         }

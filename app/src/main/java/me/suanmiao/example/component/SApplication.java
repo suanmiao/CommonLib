@@ -11,6 +11,7 @@ public class SApplication extends BaseApplication {
 
   @Override
   protected RequestManager initRequestManager() {
-    return new RequestManager(this, WaceRequestService.class, WaceRequestService.getOkHttpClient());
+    return new RequestManager(this, WaceRequestService.class, WaceRequestService.getOkHttpClient(),
+        ".commonExample");
   }
 }

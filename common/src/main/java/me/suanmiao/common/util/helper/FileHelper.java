@@ -1,8 +1,6 @@
 package me.suanmiao.common.util.helper;
 
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 
 import java.io.File;
 
@@ -12,16 +10,6 @@ import java.io.File;
  */
 public class FileHelper {
 
-    private static final String ROOT_DIR = "reder";
-
-    private static final int RESTORE_SYSTEM_SCREEN_ON_TIMEOUT_DELAY = 15000;
-
-    private static final int DEFAULT_SYSTEM_SCREEN_ON_TIMEOUT = 15000;
-
-    private static int systemScreenTimeout = -1;
-
-    private static Handler uiHandler = new Handler(Looper.getMainLooper());
-
     private FileHelper() {
     }
 
@@ -30,7 +18,7 @@ public class FileHelper {
      *
      * @return The external storage path of the device.
      */
-    public static String getAppRootDirectory() {
+    public static String getAppRootDirectory(String appFolderName) {
         try {
             if (!Environment.getExternalStorageState().equals(
                     Environment.MEDIA_MOUNTED)) {
@@ -42,7 +30,7 @@ public class FileHelper {
             return null;
         }
         String rootDir = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + "/" + ROOT_DIR + "/";
+                .getAbsolutePath() + "/" + appFolderName + "/";
         File file = new File(rootDir);
         if (!file.exists()) {
             if (!file.mkdirs()) {

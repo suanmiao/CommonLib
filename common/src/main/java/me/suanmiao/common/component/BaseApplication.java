@@ -2,7 +2,6 @@ package me.suanmiao.common.component;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Handler;
 
 import me.suanmiao.common.io.http.RequestManager;
 
@@ -24,20 +23,9 @@ public abstract class BaseApplication extends Application {
   private void init() {
     context = getApplicationContext();
     requestManager = initRequestManager();
-    setExceptionHandler();
   }
 
   protected abstract RequestManager initRequestManager();
-
-  private void setExceptionHandler() {
-    new Handler().postDelayed(new Runnable() {
-      @Override
-      public void run() {
-        Thread.setDefaultUncaughtExceptionHandler(new SExceptionHandler(Thread
-            .getDefaultUncaughtExceptionHandler()));
-      }
-    }, 200);
-  }
 
   public static Context getAppContext() {
     return context;
