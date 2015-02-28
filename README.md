@@ -21,12 +21,14 @@
   > full-case coverage for all request
 
 ## Usage
-
-  >    compile ('me.suanmiao.common:common-library:0.1.1'){
+**Gradle:**
+```groovy
+    compile ('me.suanmiao.common:common-library:0.1.1'){
          exclude module: 'stax'
          exclude module: 'stax-api'
          exclude module: 'xpp3'
      }
+ ```
 
 ## Other
   **it's a library designed in my coding and feature style, and the stability hasn't been verified**
