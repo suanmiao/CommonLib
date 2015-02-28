@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><!-- ListView的头部 -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="15dip"
+    android:id="@+id/head_contentLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:layout_centerHorizontal="true"
+        android:background="#293487"
+        android:id="@+id/ic_neck"
+        android:layout_width="40dp"
+        android:layout_height="300dp"/>
+
+    <ImageView
+        android:id="@+id/mie_head"
+        android:background="@drawable/ic_alpaca_header"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/ic_neck"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-10dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"/>
+
+</RelativeLayout>

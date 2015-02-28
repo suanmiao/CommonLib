@@ -26,13 +26,21 @@ public class PtrListView extends ListView implements
   private IPTRHeader mHeader;
   private IPTRFooter mFooter;
 
+  /**
+   * normal mode
+   */
   private int startY;
-  private boolean isLoading = false;
-  private REFRESH_STATE refreshState;
   private boolean lastItemVisibile = false;
 
   // 用于保证startY的值在一个完整的touch事件中只被记录一次
   private boolean isRecorded;
+
+  /**
+   * continous mode
+   */
+  private float lastY;
+  private float currentPullingY;
+
 
   private OnRefreshListener refreshListener;
   private OnLoadListener onLoadListener;
@@ -40,9 +48,12 @@ public class PtrListView extends ListView implements
   private OnScrollListener mScrollListener;
 
   private boolean catchMotionEvent;
+  private boolean isLoading = false;
+  private REFRESH_STATE refreshState;
 
   private boolean refreshEnable = true;
   private boolean loadEnable = true;
+  private boolean continuousPulling = false;
 
   private static final int VISIBLE_SLOP = 30;
 
@@ -77,6 +88,100 @@ public class PtrListView extends ListView implements
 
   @Override
   public boolean onTouchEvent(MotionEvent ev) {
+    if (continuousPulling) {
+      return continuousTouch(ev);
+    } else {
+      return normalTouch(ev);
+    }
+  }
+
+  private boolean continuousTouch(MotionEvent ev) {
+    // Log.e("SUAN", ev.getAction() + " amount: " + ev.getPointerCount());
+    if (catchMotionEvent && refreshEnable) {
+      float currentY = ev.getY();
+      if (ev.getPointerCount() >= 2 && ev.getY(1) < currentY) {
+        currentY = ev.getY(1);
+      }
+      switch (ev.getAction()) {
+        case MotionEvent.ACTION_DOWN:
+          if (!isRecorded) {
+            isRecorded = true;
+          }
+          lastY = currentY;// position of event start
+          break;
+        case MotionEvent.ACTION_CANCEL:
+        case MotionEvent.ACTION_UP:
+          if (refreshState != REFRESH_STATE.REFRESHING && refreshState != REFRESH_STATE.LOADING) {
+            if (refreshState == REFRESH_STATE.PULL_TO_REFRESH) {
+              refreshState = REFRESH_STATE.DONE;
+              mHeader.onPullCancel();
+            }
+            if (refreshState == REFRESH_STATE.RELEASE_TO_REFRESH) {
+              refreshState = REFRESH_STATE.REFRESHING;
+              mHeader.onRefreshStart();
+              if (refreshListener != null) {
+                refreshListener.onRefresh();
+              }
+            }
+          }
+          isRecorded = false;
+          currentPullingY = 0;
+          break;
+        case MotionEvent.ACTION_MOVE:
+          if (!isRecorded) {
+            isRecorded = true;
+            lastY = currentY;
+          }
+          float deltaY = currentY - lastY;
+          currentPullingY += deltaY;
+          switch (refreshState) {
+            case RELEASE_TO_REFRESH:
+              // ensure the section is always the first one
+              setSelection(0);
+              if (currentPullingY > 0) {
+                if (currentPullingY / ratio < mHeader.getHeaderRefreshingHeight()) {
+                  refreshState = REFRESH_STATE.PULL_TO_REFRESH;
+                }
+              } else {
+                refreshState = REFRESH_STATE.DONE;
+              }
+              setPullProgress(currentPullingY / ratio
+                  / (float) mHeader.getHeaderRefreshingHeight());
+              break;
+            case PULL_TO_REFRESH:
+              setSelection(0);
+              if (currentPullingY / ratio >= mHeader.getHeaderRefreshingHeight()) {
+                // change state to rtr
+                refreshState = REFRESH_STATE.RELEASE_TO_REFRESH;
+              } else if (currentPullingY <= 0) {
+                refreshState = REFRESH_STATE.DONE;
+              }
+              setPullProgress(currentPullingY / ratio
+                  / (float) mHeader.getHeaderRefreshingHeight());
+              break;
+            case DONE:
+              if (currentPullingY > 0) {
+                refreshState = REFRESH_STATE.PULL_TO_REFRESH;
+                setPullProgress((currentPullingY) / ratio
+                    / (float) mHeader.getHeaderRefreshingHeight());
+              }
+              break;
+          }
+          break;
+
+        default:
+          break;
+      }
+      lastY = currentY;
+    }
+    try {
+      return super.onTouchEvent(ev);
+    } catch (Exception e) {
+      return true;
+    }
+  }
+
+  private boolean normalTouch(MotionEvent ev) {
     // Log.e("SUAN", ev.getAction() + " amount: " + ev.getPointerCount());
     if (catchMotionEvent && refreshEnable) {
       switch (ev.getAction()) {
@@ -242,6 +347,11 @@ public class PtrListView extends ListView implements
   @Override
   public boolean isLoading() {
     return isLoading;
+  }
+
+  @Override
+  public void setContinuousPulling(boolean continous) {
+    this.continuousPulling = continous;
   }
 
   public void setAdapter(ListAdapter adapter) {

@@ -25,9 +25,9 @@ import me.suanmiao.example.ui.adapter.listview.ExampleListAdapter;
 import me.suanmiao.example.ui.mvc.Model.ArticleModel;
 import me.suanmiao.example.ui.mvc.Model.ChannelModel;
 import me.suanmiao.example.ui.mvc.Model.ExampleItemModel;
+import me.suanmiao.example.ui.widget.MieHeader;
 import me.suanmiao.example.ui.widget.TipView;
 import me.suanmiao.ptrListview.PtrListView;
-import me.suanmiao.ptrListview.header.RaindropHeader;
 
 /**
  * Created by suanmiao on 14-12-2.
@@ -96,7 +96,8 @@ public class ArticleListFragment extends AbstractBaseFragment {
     listMainArticle.setOnLoadListener(loadListener);
     listMainArticle.setOnScrollListener(listAdapter);
     listMainArticle.setAdapter(listAdapter);
-    listMainArticle.setHeaderLayout(new RaindropHeader(getActivity()));
+    listMainArticle.setHeaderLayout(new MieHeader(getActivity()));
+    listMainArticle.setContinuousPulling(true);
   }
 
   private BaseViewModel.UIChangeListener mUiChangeListener = new BaseViewModel.UIChangeListener() {
@@ -160,8 +161,8 @@ public class ArticleListFragment extends AbstractBaseFragment {
         Log.e("SUAN", "response success " + response + "|" + response.title + "|"
             + response.itemList);
         for (ArticleModel articleModel : response.itemList) {
-//          Log.e("SUAN", "article " + articleModel + "|" + articleModel.title + "|"
-//              + articleModel.pubDate + "|" + DateUtil.parsePubdateDate(articleModel.pubDate));
+          // Log.e("SUAN", "article " + articleModel + "|" + articleModel.title + "|"
+          // + articleModel.pubDate + "|" + DateUtil.parsePubdateDate(articleModel.pubDate));
         }
       }
     });

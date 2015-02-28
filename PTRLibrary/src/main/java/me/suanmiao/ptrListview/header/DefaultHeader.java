@@ -121,7 +121,7 @@ public class DefaultHeader implements IPTRHeader {
 
   @Override
   public void onInit() {
-    headerLayout.setPadding(0, -getHeaderTotalHeight(), 0, 0);
+    setPadding(0, -getHeaderTotalHeight(), 0, 0);
   }
 
   @Override

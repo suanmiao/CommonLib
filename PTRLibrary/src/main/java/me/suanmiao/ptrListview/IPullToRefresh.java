@@ -39,4 +39,5 @@ public interface IPullToRefresh {
 
   public boolean isLoading();
 
+  public void setContinuousPulling(boolean continous);
 }

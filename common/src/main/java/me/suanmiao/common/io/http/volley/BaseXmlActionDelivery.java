@@ -1,7 +1,5 @@
 package me.suanmiao.common.io.http.volley;
 
-import android.util.Log;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
@@ -26,7 +24,6 @@ public abstract class BaseXmlActionDelivery<T> implements IVolleyActionDelivery<
       return Response.success(getSerializer().read(mClazz, data),
           HttpHeaderParser.parseCacheHeaders(response));
     } catch (Exception e) {
-      Log.e("SUAN", "xml parse error " + e);
       return Response.error(new ParseError());
     }
   }

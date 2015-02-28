@@ -58,4 +58,8 @@
     <dimen name="default_min_hole_radius">35dp</dimen>
     <dimen name="default_hint_size">15dp</dimen>
 
+    <!--ptr-->
+    <dimen name="header_total_height">380dp</dimen>
+    <dimen name="header_refresh_height">100dp</dimen>
+
 </resources>
