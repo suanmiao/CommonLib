@@ -18,7 +18,8 @@ public class DateUtil {
   public static final String FORMATE_MM_DD_HH_MM_SS = "MM-dd.HH:mm:ss";
   public static final String FORMATE_MM_DD = "MM.dd";
 
-  public static final long DAY_TIME = 1000 * 60 * 60 * 24;
+  public static long HOUR_LENGTH = 1000 * 60 * 60;
+  public static final long DAY_LENGTH = 1000 * 60 * 60 * 24;
 
   public enum DATE {
     TODAY,

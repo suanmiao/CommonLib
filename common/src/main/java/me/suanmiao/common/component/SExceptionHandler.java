@@ -1,7 +1,7 @@
 package me.suanmiao.common.component;
 
 import me.suanmiao.common.util.DateUtil;
-import me.suanmiao.common.util.FileUtils;
+import me.suanmiao.common.util.FileUtil;
 
 /**
  * Created by suanmiao on 15/1/2.
@@ -25,7 +25,7 @@ public class SExceptionHandler implements Thread.UncaughtExceptionHandler {
     }
 
     public  void writeToFile(String content) {
-        FileUtils.saveTextFile(crashFilePath, content);
+        FileUtil.saveTextFile(crashFilePath, content);
     }
 
     private String getExceptionContent(Throwable ex) {

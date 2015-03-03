@@ -11,7 +11,7 @@ import java.util.Map;
 import me.suanmiao.common.io.http.exception.CommonParamException;
 import me.suanmiao.common.io.http.exception.CommonRequestException;
 import me.suanmiao.common.io.http.image.Photo;
-import me.suanmiao.common.io.http.robospiece.api.TaggedRequestListener;
+import me.suanmiao.common.io.http.robospiece.TaggedRequestListener;
 
 /**
  * Created by suanmiao on 15/1/19.

@@ -2,7 +2,6 @@ package me.suanmiao.common.io.http;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,10 +20,10 @@ import me.suanmiao.common.component.BaseApplication;
 import me.suanmiao.common.io.cache.CacheManager;
 import me.suanmiao.common.io.http.exception.CommonParamException;
 import me.suanmiao.common.io.http.exception.CommonRequestException;
-import me.suanmiao.common.io.http.robospiece.api.TaggedRequestListener;
+import me.suanmiao.common.io.http.robospiece.TaggedRequestListener;
 import me.suanmiao.common.io.http.volley.CommonNetwork;
 import me.suanmiao.common.io.http.volley.FakeVolleyRequest;
-import me.suanmiao.common.util.helper.FileHelper;
+import me.suanmiao.common.util.FileUtil;
 
 /**
  * Created by suanmiao on 14-10-31.
@@ -53,19 +52,10 @@ public class RequestManager {
 
   public enum ExecuteMode {
     ROBO_SPIECE,
-    VOLLEY,
-    BOTH
+    VOLLEY
   }
 
   private static ExecuteMode mExecuteMode;
-
-  public RequestManager(Context context, Class requestService, OkHttpClient okHttpClient,
-      String appFolderName) {
-    initCommon(appFolderName);
-    initVolley(context);
-    initRobo(requestService, okHttpClient);
-    mExecuteMode = ExecuteMode.BOTH;
-  }
 
   public RequestManager(Class requestService, OkHttpClient okHttpClient, String appFolderName) {
     initCommon(appFolderName);
@@ -80,9 +70,9 @@ public class RequestManager {
   }
 
   private void initCommon(String appFolderName) {
-    diskBitmapCacheDir = FileHelper.getAppRootDirectory(appFolderName) +
+    diskBitmapCacheDir = FileUtil.getAppRootDirectory(appFolderName) +
         "/cache";
-    diskHTTPCacheDir = FileHelper.getAppRootDirectory(appFolderName) +
+    diskHTTPCacheDir = FileUtil.getAppRootDirectory(appFolderName) +
         "/httpCache";
 
     runningRequest = new HashMap<>();

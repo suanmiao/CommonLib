@@ -1,4 +1,4 @@
-package me.suanmiao.example.ui.mvc.Model;
+package me.suanmiao.example.ui.mvvm.model;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;

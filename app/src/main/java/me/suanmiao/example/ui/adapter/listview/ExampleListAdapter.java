@@ -4,9 +4,9 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import me.suanmiao.common.ui.adapter.listview.BaseListAdapter;
-import me.suanmiao.common.ui.mvc.ViewModel.BaseViewModel;
-import me.suanmiao.example.ui.mvc.Model.ExampleItemModel;
-import me.suanmiao.example.ui.mvc.ViewModel.ExampleItemViewModel;
+import me.suanmiao.common.mvvm.viewmodel.BaseViewModel;
+import me.suanmiao.example.ui.mvvm.model.ExampleItemModel;
+import me.suanmiao.example.ui.mvvm.viewmodel.ExampleItemViewModel;
 
 /**
  * Created by suanmiao on 15/1/26.

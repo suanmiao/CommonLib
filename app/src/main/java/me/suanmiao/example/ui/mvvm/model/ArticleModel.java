@@ -1,7 +1,7 @@
-package me.suanmiao.example.ui.mvc.Model;
+package me.suanmiao.example.ui.mvvm.model;
 
 
-import me.suanmiao.common.ui.mvc.Model.BaseModel;
+import me.suanmiao.common.mvvm.model.BaseModel;
 
 import org.simpleframework.xml.Element;
 

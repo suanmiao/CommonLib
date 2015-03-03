@@ -4,8 +4,8 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
-import me.suanmiao.common.ui.mvc.Model.BaseModel;
-import me.suanmiao.common.ui.mvc.ViewModel.BaseViewModel;
+import me.suanmiao.common.mvvm.model.BaseModel;
+import me.suanmiao.common.mvvm.viewmodel.BaseViewModel;
 
 /**
  * Created by suanmiao on 14/12/4.

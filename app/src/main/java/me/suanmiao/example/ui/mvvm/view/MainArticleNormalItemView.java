@@ -1,4 +1,4 @@
-package me.suanmiao.example.ui.mvc.View;
+package me.suanmiao.example.ui.mvvm.view;
 
 import android.content.Context;
 import android.view.ViewGroup;
@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import me.suanmiao.common.ui.mvc.View.BaseView;
+import me.suanmiao.common.mvvm.view.BaseView;
 
 /**
  * Created by suanmiao on 14-12-3.

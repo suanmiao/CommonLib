@@ -1,4 +1,4 @@
-package me.suanmiao.common.io.http.robospiece.api;
+package me.suanmiao.common.io.http.robospiece;
 
 import com.android.volley.VolleyError;
 import com.octo.android.robospice.persistence.exception.SpiceException;

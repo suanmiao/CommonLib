@@ -1,22 +1,23 @@
-package me.suanmiao.example.ui.mvc.ViewModel;
+package me.suanmiao.example.ui.mvvm.viewmodel;
 
 import android.content.Context;
 import android.view.ViewGroup;
 
 import me.suanmiao.common.io.http.image.Photo;
-import me.suanmiao.common.ui.mvc.Model.BaseModel;
-import me.suanmiao.common.ui.mvc.ViewModel.BaseViewModel;
+import me.suanmiao.common.mvvm.UICallback;
+import me.suanmiao.common.mvvm.model.BaseModel;
+import me.suanmiao.common.mvvm.viewmodel.BaseViewModel;
 import me.suanmiao.example.R;
-import me.suanmiao.example.ui.mvc.Model.ExampleItemModel;
-import me.suanmiao.example.ui.mvc.View.ExampleItemView;
+import me.suanmiao.example.ui.mvvm.model.ExampleItemModel;
+import me.suanmiao.example.ui.mvvm.view.ExampleItemView;
 
 /**
  * Created by suanmiao on 15/1/26.
  */
 public class ExampleItemViewModel extends BaseViewModel {
   public ExampleItemViewModel(ViewGroup container, Context context,
-      UIChangeListener uiChangeListener) {
-    super(new ExampleItemView(context, container), context, uiChangeListener);
+      UICallback uiCallback) {
+    super(new ExampleItemView(context, container), context, uiCallback);
   }
 
   @Override

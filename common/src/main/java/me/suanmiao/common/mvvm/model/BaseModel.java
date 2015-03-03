@@ -1,4 +1,4 @@
-package me.suanmiao.common.ui.mvc.Model;
+package me.suanmiao.common.mvvm.model;
 
 import java.io.Serializable;
 

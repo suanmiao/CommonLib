@@ -20,7 +20,7 @@ import me.suanmiao.common.io.http.VolleyCommonListener;
 import me.suanmiao.common.io.http.image.spice.PhotoSpiceRequest;
 import me.suanmiao.common.io.http.image.volley.BlurPhotoActionDelivery;
 import me.suanmiao.common.io.http.image.volley.PhotoActionDelivery;
-import me.suanmiao.common.io.http.robospiece.ProgressListener;
+import me.suanmiao.common.io.http.ProgressListener;
 import me.suanmiao.common.io.http.RequestManager;
 import me.suanmiao.common.util.TextUtil;
 

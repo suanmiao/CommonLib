@@ -8,23 +8,22 @@ import android.util.Log;
 import android.view.View;
 
 import com.android.volley.VolleyError;
-import com.octo.android.robospice.persistence.exception.SpiceException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.InjectView;
 import me.suanmiao.common.io.http.VolleyCommonListener;
-import me.suanmiao.common.io.http.robospiece.api.BaseFormResult;
 import me.suanmiao.common.ui.adapter.listview.BaseListAdapter;
 import me.suanmiao.common.ui.fragment.AbstractBaseFragment;
-import me.suanmiao.common.ui.mvc.ViewModel.BaseViewModel;
 import me.suanmiao.example.event.BusProvider;
+import me.suanmiao.example.io.http.BaseFormResult;
 import me.suanmiao.example.io.http.requests.ChannelRequest;
 import me.suanmiao.example.ui.adapter.listview.ExampleListAdapter;
-import me.suanmiao.example.ui.mvc.Model.ArticleModel;
-import me.suanmiao.example.ui.mvc.Model.ChannelModel;
-import me.suanmiao.example.ui.mvc.Model.ExampleItemModel;
+import me.suanmiao.example.ui.mvvm.model.ArticleModel;
+import me.suanmiao.example.ui.mvvm.model.ChannelModel;
+import me.suanmiao.example.ui.mvvm.model.ExampleItemModel;
+import me.suanmiao.example.ui.mvvm.SUICallback;
 import me.suanmiao.example.ui.widget.MieHeader;
 import me.suanmiao.example.ui.widget.TipView;
 import me.suanmiao.ptrlistview.PtrListView;
@@ -100,14 +99,14 @@ public class ArticleListFragment extends AbstractBaseFragment {
     listMainArticle.setContinuousPulling(true);
   }
 
-  private BaseViewModel.UIChangeListener mUiChangeListener = new BaseViewModel.UIChangeListener() {
+  private SUICallback mUiChangeListener = new SUICallback() {
     @Override
     public void notifyUIChange() {
       listAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void notifyException(SpiceException exception) {
+    public void notifyException(Exception exception) {
 
     }
 

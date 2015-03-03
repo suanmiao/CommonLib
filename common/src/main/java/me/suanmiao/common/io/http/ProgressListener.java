@@ -1,4 +1,4 @@
-package me.suanmiao.common.io.http.robospiece;
+package me.suanmiao.common.io.http;
 
 /**
  * Created by suanmiao on 14/12/8.

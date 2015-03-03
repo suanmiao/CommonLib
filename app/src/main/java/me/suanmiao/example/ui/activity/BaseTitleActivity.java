@@ -8,22 +8,13 @@ import me.suanmiao.common.ui.activity.BaseActivity;
  * Created by suanmiao on 14-12-1.
  */
 public abstract class BaseTitleActivity extends BaseActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setupActionBar();
-    }
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
 
-    protected abstract void afterInjected();
+  protected abstract void afterInjected();
 
-    protected abstract int getContentViewId();
-
-    private void setupActionBar(){
-//        ActionBar actionBar = getActionBar();
-//        actionBar.setDisplayShowTitleEnabled(false);
-//        actionBar.setDisplayUseLogoEnabled(false);
-//        actionBar.setDisplayShowCustomEnabled(true);
-    }
-
+  protected abstract int getContentViewId();
 
 }

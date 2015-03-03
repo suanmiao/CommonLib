@@ -6,12 +6,13 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 
+import java.util.List;
+
 import me.suanmiao.common.component.BaseApplication;
 import me.suanmiao.common.io.http.RequestManager;
-import me.suanmiao.common.ui.mvc.Model.BaseModel;
-import me.suanmiao.common.ui.mvc.ViewModel.BaseViewModel;
-
-import java.util.List;
+import me.suanmiao.common.mvvm.UICallback;
+import me.suanmiao.common.mvvm.model.BaseModel;
+import me.suanmiao.common.mvvm.viewmodel.BaseViewModel;
 
 /**
  * Created by suanmiao on 14-12-3.
@@ -19,7 +20,7 @@ import java.util.List;
 public abstract class BaseListAdapter<T extends BaseModel> extends BaseAdapter
     implements
     AbsListView.OnScrollListener {
-  private BaseViewModel.UIChangeListener mUIChangeListener;
+  private UICallback mUICallback;
   protected RequestManager requestManager;
   private Context mContext;
 
@@ -32,12 +33,12 @@ public abstract class BaseListAdapter<T extends BaseModel> extends BaseAdapter
     this.mContext = context;
   }
 
-  public void setUIChangeListener(BaseViewModel.UIChangeListener mUIChangeListener) {
-    this.mUIChangeListener = mUIChangeListener;
+  public void setUIChangeListener(UICallback mUICallback) {
+    this.mUICallback = mUICallback;
   }
 
-  public BaseViewModel.UIChangeListener getUIChangeListener() {
-    return mUIChangeListener;
+  public UICallback getUIChangeListener() {
+    return mUICallback;
   }
 
   public Context getContext() {

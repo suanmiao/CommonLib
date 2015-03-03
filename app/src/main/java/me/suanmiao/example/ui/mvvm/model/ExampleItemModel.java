@@ -1,6 +1,6 @@
-package me.suanmiao.example.ui.mvc.Model;
+package me.suanmiao.example.ui.mvvm.model;
 
-import me.suanmiao.common.ui.mvc.Model.BaseModel;
+import me.suanmiao.common.mvvm.model.BaseModel;
 
 /**
  * Created by suanmiao on 15/1/26.

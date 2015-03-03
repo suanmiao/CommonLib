@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import me.suanmiao.common.io.http.robospiece.api.BaseFormResult;
+import me.suanmiao.example.io.http.BaseFormResult;
 import me.suanmiao.example.ui.widget.TipView;
 
 /**

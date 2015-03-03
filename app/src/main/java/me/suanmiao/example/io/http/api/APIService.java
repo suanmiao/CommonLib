@@ -1,7 +1,7 @@
 package me.suanmiao.example.io.http.api;
 
-import me.suanmiao.common.io.http.robospiece.api.BaseFormResult;
 
+import me.suanmiao.example.io.http.BaseFormResult;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
