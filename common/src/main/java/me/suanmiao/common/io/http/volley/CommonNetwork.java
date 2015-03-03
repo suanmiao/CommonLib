@@ -8,13 +8,14 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.HttpClientStack;
+
+import java.io.IOException;
+
 import me.suanmiao.common.component.BaseApplication;
 import me.suanmiao.common.io.cache.CacheManager;
 import me.suanmiao.common.io.http.image.Photo;
 import me.suanmiao.common.io.http.image.volley.BitmapNetworkResponse;
 import me.suanmiao.common.ui.blur.Blur;
-
-import java.io.IOException;
 
 /**
  * Created by suanmiao on 15/1/26.

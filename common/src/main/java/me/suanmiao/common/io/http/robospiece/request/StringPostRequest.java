@@ -1,11 +1,5 @@
 package me.suanmiao.common.io.http.robospiece.request;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -15,6 +9,12 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by suanmiao on 14/12/15.
@@ -50,12 +50,11 @@ public class StringPostRequest extends BaseOkhttpRequest<String> {
 
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
-            String content = IOUtils.toString(response.getEntity().getContent());
-            return content;
+            return IOUtils.toString(response.getEntity().getContent());
         } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         return "";
 

@@ -7,7 +7,6 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.Volley;
 import com.octo.android.robospice.SpiceManager;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -101,9 +100,13 @@ public class RequestManager {
   }
 
   private void initVolley(Context context) {
-    requestQueue = Volley.newRequestQueue(context);
     requestQueue =
         new RequestQueue(new DiskBasedCache(new File(diskHTTPCacheDir)), new CommonNetwork());
+    requestQueue.start();
+  }
+
+  public void setVolleyRequestQueue(RequestQueue requestQueue) {
+    this.requestQueue = requestQueue;
     requestQueue.start();
   }
 

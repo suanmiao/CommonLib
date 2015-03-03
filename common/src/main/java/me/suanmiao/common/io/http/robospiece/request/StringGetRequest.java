@@ -1,18 +1,18 @@
 package me.suanmiao.common.io.http.robospiece.request;
 
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by suanmiao on 14/12/15.
@@ -63,12 +63,11 @@ public class StringGetRequest extends BaseOkhttpRequest<String> {
 
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httpget);
-            String content = IOUtils.toString(response.getEntity().getContent());
-            return content;
+            return IOUtils.toString(response.getEntity().getContent());
         } catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         return "";
 
