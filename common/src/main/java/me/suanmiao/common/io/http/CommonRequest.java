@@ -57,7 +57,6 @@ public class CommonRequest<T> {
   protected CommonRequest(SpiceRequest<T> request) {
     this.spiceRequest = request;
     this.requestType = RequestType.ROBO_REQUEST;
-
   }
 
   public boolean isBlurResult() {
@@ -139,6 +138,5 @@ public class CommonRequest<T> {
   public void cancel(boolean interrupt) {
     cancel();
   }
-
 
 }

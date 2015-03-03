@@ -3,7 +3,6 @@ package me.suanmiao.common.ui.widget;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +53,6 @@ public class PinedHeaderLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        Log.e("SUAN", "intercept event " + ev.getAction());
         return true;
 //        if (!pined) {
 //            return true;
@@ -72,7 +70,6 @@ public class PinedHeaderLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.e("SUAN", "touch event " + event.getAction() + "|" + pined + "|" + getScrollY());
         float currentX = event.getX();
         float currentY = event.getY();
         float deltaY = currentY - lastY;
@@ -116,7 +113,6 @@ public class PinedHeaderLayout extends ViewGroup {
             child.getLocalVisibleRect(childRect);
             MotionEvent movedEvent = MotionEvent.obtain(event);
             int offsetY = getScrollY() + childRect.top;
-            Log.e("SUAN","offset y "+offsetY);
             movedEvent.setLocation(movedEvent.getX(), movedEvent.getY() - offsetY);
             headerChild.onTouchEvent(movedEvent);
         }

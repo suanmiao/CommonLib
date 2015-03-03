@@ -1,18 +1,17 @@
 package me.suanmiao.common.io.http.volley;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+
+import java.util.Map;
+
 import me.suanmiao.common.io.http.exception.CommonParamException;
 import me.suanmiao.common.io.http.exception.CommonRequestException;
 import me.suanmiao.common.io.http.image.Photo;
 import me.suanmiao.common.io.http.robospiece.api.TaggedRequestListener;
-
-import java.util.Map;
 
 /**
  * Created by suanmiao on 15/1/19.
@@ -72,20 +71,17 @@ public class FakeVolleyRequest<T> extends Request<T> {
 
   @Override
   protected Response<T> parseNetworkResponse(NetworkResponse response) {
-    Log.e("SUAN", "request parse response " + response.data);
     return volleyActionDelivery.parseNetworkResponse(response);
   }
 
   @Override
   protected void deliverResponse(T response) {
-    Log.e("SUAN", "request deliver response " + response);
     taggedRequestListener.onResponse(response);
   }
 
   @Override
   public void deliverError(VolleyError error) {
     super.deliverError(error);
-    Log.e("SUAN", "request deliver error " + error);
     taggedRequestListener.onErrorResponse(error);
   }
 

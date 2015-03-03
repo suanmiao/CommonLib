@@ -2,12 +2,12 @@ package me.suanmiao.common.io.http.image.volley;
 
 import android.graphics.Bitmap;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
+
 import me.suanmiao.common.io.http.image.Photo;
 import me.suanmiao.common.util.BitmapUtil;
 
@@ -46,7 +46,6 @@ public class PhotoActionDelivery extends BaseCachePhotoActionDelivery {
         return Response.success(photo, HttpHeaderParser.parseCacheHeaders(response));
       }
     } catch (Exception e) {
-      Log.e("SUAN", "photo parse error " + e);
       return Response.error(new ParseError());
     }
 

@@ -1,15 +1,14 @@
 package me.suanmiao.example.io.http;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.octo.android.robospice.exception.NetworkException;
 import com.octo.android.robospice.exception.NoNetworkException;
 import com.octo.android.robospice.persistence.exception.SpiceException;
-import me.suanmiao.example.component.SApplication;
 
 import java.net.SocketTimeoutException;
 
+import me.suanmiao.example.component.SApplication;
 import retrofit.RetrofitError;
 
 /**
@@ -37,7 +36,6 @@ public class HttpExceptionHelper {
                         return "server error";
                     }
                 } else if(retrofitError.getCause() instanceof SocketTimeoutException){
-                    Log.e("SUAN", "exception timeout " + retrofitError.getCause());
                     return "timeout";
                 }else{
                     return "network exception";

@@ -106,6 +106,9 @@ public class RequestManager {
   }
 
   public void setVolleyRequestQueue(RequestQueue requestQueue) {
+    if (this.requestQueue != null) {
+      this.requestQueue.stop();
+    }
     this.requestQueue = requestQueue;
     requestQueue.start();
   }
@@ -190,7 +193,6 @@ public class RequestManager {
               volleyRequest.setIsPhotoRequest(request.isPhotoRequest());
               volleyRequest.setBlurResult(request.isBlurResult());
               request.setVolleyRequest(volleyRequest);
-              Log.e("SUAN", "request add to queue ");
               requestQueue.add(volleyRequest);
             } catch (CommonRequestException e) {
               e.printStackTrace();
