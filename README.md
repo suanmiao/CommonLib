@@ -12,7 +12,7 @@
 
   **UI**
   > TextView and EditText with custom font support
-  > MVC framework on list item
+  > MVVM framework on list item
   > Dialog customisation support (maybe more animation support in the future)
 
   **Request Framework**
@@ -22,10 +22,78 @@
   > Bitmap,Date,File utils
 
 ## Usage
+###Step 1(installation):
 **Gradle:**
 ```groovy
-    compile 'me.suanmiao.common:library:0.1.2'
+    compile 'me.suanmiao.common:library:0.1.4'
  ```
+
+ ###Step 2(setup application):
+* Create a "Application" class extends BaseApplication and set it to be main Application
+```java
+public class SApplication extends BaseApplication {
+
+  @Override
+  protected RequestManager initRequestManager() {
+    return new RequestManager(this,".commonExample");
+  }
+}
+```
+
+```xml
+
+    <application
+        android:name="me.suanmiao.example.component.SApplication"
+        ...
+        >
+```
+##Step 3(usage of feature):
+* Setup Requests
+```java
+    String url = "http://zhihurss.miantiao.me/zhihuzhuanlan/taosay";
+    ChannelRequest request = new ChannelRequest(url);
+    executeRequest(request, new VolleyCommonListener<ChannelModel>() {
+      @Override
+      public void onErrorResponse(VolleyError error) {
+        //deal with request error
+      }
+
+      @Override
+      public void onResponse(ChannelModel response) {
+      //deal with result
+     }
+    });
+
+```
+
+* Photo load static
+```java
+   Photo.loadImg(itemView.img,url, R.drawable.ic_launcher);
+```
+
+* Photo load in ListView
+```java
+public class ExampleItemViewModel extends BaseViewModel {
+  ...
+
+  @Override
+  public void bind(int index, BaseModel baseModel, int scrollState, float scrollSpeed) {
+    ...
+    // load image when scroll
+    Photo.loadScrollItemImg(itemView.img, model.img, R.drawable.ic_launcher, scrollState,
+            scrollSpeed);
+  }
+
+  @Override
+  public void idleReload() {
+    ...
+    // load image when list stop scrolling
+    Photo.reloadImg(itemView.img);
+  }
+}
+
+```
+
 
 ## Other
   **it's a library designed in my coding and feature style, and the stability hasn't been verified**
