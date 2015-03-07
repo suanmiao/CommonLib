@@ -20,10 +20,10 @@ import me.suanmiao.example.event.BusProvider;
 import me.suanmiao.example.io.http.BaseFormResult;
 import me.suanmiao.example.io.http.requests.ChannelRequest;
 import me.suanmiao.example.ui.adapter.listview.ExampleListAdapter;
+import me.suanmiao.example.ui.mvvm.SUICallback;
 import me.suanmiao.example.ui.mvvm.model.ArticleModel;
 import me.suanmiao.example.ui.mvvm.model.ChannelModel;
 import me.suanmiao.example.ui.mvvm.model.ExampleItemModel;
-import me.suanmiao.example.ui.mvvm.SUICallback;
 import me.suanmiao.example.ui.widget.MieHeader;
 import me.suanmiao.example.ui.widget.TipView;
 import me.suanmiao.ptrlistview.PtrListView;
@@ -165,6 +165,18 @@ public class ArticleListFragment extends AbstractBaseFragment {
         }
       }
     });
+
+//    SpiceExampleRequest request1 = new SpiceExampleRequest();
+//    executeRequest(new SpiceBuilder<ExampleItemModel>().request(request1).build(),
+//        new SpiceCommonListener() {
+//          @Override
+//          public void onRequestFailure(SpiceException spiceException) {
+//          }
+//
+//          @Override
+//          public void onRequestSuccess(Object o) {
+//          }
+//        });
   }
 
   private void loadData() {

@@ -33,7 +33,7 @@
         </activity>
 
         <service
-            android:name="me.suanmiao.example.io.http.api.WaceRequestService"
+            android:name=".io.http.api.RequestService"
             android:exported="false"/>
 
         <meta-data android:value="54a38178fd98c5aa2f0003d6" android:name="UMENG_APPKEY"></meta-data>

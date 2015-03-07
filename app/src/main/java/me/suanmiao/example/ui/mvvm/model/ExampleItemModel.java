@@ -19,4 +19,5 @@ public class ExampleItemModel extends BaseModel {
   public int getViewType() {
     return 0;
   }
+
 }

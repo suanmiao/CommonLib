@@ -22,13 +22,13 @@
   > Bitmap,Date,File utils
 
 ## Usage
-###Step 1(installation):
+####Step 1(installation):
 **Gradle:**
 ```groovy
     compile 'me.suanmiao.common:library:0.1.4'
  ```
 
- ###Step 2(setup application):
+####Step 2(setup application):
 * Create a "Application" class extends BaseApplication and set it to be main Application
 ```java
 public class SApplication extends BaseApplication {
@@ -47,9 +47,17 @@ public class SApplication extends BaseApplication {
         ...
         >
 ```
-##Step 3(usage of feature):
-* Setup Requests
+####Step 3(usage of feature):
+* Setup Volley Request
 ```java
+
+    //setup request class extends CommonRequest
+    public class ChannelRequest extends CommonRequest<ChannelModel> {
+      ...
+    }
+
+
+    //execute request
     String url = "http://zhihurss.miantiao.me/zhihuzhuanlan/taosay";
     ChannelRequest request = new ChannelRequest(url);
     executeRequest(request, new VolleyCommonListener<ChannelModel>() {
@@ -63,6 +71,55 @@ public class SApplication extends BaseApplication {
       //deal with result
      }
     });
+
+```
+* Setup RoboSpice Request
+
+
+
+```java
+  // setup Request Service
+  public class RequestService extends RetrofitGsonSpiceService {
+
+      private static OkHttpClient okHttpClient;
+
+      @Override
+      public void onCreate() {
+          super.onCreate();
+          addRetrofitInterface(APIService.class);
+      }
+
+      public static OkHttpClient getOkHttpClient();
+
+      @Override
+      protected String getServerUrl() {
+          return APIConstants.BASE_URL;
+      }
+  }
+
+  //setup request class
+  public class SpiceExampleRequest extends BaseRoboRequest<ExampleItemModel, APIService> {
+    public SpiceExampleRequest() {
+      super(ExampleItemModel.class, APIService.class);
+    }
+
+    @Override
+    public ExampleItemModel loadDataFromNetwork() throws Exception {
+      return getService().getExample("token", "id");
+    }
+  }
+  //execute request
+  SpiceExampleRequest request1 = new SpiceExampleRequest();
+  executeRequest(new SpiceBuilder<ExampleItemModel>().request(request1).build(),
+      new SpiceCommonListener() {
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+        }
+
+        @Override
+        public void onRequestSuccess(Object o) {
+        }
+      });
 
 ```
 
