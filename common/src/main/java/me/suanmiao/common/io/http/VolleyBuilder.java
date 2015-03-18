@@ -47,7 +47,11 @@ public class VolleyBuilder<T> {
     if (TextUtils.isEmpty(url) || volleyActionDelivery == null) {
       throw new NullPointerException("");
     }
-    return new CommonRequest<T>(volleyRequestMethod, url, headers, params, volleyActionDelivery);
+    CommonRequest<T> request = new CommonRequest<T>(volleyRequestMethod, url);
+    request.setVolleyHeaders(headers);
+    request.setVolleyParams(params);
+    request.setVolleyActionDelivery(volleyActionDelivery);
+    return request;
   }
 
 }

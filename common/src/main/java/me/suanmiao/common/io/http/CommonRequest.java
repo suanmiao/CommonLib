@@ -43,14 +43,9 @@ public class CommonRequest<T> {
 
   private RequestType requestType;
 
-  protected CommonRequest(int volleyRequestMethod, String url, Map<String, String> headers,
-      Map<String, String> params,
-      IVolleyActionDelivery<T> volleyActionDelivery) {
+  protected CommonRequest(int volleyRequestMethod, String url) {
     this.volleyRequestMethod = volleyRequestMethod;
     this.url = url;
-    this.headers = headers;
-    this.params = params;
-    this.volleyActionDelivery = volleyActionDelivery;
     this.requestType = RequestType.VOLLEY_REQUEST;
   }
 
@@ -99,12 +94,24 @@ public class CommonRequest<T> {
     return url;
   }
 
-  public void setVolleyRequest(Request<T> volleyRequest) {
-    this.volleyRequest = volleyRequest;
+  public void setVolleyHeaders(Map<String, String> headers) {
+    this.headers = headers;
+  }
+
+  public void setVolleyParams(Map<String, String> params) {
+    this.params = params;
+  }
+
+  public void setVolleyActionDelivery(IVolleyActionDelivery<T> volleyActionDelivery) {
+    this.volleyActionDelivery = volleyActionDelivery;
   }
 
   public IVolleyActionDelivery<T> getVolleyActionDelivery() {
     return volleyActionDelivery;
+  }
+
+  public void setVolleyRequest(Request<T> volleyRequest) {
+    this.volleyRequest = volleyRequest;
   }
 
   public RequestType getRequestType() {
@@ -115,7 +122,6 @@ public class CommonRequest<T> {
     if (spiceRequest != null && spiceRequest instanceof PhotoSpiceRequest) {
       PhotoSpiceRequest photoSpiceRequest = (PhotoSpiceRequest) spiceRequest;
       photoSpiceRequest.setLoadOption(loadOption);
-      photoSpiceRequest.setBlurResult(true);
     }
     return spiceRequest;
   }
