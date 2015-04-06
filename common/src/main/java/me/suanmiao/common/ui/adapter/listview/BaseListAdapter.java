@@ -101,7 +101,7 @@ public abstract class BaseListAdapter<T extends BaseModel> extends BaseAdapter
     BaseViewModel baseViewModel;
     if (view == null) {
       baseViewModel = newViewModel(i, viewGroup);
-      view = baseViewModel.getView().getContentView();
+      view = baseViewModel.getItemView().getContentView();
       view.setTag(baseViewModel);
     } else {
       baseViewModel = (BaseViewModel) view.getTag();

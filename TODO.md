@@ -16,8 +16,9 @@
 1.Add UICallback
 2.code optimise
 
-
 ##Version:0.1.5
-///TODO
 1.Add MVC framework for ViewPager adapter
+
+##Version:0.1.6
+1.Fix bug in "Photo",add ButterKnife support in "BaseView"
 

@@ -15,15 +15,15 @@ import me.suanmiao.common.mvvm.view.BaseView;
 /**
  * Created by suanmiao on 14-12-3.
  */
-public abstract class BaseViewModel {
+public abstract class BaseViewModel <V extends BaseView,T extends BaseModel>{
   protected RequestManager mRequestManager;
 
-  protected BaseView baseView;
+  protected V baseView;
 
   protected Context mContext;
   private UICallback uiCallback;
 
-  public BaseViewModel(BaseView view, Context context, UICallback uiCallback) {
+  public BaseViewModel(V view, Context context, UICallback uiCallback) {
     this.baseView = view;
     this.mRequestManager = BaseApplication.getRequestManager();
     this.mContext = context;
@@ -42,16 +42,12 @@ public abstract class BaseViewModel {
     }
   }
 
-  public abstract void bind(int index, BaseModel baseModel, int scrollState, float scrollSpeed);
+  public abstract void bind(int index, T baseModel, int scrollState, float scrollSpeed);
 
   public abstract void idleReload();
 
-  public BaseView getView() {
+  public V getItemView() {
     return baseView;
-  }
-
-  public <T> T getView(Class<T> t) {
-    return (T) baseView;
   }
 
   public RequestManager getRequestManager() {

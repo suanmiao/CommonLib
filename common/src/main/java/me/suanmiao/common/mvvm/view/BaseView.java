@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by suanmiao on 14-12-3.
  */
@@ -18,7 +20,8 @@ public abstract class BaseView {
     LayoutInflater inflater =
         (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     contentView = inflater.inflate(getLayoutId(), container, false);
-    findView();
+    ButterKnife.inject(this, contentView);
+    afterInjected();
   }
 
   public View getContentView() {
@@ -27,7 +30,7 @@ public abstract class BaseView {
 
   public abstract int getLayoutId();
 
-  public abstract void findView();
+  public abstract void afterInjected();
 
   public <T> T findViewById(int id, Class<T> classOfT) {
     return (T) contentView.findViewById(id);

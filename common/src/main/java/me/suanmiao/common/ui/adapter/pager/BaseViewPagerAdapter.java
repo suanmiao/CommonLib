@@ -24,7 +24,7 @@ public abstract class BaseViewPagerAdapter<T extends BaseModel> extends BasePage
         View contentView = contentArray.get(position);
         if (contentView == null) {
             baseViewModel = newViewModel(position, container);
-            contentView = baseViewModel.getView().getContentView();
+            contentView = baseViewModel.getItemView().getContentView();
             contentView.setTag(baseViewModel);
         } else {
             baseViewModel = (BaseViewModel) contentView.getTag();

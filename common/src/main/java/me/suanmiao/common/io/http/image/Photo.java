@@ -181,7 +181,7 @@ public class Photo {
 
     final Photo photo = Photo.getObject(imageView, url);
     if (photo != null) {
-      if (photo.getLoadingState() == ContentState.NONE) {
+      if (photo.getLoadingState() != ContentState.DONE) {
         photo.loadFromRamCache(mRequestManager, imageView, url);
         if (saveTraffic()) {
           return;
@@ -226,9 +226,9 @@ public class Photo {
   public static void loadImg(final ImageView imageView, String url, int defaultResourceID) {
     final Photo photo = Photo.getObject(imageView, url);
     if (photo != null) {
-      if (photo.getLoadingState() == ContentState.NONE) {
+      if (photo.getLoadingState() != ContentState.DONE) {
         photo.loadFromRamCache(mRequestManager, imageView, url);
-        if (photo.getLoadingState() == ContentState.NONE) {
+        if (photo.getLoadingState() != ContentState.DONE) {
           imageView.setImageResource(defaultResourceID);
           photo.setContentState(ContentState.LOADING);
           CommonRequest<Photo> request = null;
@@ -265,7 +265,10 @@ public class Photo {
   public static void reloadImg(final ImageView imageView) {
     if (imageView != null && imageView.getTag() != null) {
       final Photo photo = (Photo) imageView.getTag();
-      if (photo.getLoadingState() == ContentState.NONE) {
+      if (photo.getLoadingState() != ContentState.DONE) {
+        if (photo.getRequest() != null) {
+          photo.getRequest().cancel();
+        }
         photo.setContentState(ContentState.LOADING);
         CommonRequest<Photo> request = null;
         switch (RequestManager.getExecuteMode()) {
@@ -293,10 +296,6 @@ public class Photo {
         }
 
         imageView.setTag(photo);
-      } else {
-        if (photo.getRequest() != null) {
-          photo.getRequest().cancel();
-        }
       }
     }
   }
@@ -304,9 +303,12 @@ public class Photo {
   public static void loadBlurImg(final ImageView imageView, String url, int defaultResourceID) {
     final Photo photo = Photo.getObject(imageView, url);
     if (photo != null) {
-      if (photo.getLoadingState() == ContentState.NONE) {
+      if (photo.getLoadingState() != ContentState.DONE) {
         photo.loadFromRamCache(mRequestManager, imageView, url + Photo.BLUR_SUFFIX);
-        if (photo.getLoadingState() == ContentState.NONE) {
+        if (photo.getLoadingState() != ContentState.NONE) {
+          if (photo.getRequest() != null) {
+            photo.getRequest().cancel();
+          }
           imageView.setImageResource(defaultResourceID);
           photo.setContentState(ContentState.LOADING);
           CommonRequest<Photo> request = null;
@@ -354,7 +356,7 @@ public class Photo {
 
     final Photo photo = Photo.getObject(imageView, url);
     if (photo != null) {
-      if (photo.getLoadingState() == ContentState.NONE) {
+      if (photo.getLoadingState() != ContentState.DONE) {
         photo.loadFromRamCache(mRequestManager, imageView, url + Photo.BLUR_SUFFIX);
         if (photo.getLoadingState() == ContentState.NONE) {
           imageView.setImageResource(defaultResourceID);
@@ -399,7 +401,7 @@ public class Photo {
   public static void reloadBlurImg(final ImageView imageView) {
     if (imageView != null && imageView.getTag() != null) {
       final Photo photo = (Photo) imageView.getTag();
-      if (photo.getLoadingState() == ContentState.NONE) {
+      if (photo.getLoadingState() != ContentState.DONE) {
         photo.setContentState(ContentState.LOADING);
         CommonRequest<Photo> request = null;
         switch (RequestManager.getExecuteMode()) {
