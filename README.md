@@ -25,7 +25,7 @@
 ####Step 1(installation):
 **Gradle:**
 ```groovy
-    compile 'me.suanmiao.common:library:0.1.4'
+    compile 'me.suanmiao.common:library:0.1.6'
  ```
 
 ####Step 2(setup application):

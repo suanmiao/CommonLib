@@ -4,13 +4,14 @@ import android.graphics.Bitmap;
 
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 import me.suanmiao.common.component.BaseApplication;
 import me.suanmiao.common.io.http.image.Photo;
 import me.suanmiao.common.ui.blur.Blur;
 import me.suanmiao.common.util.BitmapUtil;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Created by suanmiao on 14/12/7.
@@ -22,7 +23,6 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
   protected boolean shouldCache = true;
   protected Photo.LoadOption loadOption = Photo.LoadOption.BOTH;
   private boolean blurResult = false;
-
 
   public PhotoSpiceRequest(Photo photo) {
     super(Photo.class);
