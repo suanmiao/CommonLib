@@ -23,8 +23,6 @@ public abstract class BaseToolbarActivity extends BaseActivity {
         }
     }
 
-    protected abstract void afterInjected();
-
     protected abstract int getContentViewId();
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

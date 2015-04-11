@@ -24,10 +24,10 @@ public abstract class BaseActivity extends ActionBarActivity {
         setContentView(getContentViewId());
         mRequestManager = BaseApplication.getRequestManager();
         ButterKnife.inject(this);
-        afterInjected();
+        afterInjected(savedInstanceState);
    }
 
-    protected abstract void afterInjected();
+    protected abstract void afterInjected(Bundle savedInstanceState);
 
     protected abstract int getContentViewId();
 
