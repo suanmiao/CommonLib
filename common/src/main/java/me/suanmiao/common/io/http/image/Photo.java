@@ -29,12 +29,10 @@ import me.suanmiao.common.util.TextUtil;
  */
 public class Photo {
 
-
   public static final String BLUR_SUFFIX = "_blur";
   public static final int INVALID_VALUE = -1;
 
   private int viewWidth = INVALID_VALUE;
-
   private int viewHeight = INVALID_VALUE;
 
   private String url;
@@ -155,9 +153,6 @@ public class Photo {
     if (view.getTag() != null) {
       Photo result = (Photo) view.getTag();
       if (!TextUtils.equals(url, result.getUrl())) {
-        if (result.getRequest() != null) {
-          result.getRequest().cancel();
-        }
         result.setContentState(ContentState.NONE);
         result.setUrl(url);
       }
@@ -266,15 +261,12 @@ public class Photo {
     if (imageView != null && imageView.getTag() != null) {
       final Photo photo = (Photo) imageView.getTag();
       if (photo.getLoadingState() != ContentState.DONE) {
-        if (photo.getRequest() != null) {
-          photo.getRequest().cancel();
-        }
         photo.setContentState(ContentState.LOADING);
         CommonRequest<Photo> request = null;
         switch (RequestManager.getExecuteMode()) {
           case ROBO_SPIECE:
             PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
-            new SpiceBuilder<Photo>().request(spiceRequest)
+            request = new SpiceBuilder<Photo>().request(spiceRequest)
                 .build();
             break;
 
@@ -306,9 +298,6 @@ public class Photo {
       if (photo.getLoadingState() != ContentState.DONE) {
         photo.loadFromRamCache(mRequestManager, imageView, url + Photo.BLUR_SUFFIX);
         if (photo.getLoadingState() != ContentState.NONE) {
-          if (photo.getRequest() != null) {
-            photo.getRequest().cancel();
-          }
           imageView.setImageResource(defaultResourceID);
           photo.setContentState(ContentState.LOADING);
           CommonRequest<Photo> request = null;
@@ -488,7 +477,7 @@ public class Photo {
     url = TextUtil.parseUrl(url);
     this.contentState = ContentState.NONE;
     try {
-      Bitmap result = requestManager.getCacheManager().get(url);
+      Bitmap result = requestManager.getCacheManager().getFromRam(url);
       if (result != null) {
         imageView.setImageBitmap(result);
         this.contentState = ContentState.DONE;

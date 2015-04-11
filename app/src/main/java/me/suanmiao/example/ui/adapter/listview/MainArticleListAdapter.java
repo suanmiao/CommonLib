@@ -18,7 +18,7 @@ public class MainArticleListAdapter extends BaseArticleListAdapter {
 
   @Override
   public BaseViewModel newViewModel(int i, ViewGroup container) {
-    return new MainArticleNormalItemViewModel(getContext(), container, this, getUIChangeListener());
+    return new MainArticleNormalItemViewModel(getContext(), container, this, getUICallback());
   }
 
 }

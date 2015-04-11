@@ -18,7 +18,7 @@ public class ExampleListAdapter extends BaseListAdapter<ExampleItemModel> {
 
   @Override
   public BaseViewModel newViewModel(int i, ViewGroup container) {
-    return new ExampleItemViewModel(container,getContext(),getUIChangeListener());
+    return new ExampleItemViewModel(container,getContext(), getUICallback());
   }
 
   @Override

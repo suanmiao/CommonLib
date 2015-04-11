@@ -14,31 +14,43 @@ import me.suanmiao.common.component.BaseApplication;
  */
 public class SystemHelper {
 
-    private static int[] screenSize = null;
+  private static int screenHeight = -1;
+  private static int screenWidth = -1;
 
-    public static int getStatusBarHeight() {
-        return Resources.getSystem().getDimensionPixelSize(
-                Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android"));
-    }
+  public static int getStatusBarHeight() {
+    return Resources.getSystem().getDimensionPixelSize(
+        Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android"));
+  }
 
-    public static int getNavigationBarHeight() {
-        return Resources.getSystem().getDimensionPixelSize(
-                Resources.getSystem().getIdentifier("navigation_bar_height", "dimen", "android"));
-    }
+  public static int getNavigationBarHeight() {
+    return Resources.getSystem().getDimensionPixelSize(
+        Resources.getSystem().getIdentifier("navigation_bar_height", "dimen", "android"));
+  }
 
-    public static int[] getScreenSize() {
-        if (screenSize != null) {
-            return screenSize;
-        } else {
-            WindowManager windowManager = (WindowManager) BaseApplication.getAppContext().getSystemService(Context.WINDOW_SERVICE);
-            Display display = windowManager.getDefaultDisplay();
-            DisplayMetrics metrics = new DisplayMetrics();
-            display.getMetrics(metrics);
-            int width = metrics.widthPixels;
-            int height = metrics.heightPixels;
-            screenSize = new int[]{width, height};
-            return screenSize;
-        }
+  public static int getScreenHeight() {
+    if (screenHeight == -1) {
+      WindowManager windowManager =
+          (WindowManager) BaseApplication.getAppContext().getSystemService(Context.WINDOW_SERVICE);
+      Display display = windowManager.getDefaultDisplay();
+      DisplayMetrics metrics = new DisplayMetrics();
+      display.getMetrics(metrics);
+      screenWidth = metrics.widthPixels;
+      screenHeight = metrics.heightPixels;
     }
+    return screenHeight;
+  }
+
+  public static int getScreenWidth() {
+    if (screenHeight == -1) {
+      WindowManager windowManager =
+          (WindowManager) BaseApplication.getAppContext().getSystemService(Context.WINDOW_SERVICE);
+      Display display = windowManager.getDefaultDisplay();
+      DisplayMetrics metrics = new DisplayMetrics();
+      display.getMetrics(metrics);
+      screenWidth = metrics.widthPixels;
+      screenHeight = metrics.heightPixels;
+    }
+    return screenWidth;
+  }
 
 }

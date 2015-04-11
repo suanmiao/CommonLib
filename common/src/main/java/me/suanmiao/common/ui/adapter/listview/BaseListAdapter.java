@@ -33,11 +33,11 @@ public abstract class BaseListAdapter<T extends BaseModel> extends BaseAdapter
     this.mContext = context;
   }
 
-  public void setUIChangeListener(UICallback mUICallback) {
+  public void setUICallback(UICallback mUICallback) {
     this.mUICallback = mUICallback;
   }
 
-  public UICallback getUIChangeListener() {
+  public UICallback getUICallback() {
     return mUICallback;
   }
 
@@ -64,6 +64,16 @@ public abstract class BaseListAdapter<T extends BaseModel> extends BaseAdapter
     if (parser != null) {
       this.dataList = parser.parseData(this.dataList);
     }
+    notifyDataSetChanged();
+  }
+
+  public void insertData(int index, T t) {
+    dataList.add(index, t);
+    notifyDataSetChanged();
+  }
+
+  public void removeData(int index) {
+    dataList.remove(index);
     notifyDataSetChanged();
   }
 

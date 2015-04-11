@@ -35,5 +35,4 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.1.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
 }
-
 apply from: "./push_to_mvn.gradle"

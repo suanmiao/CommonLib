@@ -194,9 +194,9 @@ public class BitmapUtil {
       BitmapFactory.decodeStream(is1, null, options);
       int sourceWidth = options.outWidth;
       int sourceHeight = options.outHeight;
-      int[] screenSize = SystemHelper.getScreenSize();
       int sampleSize =
-          getBestFitSampleSize(sourceWidth, sourceHeight, screenSize[0], screenSize[1],
+          getBestFitSampleSize(sourceWidth, sourceHeight, SystemHelper.getScreenWidth(),
+              SystemHelper.getScreenHeight(),
               Bitmap.Config.ARGB_8888);
       options.inJustDecodeBounds = false;
       options.inSampleSize = sampleSize;
@@ -229,7 +229,7 @@ public class BitmapUtil {
       options.inJustDecodeBounds = false;
       bitmap = BitmapFactory.decodeByteArray(content, 0, content.length, options);
     } catch (Exception e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
     return bitmap;
   }

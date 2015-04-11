@@ -90,7 +90,7 @@ public class ArticleListFragment extends AbstractBaseFragment {
     mHandler = new Handler();
     listAdapter = new ExampleListAdapter(getActivity());
     listAdapter.setParser(listParser);
-    listAdapter.setUIChangeListener(mUiChangeListener);
+    listAdapter.setUICallback(mUiChangeListener);
     listMainArticle.setonRefreshListener(refreshListener);
     listMainArticle.setOnLoadListener(loadListener);
     listMainArticle.setOnScrollListener(listAdapter);

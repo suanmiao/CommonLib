@@ -7,7 +7,7 @@
     <option name="importOrderConfigFilePath" value="$PROJECT_DIR$/../../../../worksoft/WandoujiaAndroidCodeStyle/import_order.importorder" />
     <option name="importOrderFromFile" value="true" />
     <option name="name" value="default" />
-    <option name="pathToConfigFileJava" value="$PROJECT_DIR$/../../../../worksoft/WandoujiaAndroidCodeStyle/WandoujiaAndroidCodeStyle.xml" />
+    <option name="pathToConfigFileJava" value="$PROJECT_DIR$/../../../../worksoft/WandoujiaAndroidCodeStyle/GoogleAndroidCodeStyle.xml" />
     <option name="selectedJavaProfile" value="Wandoujia Android Code Style" />
   </component>
   <component name="EntryPointsManager">
