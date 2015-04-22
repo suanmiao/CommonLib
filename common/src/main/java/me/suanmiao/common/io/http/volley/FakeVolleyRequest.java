@@ -24,7 +24,6 @@ public class FakeVolleyRequest<T> extends Request<T> {
   private Map<String, String> postParams;
   private boolean photoRequest = false;
   private Photo.LoadOption loadOption = Photo.LoadOption.BOTH;
-  private boolean blurResult = false;
 
   public FakeVolleyRequest(int method, String url, Map<String, String> headers,
       Map<String, String> postParams,
@@ -43,14 +42,6 @@ public class FakeVolleyRequest<T> extends Request<T> {
     if (param == null) {
       throw new CommonParamException("param " + paramName + " is null");
     }
-  }
-
-  public boolean isBlurResult() {
-    return blurResult;
-  }
-
-  public void setBlurResult(boolean blurResult) {
-    this.blurResult = blurResult;
   }
 
   public void setIsPhotoRequest(boolean photoRequest) {

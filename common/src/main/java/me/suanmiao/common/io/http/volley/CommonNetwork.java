@@ -12,10 +12,10 @@ import com.android.volley.toolbox.HttpClientStack;
 import java.io.IOException;
 
 import me.suanmiao.common.component.BaseApplication;
+import me.suanmiao.common.io.cache.BaseMMBean;
 import me.suanmiao.common.io.cache.CacheManager;
 import me.suanmiao.common.io.http.image.Photo;
 import me.suanmiao.common.io.http.image.volley.BitmapNetworkResponse;
-import me.suanmiao.common.ui.blur.Blur;
 
 /**
  * Created by suanmiao on 15/1/26.
@@ -32,53 +32,23 @@ public class CommonNetwork extends BasicNetwork {
   public NetworkResponse performRequest(Request<?> request) throws VolleyError {
     if (request instanceof FakeVolleyRequest && ((FakeVolleyRequest) request).isPhotoRequest()) {
       FakeVolleyRequest photoFakeVolleyRequest = (FakeVolleyRequest) request;
-      if (photoFakeVolleyRequest.isBlurResult()) {
-        if (photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.ONLY_FROM_CACHE
-            || photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.BOTH) {
-          Bitmap blurResult = getBlurImage(photoFakeVolleyRequest);
-          if (photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.ONLY_FROM_CACHE
-              || photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.BOTH) {
-            if (blurResult != null) {
-              return new BitmapNetworkResponse(blurResult);
-            }
-            Bitmap normalResult = getImage(photoFakeVolleyRequest);
-            if (normalResult != null) {
-              blurResult = Blur.apply(BaseApplication.getAppContext(), normalResult);
-              return new BitmapNetworkResponse(blurResult);
-            }
-          }
-          if (photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.ONLY_FROM_CACHE) {
-            return new BitmapNetworkResponse(null);
-          }
-        }
-      } else {
-        if (photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.ONLY_FROM_CACHE
-            || photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.BOTH) {
-          Bitmap result = getImage(photoFakeVolleyRequest);
-          if (result != null
-              || photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.ONLY_FROM_CACHE) {
-            return new BitmapNetworkResponse(result);
-          }
+      if (photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.ONLY_FROM_CACHE
+          || photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.BOTH) {
+        Bitmap cachedImage = getImageFromCache(photoFakeVolleyRequest);
+        if (cachedImage != null
+            || photoFakeVolleyRequest.getLoadOption() == Photo.LoadOption.ONLY_FROM_CACHE) {
+          return new BitmapNetworkResponse(cachedImage);
         }
       }
     }
     return super.performRequest(request);
   }
 
-  private Bitmap getImage(FakeVolleyRequest fakeVolleyRequest) {
+  private Bitmap getImageFromCache(FakeVolleyRequest fakeVolleyRequest) {
     try {
       CacheManager mCacheManager = BaseApplication.getRequestManager().getCacheManager();
-      return mCacheManager.get(fakeVolleyRequest.getUrl());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  private Bitmap getBlurImage(FakeVolleyRequest fakeVolleyRequest) {
-    try {
-      CacheManager mCacheManager = BaseApplication.getRequestManager().getCacheManager();
-      return mCacheManager.get(fakeVolleyRequest.getUrl() + Photo.BLUR_SUFFIX);
+      BaseMMBean bean = mCacheManager.get(fakeVolleyRequest.getUrl());
+      return bean.getDataBitmap();
     } catch (IOException e) {
       e.printStackTrace();
     }

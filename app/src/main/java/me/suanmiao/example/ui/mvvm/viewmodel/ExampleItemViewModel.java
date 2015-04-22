@@ -13,7 +13,7 @@ import me.suanmiao.example.ui.mvvm.view.ExampleItemView;
 /**
  * Created by suanmiao on 15/1/26.
  */
-public class ExampleItemViewModel extends BaseViewModel<ExampleItemView,ExampleItemModel> {
+public class ExampleItemViewModel extends BaseViewModel<ExampleItemView, ExampleItemModel> {
   public ExampleItemViewModel(ViewGroup container, Context context,
       UICallback uiCallback) {
     super(new ExampleItemView(context, container), context, uiCallback);
@@ -22,13 +22,7 @@ public class ExampleItemViewModel extends BaseViewModel<ExampleItemView,ExampleI
   @Override
   public void bind(int index, ExampleItemModel model, int scrollState, float scrollSpeed) {
     getItemView().text.setText(model.text);
-    if (Math.random() > 0.5) {
-      Photo.loadScrollItemImg(getItemView().img, model.img, R.drawable.ic_launcher, scrollState,
-              scrollSpeed);
-    } else {
-      Photo.loadScrollItemBlurImg(getItemView().img, model.img, R.drawable.ic_launcher, scrollState,
-          scrollSpeed);
-    }
+    Photo.loadScrollItemImg(getItemView().img, model.img, R.drawable.ic_launcher, scrollState);
   }
 
   @Override

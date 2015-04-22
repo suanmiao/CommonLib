@@ -160,7 +160,6 @@ public class RequestManager {
                       request.getVolleyActionDelivery(), taggedRequestListener);
               volleyRequest.setLoadOption(request.getLoadOption());
               volleyRequest.setIsPhotoRequest(request.isPhotoRequest());
-              volleyRequest.setBlurResult(request.isBlurResult());
               requestQueue.add(volleyRequest);
               request.setVolleyRequest(volleyRequest);
             } catch (CommonRequestException e) {
@@ -181,7 +180,6 @@ public class RequestManager {
                       taggedRequestListener);
               volleyRequest.setLoadOption(request.getLoadOption());
               volleyRequest.setIsPhotoRequest(request.isPhotoRequest());
-              volleyRequest.setBlurResult(request.isBlurResult());
               request.setVolleyRequest(volleyRequest);
               requestQueue.add(volleyRequest);
             } catch (CommonRequestException e) {

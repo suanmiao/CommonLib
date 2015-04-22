@@ -34,7 +34,6 @@ public class CommonRequest<T> {
    */
   boolean photoRequest = false;
   private Photo.LoadOption loadOption = Photo.LoadOption.BOTH;
-  private boolean blurResult = false;
 
   public enum RequestType {
     ROBO_REQUEST,
@@ -52,14 +51,6 @@ public class CommonRequest<T> {
   protected CommonRequest(SpiceRequest<T> request) {
     this.spiceRequest = request;
     this.requestType = RequestType.ROBO_REQUEST;
-  }
-
-  public boolean isBlurResult() {
-    return blurResult;
-  }
-
-  public void setBlurResult(boolean blurResult) {
-    this.blurResult = blurResult;
   }
 
   public boolean isPhotoRequest() {
