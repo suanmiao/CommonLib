@@ -9,10 +9,11 @@ import com.android.volley.VolleyError;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import me.suanmiao.common.component.BaseApplication;
-import me.suanmiao.common.io.cache.BaseMMBean;
+import me.suanmiao.common.io.cache.mmbean.AbstractMMBean;
+import me.suanmiao.common.io.cache.mmbean.BaseMMBean;
+import me.suanmiao.common.io.cache.mmbean.BigBitmapBean;
 import me.suanmiao.common.io.http.CommonRequest;
 import me.suanmiao.common.io.http.ProgressListener;
 import me.suanmiao.common.io.http.RequestManager;
@@ -22,6 +23,7 @@ import me.suanmiao.common.io.http.VolleyBuilder;
 import me.suanmiao.common.io.http.VolleyCommonListener;
 import me.suanmiao.common.io.http.image.spice.PhotoSpiceRequest;
 import me.suanmiao.common.io.http.image.volley.PhotoActionDelivery;
+import me.suanmiao.common.ui.widget.BigDrawable;
 import me.suanmiao.common.util.TextUtil;
 
 /**
@@ -37,7 +39,7 @@ public class Photo {
 
   private String url;
 
-  private BaseMMBean content;
+  private AbstractMMBean content;
 
   private ResultHandler mResultHandler;
 
@@ -92,11 +94,11 @@ public class Photo {
     return url;
   }
 
-  public void setContent(BaseMMBean content) {
+  public void setContent(AbstractMMBean content) {
     this.content = content;
   }
 
-  public BaseMMBean getContent() {
+  public AbstractMMBean getContent() {
     return content;
   }
 
@@ -349,10 +351,14 @@ public class Photo {
   private static void processResult(Photo photo, ImageView imageView) {
     photo.setContentState(ContentState.DONE);
     if (photo.getResultHandler() == null) {
-      BaseMMBean content = photo.getContent();
+      AbstractMMBean content = photo.getContent();
+
       if (content != null) {
-        if (content.getDataType() == BaseMMBean.TYPE_BITMAP) {
-          imageView.setImageBitmap(content.getDataBitmap());
+        if (content.getDataType() == AbstractMMBean.TYPE_BITMAP) {
+          imageView.setImageBitmap(((BaseMMBean) content).getDataBitmap());
+        } else if (content.getDataType() == AbstractMMBean.TYPE_BIG_BITMAP) {
+          BigDrawable drawable = new BigDrawable(((BigBitmapBean) content).getData());
+          imageView.setImageDrawable(drawable);
         }
       }
     } else {
@@ -367,7 +373,7 @@ public class Photo {
     url = TextUtil.parseUrl(url);
     this.contentState = ContentState.NONE;
     try {
-      BaseMMBean result = requestManager.getCacheManager().getFromRam(url);
+      AbstractMMBean result = requestManager.getCacheManager().getFromRam(url);
       if (result != null) {
         this.setContent(result);
         processResult(this, imageView);
@@ -378,11 +384,7 @@ public class Photo {
   }
 
   public interface ResultHandler {
-    public void onResult(BaseMMBean content, ImageView targetImage);
-
-    public BaseMMBean constructMMBeanFromStream(InputStream stream);
-
-    public BaseMMBean constructMMBeanFromBytes(byte[] data);
+    public void onResult(AbstractMMBean content, ImageView targetImage);
   }
 
   private static boolean saveTraffic() {

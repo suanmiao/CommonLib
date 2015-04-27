@@ -4,7 +4,6 @@ package me.suanmiao.example.ui.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 
 import com.android.volley.VolleyError;
@@ -152,13 +151,10 @@ public class ArticleListFragment extends AbstractBaseFragment {
     executeRequest(request, new VolleyCommonListener<ChannelModel>() {
       @Override
       public void onErrorResponse(VolleyError error) {
-        Log.e("SUAN", "response error " + error);
       }
 
       @Override
       public void onResponse(ChannelModel response) {
-        Log.e("SUAN", "response success " + response + "|" + response.title + "|"
-            + response.itemList);
         for (ArticleModel articleModel : response.itemList) {
           // Log.e("SUAN", "article " + articleModel + "|" + articleModel.title + "|"
           // + articleModel.pubDate + "|" + DateUtil.parsePubdateDate(articleModel.pubDate));

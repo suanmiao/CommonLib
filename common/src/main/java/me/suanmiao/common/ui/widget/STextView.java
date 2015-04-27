@@ -6,6 +6,9 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import me.suanmiao.common.R;
 
 
@@ -14,8 +17,8 @@ import me.suanmiao.common.R;
  */
 public class STextView extends TextView {
 
-  private static Typeface font;
-  private String fontPath = null;
+  private static Map<String, Typeface> fontCache = new HashMap<>();
+  private String currentFontPath = null;
 
   public STextView(Context context) {
     super(context);
@@ -36,11 +39,19 @@ public class STextView extends TextView {
 
   private void init(Context context) {
     try {
-      if (fontPath != null) {
-        font = Typeface.createFromAsset(getResources().getAssets(), fontPath);
-      }
-      if (font != null) {
-        setTypeface(font);
+      if (currentFontPath != null) {
+        Typeface font;
+        if (fontCache.get(currentFontPath) != null) {
+          font = fontCache.get(currentFontPath);
+        } else {
+          font = Typeface.createFromAsset(getResources().getAssets(), currentFontPath);
+        }
+        if (font != null) {
+          fontCache.put(currentFontPath, font);
+          if (!font.equals(getTypeface())) {
+            setTypeface(font);
+          }
+        }
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -51,7 +62,7 @@ public class STextView extends TextView {
     TypedArray a =
         context.obtainStyledAttributes(attributeSet, R.styleable.STextView);
     try {
-      fontPath = a.getString(R.styleable.STextView_textFontPath);
+      currentFontPath = a.getString(R.styleable.STextView_textFontPath);
     } catch (Exception e) {
       e.printStackTrace();
     }

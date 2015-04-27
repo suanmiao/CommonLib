@@ -22,3 +22,8 @@
 ##Version:0.1.6
 1.Fix bug in "Photo",add ButterKnife support in "BaseView"
 
+##Version:0.1.7
+1.Add big photo support for image request;
+2.Optimise image caching strategy;
+
+

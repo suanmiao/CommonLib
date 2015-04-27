@@ -18,6 +18,7 @@ public class BigBitmap {
   private Bitmap[][] matrix;
   private int rowCount = 0;
   private int columnCount = 0;
+  private int totalSize;
 
   public static final int MAX_ITEM_WIDTH = 500;
   public static final int MAX_ITEM_HEIGHT = 500;
@@ -27,6 +28,22 @@ public class BigBitmap {
     this.rowCount = rowCount;
     this.columnCount = columnCount;
     this.matrix = matrix;
+    this.totalSize = 0;
+    totalWidth = 0;
+    totalHeight = 0;
+    if (this.matrix != null) {
+      for (int x = 0; x < columnCount; x++) {
+        for (int y = 0; y < rowCount; y++) {
+          totalSize += matrix[x][y].getByteCount();
+          if (y == 0) {
+            totalWidth += matrix[x][y].getWidth();
+          }
+          if (x == 0) {
+            totalHeight += matrix[x][y].getHeight();
+          }
+        }
+      }
+    }
   }
 
   public BigBitmap(byte[] data) {
@@ -34,6 +51,7 @@ public class BigBitmap {
   }
 
   private void init(byte[] data) {
+    this.totalSize = data.length;
     BitmapFactory.Options options = new BitmapFactory.Options();
     options.inJustDecodeBounds = true;
     BitmapFactory.decodeByteArray(data, 0, data.length, options);
@@ -46,6 +64,7 @@ public class BigBitmap {
     rowCount = matrixRow;
     columnCount = matrixColumn;
     matrix = new Bitmap[matrixColumn][matrixRow];
+    totalSize = 0;
     for (int x = 0; x < matrixColumn; x++) {
       for (int y = 0; y < matrixRow; y++) {
         int itemWidth, itemHeight;
@@ -66,18 +85,20 @@ public class BigBitmap {
               new Rect(x * MAX_ITEM_WIDTH, y * MAX_ITEM_HEIGHT, x * MAX_ITEM_WIDTH + itemWidth, y
                   * MAX_ITEM_HEIGHT + itemHeight);
           matrix[x][y] = regionDecoder.decodeRegion(itemRect, new BitmapFactory.Options());
+          totalSize += matrix[x][y].getByteCount();
         } catch (IOException e) {
           e.printStackTrace();
         }
       }
     }
+    data = null;
   }
 
   /**
    * data structure:
    * |matrixWidth|matrixHeight|item1Size|item2Size|data1|data2|...|
    */
-  private static final int LENGTH_INT_TO_BYTE = 2;
+  private static final int LENGTH_INT_TO_BYTE = 4;
 
   public void toStream(OutputStream stream) {
     try {
@@ -88,9 +109,10 @@ public class BigBitmap {
           ByteArrayOutputStream itemOutputStream = new ByteArrayOutputStream();
           matrix[x][y].compress(Bitmap.CompressFormat.JPEG, 100, itemOutputStream);
           byte[] itemData = itemOutputStream.toByteArray();
-
+          itemOutputStream.close();
           stream.write(ByteBuffer.allocate(LENGTH_INT_TO_BYTE).putInt(itemData.length).array());
           stream.write(itemData);
+          itemData = null;
         }
       }
     } catch (IOException e) {
@@ -99,22 +121,31 @@ public class BigBitmap {
   }
 
   public static BigBitmap fromStream(InputStream stream) {
-    int columnCount = readInt(LENGTH_INT_TO_BYTE, stream);
-    int rowCount = readInt(LENGTH_INT_TO_BYTE, stream);
-    Bitmap[][] matrix = new Bitmap[columnCount][rowCount];
-    for (int x = 0; x < columnCount; x++) {
-      for (int y = 0; y < rowCount; y++) {
-        int size = readInt(LENGTH_INT_TO_BYTE, stream);
-        try {
+    try {
+      int columnCount = readInt(LENGTH_INT_TO_BYTE, stream);
+      int rowCount = readInt(LENGTH_INT_TO_BYTE, stream);
+      Bitmap[][] matrix = new Bitmap[columnCount][rowCount];
+      for (int x = 0; x < columnCount; x++) {
+        for (int y = 0; y < rowCount; y++) {
+          int size = readInt(LENGTH_INT_TO_BYTE, stream);
           byte[] itemData = new byte[size];
           stream.read(itemData);
           matrix[x][y] = BitmapFactory.decodeByteArray(itemData, 0, itemData.length);
-        } catch (IOException e) {
-          e.printStackTrace();
+          itemData = null;
         }
       }
+      return new BigBitmap(rowCount, columnCount, matrix);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        stream.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
-    return new BigBitmap(rowCount, columnCount, matrix);
+    return null;
   }
 
   private static int readInt(int length, InputStream stream) {
@@ -123,7 +154,6 @@ public class BigBitmap {
       stream.read(data);
       ByteBuffer byteBuffer = ByteBuffer.wrap(data);
       return byteBuffer.getInt();
-
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -148,5 +178,9 @@ public class BigBitmap {
 
   public int getRowCount() {
     return rowCount;
+  }
+
+  public int getTotalSize() {
+    return totalSize;
   }
 }

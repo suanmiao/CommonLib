@@ -12,8 +12,9 @@ import com.android.volley.toolbox.HttpClientStack;
 import java.io.IOException;
 
 import me.suanmiao.common.component.BaseApplication;
-import me.suanmiao.common.io.cache.BaseMMBean;
+import me.suanmiao.common.io.cache.mmbean.AbstractMMBean;
 import me.suanmiao.common.io.cache.CacheManager;
+import me.suanmiao.common.io.cache.mmbean.BaseMMBean;
 import me.suanmiao.common.io.http.image.Photo;
 import me.suanmiao.common.io.http.image.volley.BitmapNetworkResponse;
 
@@ -47,8 +48,10 @@ public class CommonNetwork extends BasicNetwork {
   private Bitmap getImageFromCache(FakeVolleyRequest fakeVolleyRequest) {
     try {
       CacheManager mCacheManager = BaseApplication.getRequestManager().getCacheManager();
-      BaseMMBean bean = mCacheManager.get(fakeVolleyRequest.getUrl());
-      return bean.getDataBitmap();
+      AbstractMMBean bean = mCacheManager.get(fakeVolleyRequest.getUrl());
+      if (bean.getDataType() == AbstractMMBean.TYPE_BITMAP) {
+        return ((BaseMMBean) bean).getDataBitmap();
+      }
     } catch (IOException e) {
       e.printStackTrace();
     }

@@ -6,7 +6,7 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.InputStream;
 
-import me.suanmiao.common.io.cache.BaseMMBean;
+import me.suanmiao.common.io.cache.mmbean.AbstractMMBean;
 import me.suanmiao.common.io.http.image.Photo;
 
 /**
@@ -38,12 +38,12 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
   private Photo loadNormalPhoto() throws IOException {
     switch (loadOption) {
       case ONLY_FROM_CACHE: {
-        BaseMMBean cacheContent = getCacheManager().get(photo.getUrl());
+        AbstractMMBean cacheContent = getCacheManager().get(photo.getUrl());
         photo.setContent(cacheContent);
       }
         break;
       case ONLY_FROM_NETWORK: {
-        BaseMMBean networkContent = getMMFromNetwork();
+        AbstractMMBean networkContent = getMMFromNetwork();
         if (shouldCache && networkContent != null) {
           getCacheManager().put(photo.getUrl(), networkContent, true);
         }
@@ -51,7 +51,7 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
       }
         break;
       case BOTH: {
-        BaseMMBean content = getCacheManager().get(photo.getUrl());
+        AbstractMMBean content = getCacheManager().get(photo.getUrl());
         if (content == null) {
           content = getMMFromNetwork();
           if (shouldCache && content != null) {
@@ -65,7 +65,7 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
     return photo;
   }
 
-  protected BaseMMBean getMMFromNetwork() throws IOException {
+  protected AbstractMMBean getMMFromNetwork() throws IOException {
     Request request = new Request.Builder()
         .url(photo.getUrl())
         .build();
@@ -77,11 +77,7 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
     photo.setContentLength(Integer.parseInt(contentLength));
 
     InputStream in = response.body().byteStream();
-    if (this.photo.getResultHandler() != null) {
-      return this.photo.getResultHandler().constructMMBeanFromStream(in);
-    } else {
-      return BaseMMBean.fromBitmapStream(in);
-    }
+    return getCacheManager().getBeanGenerator().constructMMBeanFromNetworkStream(in);
   }
 
   public boolean isShouldCache() {
