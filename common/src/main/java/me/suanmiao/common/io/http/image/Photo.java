@@ -4,9 +4,9 @@ import android.text.TextUtils;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
-import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.SpiceRequest;
 
 import java.io.IOException;
 
@@ -14,16 +14,15 @@ import me.suanmiao.common.component.BaseApplication;
 import me.suanmiao.common.io.cache.mmbean.AbstractMMBean;
 import me.suanmiao.common.io.cache.mmbean.BaseMMBean;
 import me.suanmiao.common.io.cache.mmbean.BigBitmapBean;
-import me.suanmiao.common.io.http.CommonRequest;
 import me.suanmiao.common.io.http.ProgressListener;
 import me.suanmiao.common.io.http.RequestManager;
-import me.suanmiao.common.io.http.SpiceBuilder;
 import me.suanmiao.common.io.http.SpiceCommonListener;
-import me.suanmiao.common.io.http.VolleyBuilder;
 import me.suanmiao.common.io.http.VolleyCommonListener;
 import me.suanmiao.common.io.http.image.spice.PhotoSpiceRequest;
-import me.suanmiao.common.io.http.image.volley.PhotoActionDelivery;
+import me.suanmiao.common.io.http.volley.BaseVolleyRequest;
+import me.suanmiao.common.io.http.volley.PhotoVolleyRequest;
 import me.suanmiao.common.ui.widget.BigDrawable;
+import me.suanmiao.common.util.LogUtil;
 import me.suanmiao.common.util.TextUtil;
 
 /**
@@ -31,7 +30,6 @@ import me.suanmiao.common.util.TextUtil;
  */
 public class Photo {
 
-  public static final String BLUR_SUFFIX = "_blur";
   public static final int INVALID_VALUE = -1;
 
   private int viewWidth = INVALID_VALUE;
@@ -41,12 +39,12 @@ public class Photo {
 
   private AbstractMMBean content;
 
-  private ResultHandler mResultHandler;
-
   /**
    * about progress
    */
   private ProgressListener progressListener;
+
+  private Option loadOption;
 
   private int contentLength;
 
@@ -58,7 +56,7 @@ public class Photo {
     NONE
   }
 
-  public static enum LoadOption {
+  public static enum LoadSource {
     ONLY_FROM_CACHE,
     ONLY_FROM_NETWORK,
     BOTH
@@ -66,15 +64,15 @@ public class Photo {
 
   private ContentState contentState = ContentState.NONE;
 
-  private CommonRequest request;
+  private ICommonRequest request;
 
   private static RequestManager mRequestManager;
 
-  public Photo(String url, int viewWidth, int viewHeight, ResultHandler resultHandler) {
+  public Photo(String url, int viewWidth, int viewHeight, Option option) {
     this.viewWidth = viewWidth;
     this.viewHeight = viewHeight;
     this.url = url;
-    this.mResultHandler = resultHandler;
+    this.loadOption = option;
     mRequestManager = BaseApplication.getRequestManager();
   }
 
@@ -94,6 +92,10 @@ public class Photo {
     return url;
   }
 
+  public String getCacheKey() {
+    return getUrl() + getLoadOption().cacheSuffix;
+  }
+
   public void setContent(AbstractMMBean content) {
     this.content = content;
   }
@@ -102,8 +104,15 @@ public class Photo {
     return content;
   }
 
-  public ResultHandler getResultHandler() {
-    return mResultHandler;
+  public Option getLoadOption() {
+    if (loadOption == null) {
+      loadOption = new Option();
+    }
+    return loadOption;
+  }
+
+  public void setLoadOption(Option loadOption) {
+    this.loadOption = loadOption;
   }
 
   public void setProgressListener(ProgressListener progressListener) {
@@ -130,15 +139,11 @@ public class Photo {
     this.contentState = contentState;
   }
 
-  public PhotoSpiceRequest newSpiceRequest() {
-    return new PhotoSpiceRequest(this);
-  }
-
-  public CommonRequest getRequest() {
+  public ICommonRequest getRequest() {
     return request;
   }
 
-  public void setRequest(CommonRequest request) {
+  public void setRequest(ICommonRequest request) {
     this.request = request;
   }
 
@@ -149,7 +154,7 @@ public class Photo {
    * @param url target url to request image
    * @return
    */
-  public static Photo getObject(ImageView view, String url, ResultHandler resultHandler) {
+  public static Photo getObject(ImageView view, String url,Option option) {
     /**
      * scheme :
      * when there is a Photo object in imageView's tag,just compare the url ,if not equal ,cancel
@@ -172,7 +177,7 @@ public class Photo {
         width = view.getLayoutParams().width > 0 ? view.getLayoutParams().width : 0;
         height = view.getLayoutParams().height > 0 ? view.getLayoutParams().height : 0;
       }
-      return new Photo(url, width, height, resultHandler);
+      return new Photo(url, width, height, option);
     }
   }
 
@@ -182,16 +187,16 @@ public class Photo {
   }
 
   public static void loadScrollItemImg(final ImageView imageView, String url,
-      int defaultResourceID, int scrollState, ResultHandler resultHandler) {
+      int defaultResourceID, int scrollState, Option option) {
     if (TextUtils.isEmpty(url)) {
       return;
     }
     url = TextUtil.parseUrl(url);
 
-    final Photo photo = Photo.getObject(imageView, url, resultHandler);
+    final Photo photo = Photo.getObject(imageView, url, option);
     if (photo != null) {
       if (photo.getLoadingState() != ContentState.DONE) {
-        photo.loadFromRamCache(mRequestManager, imageView, url);
+        photo.loadFromRamCache(mRequestManager, imageView);
         if (saveTraffic()) {
           return;
         }
@@ -200,30 +205,27 @@ public class Photo {
           imageView.setImageResource(defaultResourceID);
           if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
             photo.setContentState(ContentState.LOADING);
-            CommonRequest<Photo> request = null;
+            if (saveTraffic) {
+              photo.getLoadOption().loadSource = LoadSource.ONLY_FROM_CACHE;
+            } else {
+              photo.getLoadOption().loadSource = LoadSource.BOTH;
+            }
+
             switch (RequestManager.getExecuteMode()) {
-              case ROBO_SPIECE:
-                PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
-                spiceRequest.setLoadOption(LoadOption.BOTH);
-                request = new SpiceBuilder<Photo>().request(spiceRequest)
-                    .build();
+              case ROBO_SPIECE: {
+                PhotoSpiceRequest request = new PhotoSpiceRequest(photo);
+
+                photo.setRequest(request);
+                executeSpiceRequest(request, photo, imageView);
+              }
                 break;
 
-              case VOLLEY:
-                request =
-                    new VolleyBuilder<Photo>().url(photo.getUrl())
-                        .method(Request.Method.GET)
-                        .actionDelivery(new PhotoActionDelivery(photo)).build();
-                break;
-            }
-            if (request != null) {
-              if (saveTraffic) {
-                request.setLoadOption(LoadOption.ONLY_FROM_CACHE);
-              } else {
-                request.setLoadOption(LoadOption.BOTH);
+              case VOLLEY: {
+                PhotoVolleyRequest request = new PhotoVolleyRequest(photo);
+                photo.setRequest(request);
+                executeVolleyRequest(request, photo, imageView);
               }
-              photo.setRequest(request);
-              executeFullRequest(request, photo, imageView);
+                break;
             }
           }
         }
@@ -237,38 +239,34 @@ public class Photo {
   }
 
   public static void loadImg(final ImageView imageView, String url, int defaultResourceID,
-      ResultHandler resultHandler) {
-    final Photo photo = Photo.getObject(imageView, url, resultHandler);
+      Option option) {
+    final Photo photo = Photo.getObject(imageView, url, option);
     if (photo != null) {
       if (photo.getLoadingState() != ContentState.DONE) {
-        photo.loadFromRamCache(mRequestManager, imageView, url);
+        photo.loadFromRamCache(mRequestManager, imageView);
         if (photo.getLoadingState() != ContentState.DONE) {
           imageView.setImageResource(defaultResourceID);
           photo.setContentState(ContentState.LOADING);
-          CommonRequest<Photo> request = null;
-          switch (RequestManager.getExecuteMode()) {
-            case ROBO_SPIECE:
-              PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
-              request =
-                  new SpiceBuilder<Photo>().request(spiceRequest)
-                      .build();
-              break;
-
-            case VOLLEY:
-              request =
-                  new VolleyBuilder<Photo>().url(photo.getUrl())
-                      .method(Request.Method.GET)
-                      .actionDelivery(new PhotoActionDelivery(photo)).build();
-              break;
+          if (saveTraffic) {
+            photo.getLoadOption().loadSource = LoadSource.ONLY_FROM_CACHE;
+          } else {
+            photo.getLoadOption().loadSource = LoadSource.BOTH;
           }
-          if (request != null) {
-            photo.setRequest(request);
-            if (saveTraffic) {
-              request.setLoadOption(LoadOption.ONLY_FROM_CACHE);
-            } else {
-              request.setLoadOption(LoadOption.BOTH);
+          switch (RequestManager.getExecuteMode()) {
+            case ROBO_SPIECE: {
+              // spiceRequest.setLoadSource(LoadSource.BOTH);
+              PhotoSpiceRequest request = new PhotoSpiceRequest(photo);
+
+              photo.setRequest(request);
+              executeSpiceRequest(request, photo, imageView);
             }
-            executeFullRequest(request, photo, imageView);
+              break;
+            case VOLLEY: {
+              PhotoVolleyRequest request = new PhotoVolleyRequest(photo);
+              photo.setRequest(request);
+              executeVolleyRequest(request, photo, imageView);
+            }
+              break;
           }
         }
       }
@@ -281,29 +279,26 @@ public class Photo {
       final Photo photo = (Photo) imageView.getTag();
       if (photo.getLoadingState() != ContentState.DONE) {
         photo.setContentState(ContentState.LOADING);
-        CommonRequest<Photo> request = null;
-        switch (RequestManager.getExecuteMode()) {
-          case ROBO_SPIECE:
-            PhotoSpiceRequest spiceRequest = photo.newSpiceRequest();
-            request = new SpiceBuilder<Photo>().request(spiceRequest)
-                .build();
-            break;
-
-          case VOLLEY:
-            request =
-                new VolleyBuilder<Photo>().url(photo.getUrl())
-                    .method(Request.Method.GET)
-                    .actionDelivery(new PhotoActionDelivery(photo)).build();
-            break;
+        if (saveTraffic) {
+          photo.getLoadOption().loadSource = LoadSource.ONLY_FROM_CACHE;
+        } else {
+          photo.getLoadOption().loadSource = LoadSource.BOTH;
         }
-        if (request != null) {
-          photo.setRequest(request);
-          if (saveTraffic) {
-            request.setLoadOption(LoadOption.ONLY_FROM_CACHE);
-          } else {
-            request.setLoadOption(LoadOption.BOTH);
+        switch (RequestManager.getExecuteMode()) {
+          case ROBO_SPIECE: {
+            // spiceRequest.setLoadSource(LoadSource.BOTH);
+            PhotoSpiceRequest request = new PhotoSpiceRequest(photo);
+
+            photo.setRequest(request);
+            executeSpiceRequest(request, photo, imageView);
           }
-          executeFullRequest(request, photo, imageView);
+            break;
+          case VOLLEY: {
+            PhotoVolleyRequest request = new PhotoVolleyRequest(photo);
+            photo.setRequest(request);
+            executeVolleyRequest(request, photo, imageView);
+          }
+            break;
         }
 
         imageView.setTag(photo);
@@ -311,46 +306,49 @@ public class Photo {
     }
   }
 
-  public static void executeFullRequest(CommonRequest<Photo> request, final Photo photo,
+  public static void executeSpiceRequest(SpiceRequest request, final Photo photo,
       final ImageView imageView) {
-    switch (RequestManager.getExecuteMode()) {
-      case ROBO_SPIECE:
-        mRequestManager.executeRequest(request, new SpiceCommonListener<Photo>() {
-          @Override
-          public void onRequestFailure(SpiceException spiceException) {
-            photo.setContentState(ContentState.NONE);
-          }
+    LogUtil.logD("start spice photo request ", request);
+    mRequestManager.executeRequest(request, new SpiceCommonListener<Photo>() {
+      @Override
+      public void onRequestFailure(SpiceException spiceException) {
+        LogUtil.logD(" spice photo request error ", spiceException);
+        photo.setContentState(ContentState.NONE);
+      }
 
-          @Override
-          public void onRequestSuccess(Photo photo) {
-            if (photo.getContent() != null) {
-              processResult(photo, imageView);
-            }
-          }
-        }, imageView);
+      @Override
+      public void onRequestSuccess(Photo photo) {
+        LogUtil.logD(" spice photo request success ", photo);
+        if (photo.getContent() != null) {
+          processResult(photo, imageView);
+        }
+      }
+    }, imageView);
+  }
 
-        break;
-      case VOLLEY:
-        mRequestManager.executeRequest(request, new VolleyCommonListener<Photo>() {
-          @Override
-          public void onErrorResponse(VolleyError error) {
-            photo.setContentState(ContentState.NONE);
-          }
+  public static void executeVolleyRequest(BaseVolleyRequest request, final Photo photo,
+      final ImageView imageView) {
+    LogUtil.logD("start volley photo request ", request);
+    mRequestManager.executeRequest(request, new VolleyCommonListener<Photo>() {
+      @Override
+      public void onErrorResponse(VolleyError error) {
+        LogUtil.logD("volley photo request error ", error);
+        photo.setContentState(ContentState.NONE);
+      }
 
-          @Override
-          public void onResponse(Photo photo) {
-            if (photo.getContent() != null) {
-              processResult(photo, imageView);
-            }
-          }
-        }, imageView);
-        break;
-    }
+      @Override
+      public void onResponse(Photo photo) {
+        LogUtil.logD("volley photo request success ", photo);
+        if (photo.getContent() != null) {
+          processResult(photo, imageView);
+        }
+      }
+    }, imageView);
   }
 
   private static void processResult(Photo photo, ImageView imageView) {
     photo.setContentState(ContentState.DONE);
-    if (photo.getResultHandler() == null) {
+    if (photo.getLoadOption().mResultHandler == null) {
       AbstractMMBean content = photo.getContent();
 
       if (content != null) {
@@ -362,24 +360,42 @@ public class Photo {
         }
       }
     } else {
-      photo.getResultHandler().onResult(photo.getContent(), imageView);
+      photo.getLoadOption().mResultHandler.onResult(photo.getContent(), imageView);
     }
   }
 
-  public void loadFromRamCache(RequestManager requestManager, ImageView imageView, String url) {
-    if (TextUtils.isEmpty(url)) {
-      return;
-    }
-    url = TextUtil.parseUrl(url);
+  public void loadFromRamCache(RequestManager requestManager, ImageView imageView) {
     this.contentState = ContentState.NONE;
     try {
-      AbstractMMBean result = requestManager.getCacheManager().getFromRam(url);
+      AbstractMMBean result = requestManager.getCacheManager().getFromRam(getCacheKey());
       if (result != null) {
         this.setContent(result);
         processResult(this, imageView);
       }
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  public static class Option {
+    public boolean sampleBigBitmap = true;
+    /**
+     * the bitmap will be sampled to the size of image view, this will save memory
+     */
+    public boolean sampleToImageSize = false;
+    /**
+     * the max size for normal bitmap ,if 'sampleBigBitmap' is true and the bitmap original size
+     * exceeds the size,it will be saved in normal bitmap
+     */
+    public int sampledMaxBitmapSize;
+    public LoadSource loadSource;
+    public String cacheSuffix = "";
+
+    public ResultHandler mResultHandler;
+
+    public Option() {
+      this.loadSource = LoadSource.BOTH;
+      this.sampleBigBitmap = true;
     }
   }
 

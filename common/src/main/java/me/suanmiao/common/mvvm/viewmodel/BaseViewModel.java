@@ -3,11 +3,12 @@ package me.suanmiao.common.mvvm.viewmodel;
 import android.content.Context;
 
 import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.SpiceRequest;
 
 import me.suanmiao.common.component.BaseApplication;
-import me.suanmiao.common.io.http.CommonRequest;
 import me.suanmiao.common.io.http.CommonRequestListener;
 import me.suanmiao.common.io.http.RequestManager;
+import me.suanmiao.common.io.http.volley.BaseVolleyRequest;
 import me.suanmiao.common.mvvm.UICallback;
 import me.suanmiao.common.mvvm.model.BaseModel;
 import me.suanmiao.common.mvvm.view.BaseView;
@@ -15,7 +16,7 @@ import me.suanmiao.common.mvvm.view.BaseView;
 /**
  * Created by suanmiao on 14-12-3.
  */
-public abstract class BaseViewModel <V extends BaseView,T extends BaseModel>{
+public abstract class BaseViewModel<V extends BaseView, T extends BaseModel> {
   protected RequestManager mRequestManager;
 
   protected V baseView;
@@ -62,8 +63,12 @@ public abstract class BaseViewModel <V extends BaseView,T extends BaseModel>{
     return uiCallback;
   }
 
-  public void executeRequest(CommonRequest request, CommonRequestListener listener) {
-    mRequestManager.executeRequest(request, listener, this);
+  protected void executeRequest(SpiceRequest request, CommonRequestListener requestListener) {
+    mRequestManager.executeRequest(request, requestListener, this);
+  }
+
+  protected void executeRequest(BaseVolleyRequest request, CommonRequestListener requestListener) {
+    mRequestManager.executeRequest(request, requestListener, this);
   }
 
   public void cancelRequest() {

@@ -3,12 +3,13 @@ package me.suanmiao.common.ui.activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-import me.suanmiao.common.component.BaseApplication;
-import me.suanmiao.common.io.http.CommonRequest;
-import me.suanmiao.common.io.http.CommonRequestListener;
-import me.suanmiao.common.io.http.RequestManager;
+import com.octo.android.robospice.request.SpiceRequest;
 
 import butterknife.ButterKnife;
+import me.suanmiao.common.component.BaseApplication;
+import me.suanmiao.common.io.http.CommonRequestListener;
+import me.suanmiao.common.io.http.RequestManager;
+import me.suanmiao.common.io.http.volley.BaseVolleyRequest;
 
 /**
  * Created by suanmiao on 14-10-31.
@@ -58,7 +59,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         mRequestManager.cancelRequest(this);
     }
 
-    protected void executeRequest(CommonRequest request, CommonRequestListener requestListener) {
+    protected void executeRequest(SpiceRequest request, CommonRequestListener requestListener) {
+        mRequestManager.executeRequest(request, requestListener, this);
+    }
+
+    protected void executeRequest(BaseVolleyRequest request, CommonRequestListener requestListener) {
         mRequestManager.executeRequest(request, requestListener, this);
     }
 

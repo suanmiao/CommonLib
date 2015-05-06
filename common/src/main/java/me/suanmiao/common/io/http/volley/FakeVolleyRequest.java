@@ -6,11 +6,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Map;
 
 import me.suanmiao.common.io.http.exception.CommonParamException;
 import me.suanmiao.common.io.http.exception.CommonRequestException;
-import me.suanmiao.common.io.http.image.Photo;
 import me.suanmiao.common.io.http.robospiece.TaggedRequestListener;
 
 /**
@@ -21,19 +22,17 @@ public class FakeVolleyRequest<T> extends Request<T> {
   private IVolleyActionDelivery<T> volleyActionDelivery;
   private TaggedRequestListener<T> taggedRequestListener;
   private Map<String, String> headers;
-  private Map<String, String> postParams;
-  private boolean photoRequest = false;
-  private Photo.LoadOption loadOption = Photo.LoadOption.BOTH;
+  private Map<String, String> params;
 
   public FakeVolleyRequest(int method, String url, Map<String, String> headers,
-      Map<String, String> postParams,
+      Map<String, String> params,
       IVolleyActionDelivery<T> volleyActionDelivery,
       TaggedRequestListener<T> taggedRequestListener) throws CommonRequestException {
     super(method, url, taggedRequestListener);
     checkNull("url", url);
     checkNull("action delivery", volleyActionDelivery);
     this.headers = headers;
-    this.postParams = postParams;
+    this.params = params;
     this.volleyActionDelivery = volleyActionDelivery;
     this.taggedRequestListener = taggedRequestListener;
   }
@@ -42,22 +41,6 @@ public class FakeVolleyRequest<T> extends Request<T> {
     if (param == null) {
       throw new CommonParamException("param " + paramName + " is null");
     }
-  }
-
-  public void setIsPhotoRequest(boolean photoRequest) {
-    this.photoRequest = photoRequest;
-  }
-
-  public boolean isPhotoRequest() {
-    return photoRequest;
-  }
-
-  public void setLoadOption(Photo.LoadOption loadOption) {
-    this.loadOption = loadOption;
-  }
-
-  public Photo.LoadOption getLoadOption() {
-    return loadOption;
   }
 
   @Override
@@ -92,10 +75,49 @@ public class FakeVolleyRequest<T> extends Request<T> {
    */
   @Override
   protected Map<String, String> getParams() throws AuthFailureError {
-    if (this.postParams != null) {
-      return this.postParams;
+    if (this.params != null) {
+      return this.params;
     } else {
       return super.getParams();
     }
   }
+
+  @Override
+  public String getUrl() {
+    if (getMethod() == Method.GET) {
+      return getEncodedGETUrl(super.getUrl(), this.params);
+    } else {
+      return super.getUrl();
+    }
+  }
+
+  private String getEncodedGETUrl(String url, Map<String, String> params) {
+    if (params == null) {
+      return url;
+    }
+    ArrayList<Map.Entry<String, String>> entryArrayList = new ArrayList<>();
+    entryArrayList.addAll(params.entrySet());
+    for (int i = 0; i < entryArrayList.size(); i++) {
+      Map.Entry<String, String> entry = entryArrayList.get(i);
+      String key = entry.getKey();
+      String value = entry.getValue();
+      try {
+        value = URLEncoder.encode(value, "UTF-8");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      try {
+        key = URLEncoder.encode(key, "UTF-8");
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      if (i == 0) {
+        url += ("?" + key + "=" + value);
+      } else {
+        url += ("&" + key + "=" + value);
+      }
+    }
+    return url;
+  }
+
 }

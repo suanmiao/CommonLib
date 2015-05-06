@@ -7,12 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import me.suanmiao.common.component.BaseApplication;
-import me.suanmiao.common.io.http.CommonRequest;
-import me.suanmiao.common.io.http.CommonRequestListener;
-import me.suanmiao.common.io.http.RequestManager;
+import com.octo.android.robospice.request.SpiceRequest;
 
 import butterknife.ButterKnife;
+import me.suanmiao.common.component.BaseApplication;
+import me.suanmiao.common.io.http.CommonRequestListener;
+import me.suanmiao.common.io.http.RequestManager;
+import me.suanmiao.common.io.http.volley.BaseVolleyRequest;
 
 /**
  * Created by suanmiao on 14-12-2.
@@ -49,10 +50,10 @@ public abstract class AbstractBaseFragment extends Fragment {
     super.onActivityCreated(savedInstanceState);
     onPrepareLoading();
     contentView.post(new Runnable() {
-      @Override
-      public void run() {
-        onStartLoading();
-      }
+        @Override
+        public void run() {
+            onStartLoading();
+        }
     });
   }
 
@@ -64,7 +65,11 @@ public abstract class AbstractBaseFragment extends Fragment {
 
   protected abstract void onStartLoading();
 
-  protected void executeRequest(CommonRequest request, CommonRequestListener requestListener) {
+  protected void executeRequest(SpiceRequest request, CommonRequestListener requestListener) {
+    getRequestManager().executeRequest(request, requestListener, this);
+  }
+
+  protected void executeRequest(BaseVolleyRequest request, CommonRequestListener requestListener) {
     getRequestManager().executeRequest(request, requestListener, this);
   }
 

@@ -17,17 +17,17 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
   protected static final String KEY_CONTENT_LENGTH = "Content-Length";
   protected Photo photo;
   protected boolean shouldCache = true;
-  protected Photo.LoadOption loadOption = Photo.LoadOption.BOTH;
+  protected Photo.LoadSource loadSource = Photo.LoadSource.BOTH;
 
   public PhotoSpiceRequest(Photo photo) {
     super(Photo.class);
     this.photo = photo;
   }
 
-  public PhotoSpiceRequest(Photo photo, Photo.LoadOption option) {
+  public PhotoSpiceRequest(Photo photo, Photo.LoadSource option) {
     super(Photo.class);
     this.photo = photo;
-    this.loadOption = option;
+    this.loadSource = option;
   }
 
   @Override
@@ -36,26 +36,26 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
   }
 
   private Photo loadNormalPhoto() throws IOException {
-    switch (loadOption) {
+    switch (loadSource) {
       case ONLY_FROM_CACHE: {
-        AbstractMMBean cacheContent = getCacheManager().get(photo.getUrl());
+        AbstractMMBean cacheContent = getCacheManager().get(photo.getCacheKey());
         photo.setContent(cacheContent);
       }
         break;
       case ONLY_FROM_NETWORK: {
         AbstractMMBean networkContent = getMMFromNetwork();
         if (shouldCache && networkContent != null) {
-          getCacheManager().put(photo.getUrl(), networkContent, true);
+          getCacheManager().put(photo.getCacheKey(), networkContent, true);
         }
         photo.setContent(networkContent);
       }
         break;
       case BOTH: {
-        AbstractMMBean content = getCacheManager().get(photo.getUrl());
+        AbstractMMBean content = getCacheManager().get(photo.getCacheKey());
         if (content == null) {
           content = getMMFromNetwork();
           if (shouldCache && content != null) {
-            getCacheManager().put(photo.getUrl(), content, true);
+            getCacheManager().put(photo.getCacheKey(), content, true);
           }
         }
         photo.setContent(content);
@@ -77,7 +77,8 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
     photo.setContentLength(Integer.parseInt(contentLength));
 
     InputStream in = response.body().byteStream();
-    return getCacheManager().getBeanGenerator().constructMMBeanFromNetworkStream(in);
+    return getCacheManager().getBeanGenerator().constructMMBeanFromNetworkStream(
+        photo, in);
   }
 
   public boolean isShouldCache() {
@@ -88,11 +89,4 @@ public class PhotoSpiceRequest extends BaseCacheImageRequest<Photo> {
     this.shouldCache = shouldCache;
   }
 
-  public Photo.LoadOption getLoadOption() {
-    return loadOption;
-  }
-
-  public void setLoadOption(Photo.LoadOption loadOption) {
-    this.loadOption = loadOption;
-  }
 }

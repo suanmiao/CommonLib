@@ -20,8 +20,8 @@ public class BigBitmap {
   private int columnCount = 0;
   private int totalSize;
 
-  public static final int MAX_ITEM_WIDTH = 500;
-  public static final int MAX_ITEM_HEIGHT = 500;
+  public static final int MAX_ITEM_WIDTH = 900;
+  public static final int MAX_ITEM_HEIGHT = 900;
   private int totalWidth, totalHeight;
 
   public BigBitmap(int rowCount, int columnCount, Bitmap[][] matrix) {

@@ -3,11 +3,7 @@ package me.suanmiao.common.io.http;
 import com.android.volley.Request;
 import com.octo.android.robospice.request.SpiceRequest;
 
-import java.util.Map;
-
-import me.suanmiao.common.io.http.image.Photo;
-import me.suanmiao.common.io.http.image.spice.PhotoSpiceRequest;
-import me.suanmiao.common.io.http.volley.IVolleyActionDelivery;
+import me.suanmiao.common.io.http.volley.BaseVolleyRequest;
 
 /**
  * Created by suanmiao on 15/1/18.
@@ -17,12 +13,9 @@ public class CommonRequest<T> {
   /**
    * Volley
    */
-  private int volleyRequestMethod;
-  private String url;
-  private IVolleyActionDelivery<T> volleyActionDelivery;
-  private Request<T> volleyRequest;
-  private Map<String, String> headers;
-  private Map<String, String> params;
+  private BaseVolleyRequest<T> volleyRequest;
+
+  private Request<T> fakeVolleyRequest;
 
   /**
    * Robo
@@ -33,7 +26,6 @@ public class CommonRequest<T> {
    * common
    */
   boolean photoRequest = false;
-  private Photo.LoadOption loadOption = Photo.LoadOption.BOTH;
 
   public enum RequestType {
     ROBO_REQUEST,
@@ -42,9 +34,8 @@ public class CommonRequest<T> {
 
   private RequestType requestType;
 
-  protected CommonRequest(int volleyRequestMethod, String url) {
-    this.volleyRequestMethod = volleyRequestMethod;
-    this.url = url;
+  protected CommonRequest(BaseVolleyRequest<T> request) {
+    this.volleyRequest = request;
     this.requestType = RequestType.VOLLEY_REQUEST;
   }
 
@@ -61,48 +52,8 @@ public class CommonRequest<T> {
     this.photoRequest = photoRequest;
   }
 
-  public Photo.LoadOption getLoadOption() {
-    return loadOption;
-  }
-
-  public void setLoadOption(Photo.LoadOption loadOption) {
-    this.loadOption = loadOption;
-  }
-
-  public Map<String, String> getVolleyHeaders() {
-    return headers;
-  }
-
-  public Map<String, String> getVolleyParams() {
-    return params;
-  }
-
-  public int getVolleyRequestMethod() {
-    return volleyRequestMethod;
-  }
-
-  public String getUrl() {
-    return url;
-  }
-
-  public void setVolleyHeaders(Map<String, String> headers) {
-    this.headers = headers;
-  }
-
-  public void setVolleyParams(Map<String, String> params) {
-    this.params = params;
-  }
-
-  public void setVolleyActionDelivery(IVolleyActionDelivery<T> volleyActionDelivery) {
-    this.volleyActionDelivery = volleyActionDelivery;
-  }
-
-  public IVolleyActionDelivery<T> getVolleyActionDelivery() {
-    return volleyActionDelivery;
-  }
-
   public void setVolleyRequest(Request<T> volleyRequest) {
-    this.volleyRequest = volleyRequest;
+    this.fakeVolleyRequest = volleyRequest;
   }
 
   public RequestType getRequestType() {
@@ -110,10 +61,6 @@ public class CommonRequest<T> {
   }
 
   public SpiceRequest<T> getSpiceRequest() {
-    if (spiceRequest != null && spiceRequest instanceof PhotoSpiceRequest) {
-      PhotoSpiceRequest photoSpiceRequest = (PhotoSpiceRequest) spiceRequest;
-      photoSpiceRequest.setLoadOption(loadOption);
-    }
     return spiceRequest;
   }
 
@@ -121,7 +68,7 @@ public class CommonRequest<T> {
     switch (requestType) {
       case VOLLEY_REQUEST:
         if (this.volleyRequest != null) {
-          this.volleyRequest.cancel();
+          this.fakeVolleyRequest.cancel();
         }
         break;
       case ROBO_REQUEST:
